@@ -1,0 +1,10 @@
+Gracz pierwszy uruchamia serwer podając parametry
+Serwer czeka na określoną ilość graczy i startuje
+	Pętla:
+Sprawdzenie czy gracze są w grze
+Rusza runda 
+Rozdanie kart 
+Licytacja I - VI
+Zgarnięcie puli
+	KONIEC PĘTLI
+5. Ogłoszenie wyników
