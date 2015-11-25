@@ -10,6 +10,8 @@ import main.Card;
 
 public class TestCard {
 
+	
+	
 	@Test(expected = InvalidNumberOfRankException.class)
 	public void test_InvalidNumberOfRankException() 
 			throws InvalidNumberOfRankException, 
@@ -41,4 +43,7 @@ public class TestCard {
 		assertEquals( -1, card2.Compare( card3 ) );
 		assertEquals( 0 , card3.Compare( card4 ) );
 	}
+	
+	
+	
 }
