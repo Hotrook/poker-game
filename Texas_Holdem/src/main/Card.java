@@ -28,6 +28,7 @@ public class Card {
 	
 	private final int suit;
 	private final int rank;
+	private final int power;
 	
 	public Card( int rank , int suit ) throws InvalidNumberOfRankException, 
 				   							  InvalidNumberOfSuitException 
@@ -43,6 +44,7 @@ public class Card {
 		
 		this.suit = suit ;
 		this.rank = rank ;
+		this.power = 13 * rank + suit;
 	}
 
 	
