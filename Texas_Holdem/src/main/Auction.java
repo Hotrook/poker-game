@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Auction {
 	private List<Player> playerQueue;
-	private List<Player> playersInGame;
+	private List<Player> playersInRound;
 	private int roundNumber;
 	
 	private int currentPot;
@@ -13,7 +13,7 @@ public class Auction {
 	public Auction(int pot){
 		setCurrentPot(0);
 		setRoundNumber(0);
-		setInitialPlayerQueue(playersInGame);
+		setInitialPlayerQueue(playersInRound);
 	}
 
 	public int getCurrentPot() {
@@ -40,12 +40,12 @@ public class Auction {
 		this.roundNumber = roundNumber;
 	}
 	
-	public List<Player> getPlayersInGame() {
-		return playersInGame;
+	public List<Player> getPlayersInRound() {
+		return playersInRound;
 	}
 
-	public void setPlayersInGame(List<Player> playersInGame) {
-		this.playersInGame = playersInGame;
+	public void setPlayersInRound(List<Player> playersInGame) {
+		this.playersInRound = playersInGame;
 	}
 	
 	public void setInitialPlayerQueue(List<Player> players){
@@ -79,12 +79,47 @@ public class Auction {
 		}
 	}
 	
+	private boolean checkIfBetsAreEqual(List<Player> players){
+		boolean temp = true;
+		int checkingBet = players.get(0).getCurrentBet();
+		for(int i=1; i<players.size(); i++){
+			if(players.get(i).getCurrentBet() != checkingBet){
+				temp = false;
+				break;
+			}
+			
+			checkingBet = players.get(i).getCurrentBet();
+		}
+		return temp;
+	}
+	
+	private boolean endOfAuction = false;
+	private int auctionCounter = 0;
+	
 	public void StartAuction(int round){
+		endOfAuction = false;
 		if(round!=0)
-			setPlayerQueue(playersInGame);
-		
-		
-		
+			setPlayerQueue(playersInRound); //set player queue with from players in round
+			
+		while(true){ //while everyone makes his move and all player's bets are equal
+			for(Player player : playerQueue){
+				if(auctionCounter > 0 && checkIfBetsAreEqual(playerQueue) == true){	//if everyone took his turn and all player's bets are equal
+					endOfAuction=true;
+					break;
+				}
+				
+				player.getMovement(); //get movement from server 
+				if(player.playerState == ActionTaken.ALLIN) //if player did all in action, remove him from queue
+					playerQueue.remove(player);
+				
+				if(player.playerState == ActionTaken.FOLDING){
+					playersInRound.remove(player); //if player is folding, remove him from this round
+				}
+				auctionCounter++;
+			}
+			if(endOfAuction == true)
+			break;	
+		}
 		
 		setPlayerQueue(null);
 	}

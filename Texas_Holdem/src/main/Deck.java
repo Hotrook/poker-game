@@ -19,7 +19,6 @@ public class Deck {
 						  InvalidNumberOfSuitException {
 		
 		Deck.cards = new ArrayList<Card>();
-		
 		for( int i = 0 ; i < 13 ; ++i )
 		for( int j = 0 ; j < 4  ; ++j )
 			Deck.cards.add( new Card( i, j ) );
