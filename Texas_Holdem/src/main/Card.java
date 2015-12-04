@@ -19,7 +19,7 @@ public class Card {
 	public static final int QUEEN = 12;
 	public static final int KING = 13;
 	public static final int ACE = 14;
-// suits
+// suits'
 	public static final int CLUB = 0;
 	public static final int DIAMOND = 1;
 	public static final int HEART = 2;
