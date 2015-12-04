@@ -1,9 +1,13 @@
 package main;
 
+import java.util.List;
+
 public class Player{
 
 	private final String playerName;
-	private Card[] hand;
+	private List<Card> hand;
+	private List<Card> winningHand;
+	private List<Card> drawCards;
 	private boolean isInGame;
 	private int playerTokens; //possibly List<Token>, where Token has it's value and amount
 	private boolean isSmallBlind;
@@ -18,7 +22,12 @@ public class Player{
 		this.setPlayerTokens(tokens);
 		setInGame(true);
 		setHand(null);
+		setWinningHand(null);
+		setDrawCards(null);
 		setCurrentBet(0);
+		setBigBlind(false);
+		setSmallBlind(false);
+		setDealerButton(false);
 	}
 
 	//Getters and setters...
@@ -27,12 +36,28 @@ public class Player{
 		return playerName;
 	}
 
-	public Card[] getHand() {
+	public List<Card> getHand() {
 		return hand;
 	}
 
-	public void setHand(Card[] hand) {
+	public void setHand(List<Card> hand) {
 		this.hand = hand;
+	}
+
+	public List<Card> getWinningHand() {
+		return winningHand;
+	}
+
+	public void setWinningHand(List<Card> winningHand) {
+		this.winningHand = winningHand;
+	}
+
+	public List<Card> getDrawCards() {
+		return drawCards;
+	}
+
+	public void setDrawCards(List<Card> drawCards) {
+		this.drawCards = drawCards;
 	}
 
 	public int getPlayerTokens() {
@@ -116,5 +141,13 @@ public class Player{
 		setCurrentBet(getCurrentBet() + playerTokens);
 		setPlayerTokens(0);
 		return this.playerTokens;
+	}
+
+	/**
+	 * based on button pressed, calls one of auction methods
+	 * used in auction to wait for players action
+	 */
+	public void getMovement() {
+		// TODO Auto-generated method stub
 	}
 }
