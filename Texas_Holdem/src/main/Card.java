@@ -53,7 +53,9 @@ public class Card {
 		return suit;
 	}
 
-	
+	public int getPower(){
+		return power;
+	}
 	
 	public int getRank() {
 		return rank;
