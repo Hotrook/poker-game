@@ -1,5 +1,6 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -7,16 +8,16 @@ import java.util.List;
 
 public class HandDeterminer {
 	
-	private List<Card> operatingList;
+	private static List<Card> operatingList = new ArrayList<Card>();
 	
 
-	public double determineHand(List<Card> playerCards, List<Card> tableCards,Player player){
+	public static double determineHand(List<Card> playerCards, List<Card> tableCards,Player player){
 		double power;
-		operatingList = null;
+		operatingList.clear();
 		operatingList.addAll(playerCards);
 		operatingList.addAll(tableCards);
 		
-		Collections.sort(operatingList, new SortBySuitThenRank());
+		
 		if( (power = HandDeterminer.StraightFlush(operatingList, player)) > 0){
 			return Hands.STRAIGHTFLUSH * 251 + power;
 		}
@@ -48,9 +49,9 @@ public class HandDeterminer {
 	}
 	
 	
-	
 	private static double StraightFlush(List<Card> operatingList,
 										 Player player){
+		Collections.sort(operatingList, new SortBySuitThenRank());
 		int counter = 0;
 		int max = 0; 
 		
@@ -62,7 +63,7 @@ public class HandDeterminer {
 				max = operatingList.get(i - 1).getRank();
 				
 				while( operatingList.get(i+counter).getSuit() == operatingList.get( i + counter - 1 ).getSuit() &&
-					   operatingList.get(i+counter).getRank() == operatingList.get( i + counter - 1 ).getRank() + 1){
+					   operatingList.get(i+counter).getRank() == operatingList.get( i + counter - 1 ).getRank() - 1){
 					counter++;
 				}
 			}
@@ -83,8 +84,10 @@ public class HandDeterminer {
 						   Player player){
 		
 		Collections.sort( operatingList, new SortByRank());
+		
+		 
 		int counter = 0;
-		int max = 0 ; 
+		double max = 0 ; 
 		
 		for( int i = 1 ; i <= 4 ; ++i ){
 			if( counter != 3 ){
@@ -92,9 +95,11 @@ public class HandDeterminer {
 				counter = 0 ;
 				max = operatingList.get(i-1).getRank();
 				
-				while( operatingList.get(i+counter).getRank() == operatingList.get(i+counter - 1).getRank() ){
+				while( i+counter < 7 &&
+						operatingList.get(i+counter).getRank() == operatingList.get(i+counter - 1).getRank() ){
 					counter++;
 				}
+				
 				
 			}
 			
@@ -131,16 +136,17 @@ public class HandDeterminer {
 			three = operatingList.get(i).getRank();
 			
 			counter = 1;
-			while( operatingList.get( i + counter).getRank() == three){
+			while( i+counter <= 6 && operatingList.get( i + counter).getRank() == three){
 				counter++;
 			}
 			
-			if( counter >= 3){
+			if( counter == 3){
 				three_found = true;
 			}
 			i++;
 		}
 		
+		i=0;
 		while( i <= 5  && two_found == false){
 			if( operatingList.get(i).getRank() != three){
 				two = operatingList.get(i).getRank();
@@ -153,6 +159,7 @@ public class HandDeterminer {
 		
 		if( three_found && two_found ) {
 			result = three + two*0.01;
+			
 			return result;
 		}
 		
@@ -163,7 +170,7 @@ public class HandDeterminer {
 	
 	
 	private static double Flush(List<Card> operatingList, Player player){
-		
+		Collections.sort(operatingList, new SortBySuitThenRank());
 		int counter = 0;
 		int i = 0 ;
 		int suit = 0;
@@ -171,10 +178,11 @@ public class HandDeterminer {
 		boolean flush_found = false;
 		
 		while (i <= 2 && flush_found == false ){
+				
 				counter = 1;
 				suit = operatingList.get(i).getSuit();
 				result = operatingList.get(i).getRank();
-				while( operatingList.get(i+counter).getSuit() == suit ){
+				while( counter < 5 && operatingList.get(i+counter).getSuit() == suit  ){
 					result += operatingList.get(i+counter).getRank() * Math.pow( 10 , ((-2)*counter));
 					counter++;
 				}
@@ -402,7 +410,7 @@ public class HandDeterminer {
 
 	
 	
-	private class SortBySuitThenRank implements Comparator<Card>{
+	private static class SortBySuitThenRank implements Comparator<Card>{
 		@Override
 		public int compare(Card o1, Card o2) {
 			Card card1 = o1;
