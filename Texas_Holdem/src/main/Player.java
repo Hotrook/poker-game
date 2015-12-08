@@ -14,6 +14,7 @@ public class Player{
 	private boolean isBigBlind;
 	private boolean isDealerButton;
 	private int currentBet;
+	private int currentAuctionBet;
 	private final int playerIndex;
 	
 	public Player(String name, int tokens, int index){
@@ -30,8 +31,55 @@ public class Player{
 		setDealerButton(false);
 	}
 
-	//Getters and setters...
+////AUCTION METHODS////
 	
+	public ActionTaken playerState;
+		
+	public void Check(){
+		playerState = ActionTaken.CHECKING;
+	}
+	
+	public int Bet(int betValue){
+		setPlayerTokens(getPlayerTokens() - betValue);
+		setCurrentBet(getCurrentBet() + betValue);
+		playerState = ActionTaken.BETING;
+		return betValue;
+	}
+	
+	public void Call(int betValue){
+		setPlayerTokens(getPlayerTokens() - betValue);
+		setCurrentBet(getCurrentBet() + betValue);
+		playerState = ActionTaken.CALLING;
+	}
+
+	public int Raise(int betValue, int riseValue){
+		setPlayerTokens(getPlayerTokens() - betValue - riseValue);
+		setCurrentBet(getCurrentBet() + betValue + riseValue);
+		playerState = ActionTaken.RISING;
+		return riseValue;
+	}
+
+	public void Fold(){
+		playerState = ActionTaken.FOLDING;
+	}
+	
+	public int AllIn(){
+		playerState = ActionTaken.ALLIN;
+		setCurrentBet(getCurrentBet() + playerTokens);
+		setPlayerTokens(0);
+		return this.playerTokens;
+	}
+
+	/**
+	 * based on button pressed, calls one of auction methods
+	 * used in auction to wait for players action
+	 */
+	public void getMovement() {
+		
+	}
+
+////GETTERS AND SETTERS////
+
 	public String getPlayerName() {
 		return playerName;
 	}
@@ -76,6 +124,14 @@ public class Player{
 		this.currentBet = currentBet;
 	}
 
+	public int getCurrentAuctionBet() {
+		return currentAuctionBet;
+	}
+
+	public void setCurrentAuctionBet(int currentAuctionBet) {
+		this.currentAuctionBet = currentAuctionBet;
+	}
+
 	public boolean isSmallBlind() {
 		return isSmallBlind;
 	}
@@ -110,44 +166,5 @@ public class Player{
 	
 	public int getPlayerIndex() {
 		return playerIndex;
-	}
-
-	// Auction methods
-	public ActionTaken playerState;
-		
-	public void Check(){
-		playerState = ActionTaken.CHECKING;
-	}
-	
-	public void Bet(int betValue){
-		setPlayerTokens(getPlayerTokens() - betValue);
-		setCurrentBet(getCurrentBet() + betValue);
-		playerState = ActionTaken.BETING;
-	}
-
-	public int Raise(int betValue, int riseValue){
-		setPlayerTokens(getPlayerTokens() - betValue - riseValue);
-		setCurrentBet(getCurrentBet() + betValue + riseValue);
-		playerState = ActionTaken.RISING;
-		return riseValue;
-	}
-
-	public void Fold(){
-		playerState = ActionTaken.FOLDING;
-	}
-	
-	public int AllIn(){
-		playerState = ActionTaken.ALLIN;
-		setCurrentBet(getCurrentBet() + playerTokens);
-		setPlayerTokens(0);
-		return this.playerTokens;
-	}
-
-	/**
-	 * based on button pressed, calls one of auction methods
-	 * used in auction to wait for players action
-	 */
-	public void getMovement() {
-		// TODO Auto-generated method stub
 	}
 }
