@@ -1,5 +1,6 @@
 package main;
 
+
 import exceptions.InvalidNumberOfRankException;
 import exceptions.InvalidNumberOfSuitException;
 
@@ -73,6 +74,9 @@ public class Card {
 		else 							  { return -1; }
 		
 	}
+	
+	
+	
 	
 	
 }

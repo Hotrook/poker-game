@@ -1,17 +1,22 @@
 package main;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.lang.Math.*;
+
 
 public class HandDeterminer {
 	
 	private List<Card> operatingList;
+	
 
 	public double determineHand(List<Card> playerCards, List<Card> tableCards,Player player){
 		double power;
 		operatingList = null;
 		operatingList.addAll(playerCards);
 		operatingList.addAll(tableCards);
+		
+		Collections.sort(operatingList, new SortBySuitThenRank());
 		if( (power = HandDeterminer.StraightFlush(operatingList, player)) > 0){
 			return Hands.STRAIGHTFLUSH * 251 + power;
 		}
@@ -49,7 +54,6 @@ public class HandDeterminer {
 		int counter = 0;
 		int max = 0; 
 		
-		sortList(operatingList);
 		
 		for( int i = 1; i <= 3 ; ++i ){
 			if( counter != 4 ){
@@ -78,10 +82,9 @@ public class HandDeterminer {
 	private static double FourOfAKind(List<Card> operatingList,
 						   Player player){
 		
+		Collections.sort( operatingList, new SortByRank());
 		int counter = 0;
 		int max = 0 ; 
-		
-		sortList(operatingList);
 		
 		for( int i = 1 ; i <= 4 ; ++i ){
 			if( counter != 3 ){
@@ -114,7 +117,7 @@ public class HandDeterminer {
 	
 	private static double FullHouse(List<Card> operatingList,
 			   			   Player player){
-		
+		Collections.sort( operatingList, new SortByRank());
 		int two = 0;
 		int three = -1;
 		int i = 0 ; 
@@ -160,7 +163,6 @@ public class HandDeterminer {
 	
 	
 	private static double Flush(List<Card> operatingList, Player player){
-		sortBySuit(operatingList);
 		
 		int counter = 0;
 		int i = 0 ;
@@ -195,21 +197,28 @@ public class HandDeterminer {
 	
 	private static double Straight(List<Card> operatingList, Player player){
 		
+		Collections.sort(operatingList, new SortByRank());
+		
 		int counter = 0;
 		int i = 0;
+		int j ;
+		int antecessor;
+		 
 		double result = 0; 
 		boolean straight_found = false;
 		
 		while( i <= 2 && straight_found == false ){
 			
+			j = i;
 			counter = 1;
 			result = operatingList.get(i).getRank();
+			antecessor = operatingList.get(i).getRank();
 			
-			while ( operatingList.get(i+counter).getRank() == 
-					operatingList.get( i + counter - 1 ).getRank() - 1 &&
-					counter <= 4){
-				
-				counter++;
+			while ( j <= 6 ){
+				if ( operatingList.get(j).getRank() + 1 == antecessor ){
+					antecessor = operatingList.get(j).getRank();
+					counter++;
+				}
 			}
 			
 			if( counter == 5 ){
@@ -230,6 +239,7 @@ public class HandDeterminer {
 	private static double ThreeOfAKind(List<Card> operatingList,
 						   Player player){
 		
+		Collections.sort(operatingList, new SortByRank());
 		int counter = 0 ;
 		int i = 0;
 		int rank;
@@ -274,6 +284,7 @@ public class HandDeterminer {
 	
 	private static double TwoPair(List<Card> operatingList,
 						   Player player){
+		Collections.sort(operatingList, new SortByRank());
 		int i = 0;
 		int rank;
 		int pair1 = 0;
@@ -326,12 +337,12 @@ public class HandDeterminer {
 	
 	private static double OnePair(List<Card> operatingList,
 						   Player player ){
+		Collections.sort(operatingList, new SortByRank());
 		
 		int i = 0; 
 		int counter = 0;
 		int rank = 0;
 		int pair = 0;
-		int counte = 0;
 		double result = 0;
 		boolean pair_found = false;
 		
@@ -367,8 +378,12 @@ public class HandDeterminer {
 
 	}
 	
-	public static int HighCard(List<Card> operatingList,
+	
+	
+	
+	public static double HighCard(List<Card> operatingList,
 					      Player player){
+		Collections.sort(operatingList, new SortByRank());
 		double result;
 		int i = 1;
 		int rank;
@@ -382,19 +397,50 @@ public class HandDeterminer {
 			
 			i++;
 		}
-		return 0;
+		return result;
 	}
+
 	
 	
-	private static void sortList(List<Card> playerCards) {
-		// TODO Auto-generated method stub
+	private class SortBySuitThenRank implements Comparator<Card>{
+		@Override
+		public int compare(Card o1, Card o2) {
+			Card card1 = o1;
+			Card card2 = o2;
+			if( card1.getSuit() > card2.getSuit()){
+				return -1;
+			}
+			else if( card1.getSuit() < card2.getSuit() ){
+				return 1;
+			}
+			else {
+				if (card1.getRank() > card2.getRank() ){
+					
+					return -1;
+				}
+				else if( card1.getRank() < card2.getRank() ){
+					
+					return 1;
+				}
+				return 0;
+			}
+		
+		}
 		
 	}
 	
-	private static void sortBySuit(List<Card> operatingList) {
-		// TODO Auto-generated method stub
+	private static class SortByRank implements Comparator<Card>{
+
+		@Override
+		public int compare(Card o1, Card o2) {
+			if( o1.getRank() > o2.getRank()){
+				return -1;
+			}
+			else if(o1.getRank() < o2.getRank()){
+				return 1;
+			}
+			return 0;
+		}
 		
 	}
-
-
 }
