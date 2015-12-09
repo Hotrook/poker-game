@@ -206,7 +206,6 @@ public class HandDeterminer {
 	private static double Straight(List<Card> operatingList, Player player){
 		
 		Collections.sort(operatingList, new SortByRank());
-		
 		int counter = 0;
 		int i = 0;
 		int j ;
@@ -222,11 +221,12 @@ public class HandDeterminer {
 			result = operatingList.get(i).getRank();
 			antecessor = operatingList.get(i).getRank();
 			
-			while ( j <= 6 ){
+			while ( j <= 6 && counter < 5){
 				if ( operatingList.get(j).getRank() + 1 == antecessor ){
 					antecessor = operatingList.get(j).getRank();
 					counter++;
 				}
+				j++;
 			}
 			
 			if( counter == 5 ){
@@ -342,6 +342,9 @@ public class HandDeterminer {
 		
 		return 0;
 	}
+	
+	
+	
 	
 	private static double OnePair(List<Card> operatingList,
 						   Player player ){
