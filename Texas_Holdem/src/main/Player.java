@@ -16,6 +16,7 @@ public class Player{
 	private int currentBet;
 	private int currentAuctionBet;
 	private final int playerIndex;
+	private double power;
 	
 	public Player(String name, int tokens, int index){
 		this.playerName=name;
@@ -166,5 +167,13 @@ public class Player{
 	
 	public int getPlayerIndex() {
 		return playerIndex;
+	}
+
+	public double getPower() {
+		return power;
+	}
+
+	public void setPower(double power) {
+		this.power = power;
 	}
 }
