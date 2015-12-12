@@ -2,8 +2,10 @@ package main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
-public class Auction {
+
+public class Auction{
 	private List<Player> playerQueue;
 	private List<Player> playersInRound;
 	private int roundNumber;
@@ -16,21 +18,23 @@ public class Auction {
 		setRoundNumber(0);
 		playerQueue = new ArrayList<Player>();
 		setPlayersInRound(playersInRound);
-		setInitialPlayerQueue(playersInRound);
 	}
 
 ////METHODS USED IN AUCTION////
-	private boolean playerAfterBigBlind = false;
+	
 	public void setInitialPlayerQueue(List<Player> players){
+		boolean playerAfterBigBlind = false;
 		int firstAddedPlayer = 0;
+		int index = 0;
 		for ( Player player : players){
 			if(player.isBigBlind()){
-				firstAddedPlayer = player.getPlayerIndex();
+				firstAddedPlayer = index;
 				playerAfterBigBlind = true;
 			}
-			else if(playerAfterBigBlind){
+			else if(playerAfterBigBlind == true){
 				playerQueue.add(player);
 			}
+		index++;
 		}
 		for(int i=0;i<=firstAddedPlayer;i++){
 			playerQueue.add(players.get(i));
@@ -38,11 +42,13 @@ public class Auction {
 	}
 	
 	public void setPlayerQueue(List<Player> players){
+		boolean playerAfterSmallBlind = false;
 		int firstAddedPlayer = 0;
+		int index = 0;
 		for ( Player player : players){
 			if(player.isSmallBlind()){
 				playerQueue.add(player);
-				firstAddedPlayer = player.getPlayerIndex();
+				firstAddedPlayer = index;
 			}
 			else if(playerQueue.isEmpty()==false){
 				playerQueue.add(player);
@@ -68,19 +74,28 @@ public class Auction {
 ////ACTUAL METHOD FOR STARTING AUCTION////	
 	private boolean endOfAuction = false;
 	private int auctionCounter = 0;
+	private Player currentPlayer = null;
 	
 	public void StartAuction(int round){
 		endOfAuction = false;
 		if(round!=0)
 			setPlayerQueue(playersInRound); //set player queue with players in round
-			
-		while(true){ //while everyone makes his move and all player's bets are equal
-			for(Player player : playerQueue){
+		else
+			setInitialPlayerQueue(playersInRound);
+
+			ListIterator<Player> it = playerQueue.listIterator();
+		while(endOfAuction!=true){ //while everyone makes his move and all player's bets are equal
+			if(it.hasNext()){
+				Player player = it.next();
+				currentPlayer = player;
 				if(auctionCounter > 0 && checkIfBetsAreEqual(playerQueue) == true){	//if everyone took his turn and all player's bets are equal
 					endOfAuction=true;
 					break;
 				}
 				
+				//TODO: add big and small blind to the pot, etc 
+				
+				MoveRestrictions.Restrict(); //TODO: implement that class
 				player.getMovement(); //get movement from server 
 				if(player.playerState == ActionTaken.CHECKING){ 
 					continue;
@@ -90,26 +105,29 @@ public class Auction {
 					setCurrentPot(player.getCurrentBet());
 				}
 				if(player.playerState == ActionTaken.CALLING){
+					player.setCurrentBet(getCurrentBet());
+					player.setPlayerTokens(player.getPlayerTokens() - getCurrentBet());
 					setCurrentPot(getCurrentPot() + player.getCurrentBet());
 				}				
 				if(player.playerState == ActionTaken.RISING){ 
+					player.setPlayerTokens(player.getPlayerTokens() - getCurrentBet());
+					player.setCurrentBet(getCurrentBet() + getCurrentBet());
 					setCurrentBet(player.getCurrentBet());
 					setCurrentPot(getCurrentPot() + player.getCurrentBet()); 
 				}
 				if(player.playerState == ActionTaken.FOLDING){ 
 					playersInRound.remove(player); //if player is folding, remove him from this round and queue
-					playerQueue.remove(player);
+					it.remove();
 				}
 				if(player.playerState == ActionTaken.ALLIN){ 
 					setCurrentPot(getCurrentPot() + player.getCurrentBet());
 					if(player.getCurrentBet() > getCurrentPot())
 						setCurrentBet(player.getCurrentBet());
-					playerQueue.remove(player); //if player did all in action, remove him from queue
+					player.setPlayerTokens(0);
+					it.remove();
 				}
 			}
-			auctionCounter++; 
-			if(endOfAuction == true)
-			break;	
+			auctionCounter++; 	
 		}
 		//reseting values before next auction
 		//*current bet
@@ -161,4 +179,8 @@ public class Auction {
 		return playerQueue;
 	}
 	
+	public Player getCurrentPlayer(){
+		return currentPlayer;
+	}
+
 }
