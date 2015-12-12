@@ -9,7 +9,7 @@ public class Player{
 	private List<Card> winningHand;
 	private List<Card> drawCards;
 	private boolean isInGame;
-	private int playerTokens; 
+	private int playerTokens; //possibly List<Token>, where Token has it's value and amount
 	private boolean isSmallBlind;
 	private boolean isBigBlind;
 	private boolean isDealerButton;
@@ -18,6 +18,7 @@ public class Player{
 	private final int playerIndex;
 	private boolean stateChanged;
 	private String name;
+	private double power;
 	
 	public Player(String name, int tokens, int index, AuctionGUI ta){
 		this.playerName=name;
@@ -194,5 +195,13 @@ public class Player{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public double getPower() {
+		return power;
+	}
+
+	public void setPower(double power) {
+		this.power = power;
 	}
 }

@@ -19,9 +19,7 @@ public class Deck {
 						  InvalidNumberOfSuitException {
 		
 		Deck.cards = new ArrayList<Card>();
-		for( int i = 0 ; i < 13 ; ++i )
-		for( int j = 0 ; j < 4  ; ++j )
-			Deck.cards.add( new Card( i, j ) );
+		initializeCards();
 		
 	}
 	
@@ -40,6 +38,13 @@ public class Deck {
 	}
 	
 	
+	public void initializeCards() throws InvalidNumberOfRankException, InvalidNumberOfSuitException{
+		cards.clear();
+		for( int i = 0 ; i < 13 ; ++i )
+			for( int j = 0 ; j < 4  ; ++j )
+				Deck.cards.add( new Card( i, j ) );
+		shuffle();
+	}
 	
 	public void shuffle(){
 		Collections.shuffle( Deck.cards );	
@@ -49,6 +54,24 @@ public class Deck {
 	
 	public List<Card> getCards(){
 		return Deck.cards;
+	}
+
+
+
+	public List<Card> giveTwoCards() {
+		return null;
+	}
+
+
+
+	public List<Card> giveCards(int i) {
+		List <Card> result = new ArrayList<Card>();
+		while( i != 0 ){ 
+			result.add(cards.get(0));
+			cards.remove(cards.get(0));
+			i--;
+		}
+		return result;
 	}
 	
 	

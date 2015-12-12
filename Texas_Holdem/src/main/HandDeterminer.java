@@ -18,39 +18,47 @@ public class HandDeterminer {
 		operatingList.addAll(tableCards);
 		
 		
-		if( (power = HandDeterminer.StraightFlush(operatingList, player)) > 0){
+		if( (power = HandDeterminer.StraightFlush(operatingList)) > 0){
+			player.setPower( Hands.STRAIGHTFLUSH*251 + power);
 			return Hands.STRAIGHTFLUSH * 251 + power;
 		}
-		else if((power = HandDeterminer.FourOfAKind(operatingList, player)) > 0){
+		else if((power = HandDeterminer.FourOfAKind(operatingList)) > 0){
+			player.setPower( Hands.FOUROFAKIND*251 + power);
 			return Hands.FOUROFAKIND * 251 + power;
 		}
-		else if((power = HandDeterminer.FullHouse(operatingList, player)) > 0){
+		else if((power = HandDeterminer.FullHouse(operatingList)) > 0){
+			player.setPower( Hands.FULLHOUSE*251 + power);
 			return Hands.FULLHOUSE * 251 + power;
 		}
-		else if((power = HandDeterminer.Flush(operatingList, player)) > 0){
+		else if((power = HandDeterminer.Flush(operatingList)) > 0){
+			player.setPower( Hands.FLUSH*251 + power);
 			return Hands.FLUSH * 251 + power; 
 		}
-		else if((power = HandDeterminer.Straight(operatingList , player)) > 0){
+		else if((power = HandDeterminer.Straight(operatingList )) > 0){
+			player.setPower( Hands.STRAIGHT*251 + power);
 			return Hands.STRAIGHT * 251 + power;
 		}
-		else if((power = HandDeterminer.ThreeOfAKind(operatingList, player)) > 0){
+		else if((power = HandDeterminer.ThreeOfAKind(operatingList)) > 0){
+			player.setPower( Hands.THREEOFAKIND*251 + power);
 			return Hands.THREEOFAKIND * 251 + power; 
 		}
-		else if((power = HandDeterminer.TwoPair(operatingList, player)) > 0){
+		else if((power = HandDeterminer.TwoPair(operatingList)) > 0){
+			player.setPower( Hands.TWOPAIR*251 + power);
 			return Hands.TWOPAIR * 251 + power; 
 		}
-		else if((power = HandDeterminer.OnePair(operatingList, player)) > 0){
+		else if((power = HandDeterminer.OnePair(operatingList)) > 0){
+			player.setPower( Hands.ONEPAIR*251 + power);
 			return Hands.ONEPAIR * 251 + power;
 		}
-		else if((power = HandDeterminer.HighCard(operatingList, player)) > 0){
+		else if((power = HandDeterminer.HighCard(operatingList)) > 0){
+			player.setPower( Hands.HIGHCARD*251 + power);
 			return Hands.HIGHCARD * 251 + power;
 		}
 		return -1;
 	}
 	
 	
-	private static double StraightFlush(List<Card> operatingList,
-										 Player player){
+	private static double StraightFlush(List<Card> operatingList){
 		Collections.sort(operatingList, new SortBySuitThenRank());
 		int counter = 0;
 		int max = 0; 
@@ -80,8 +88,7 @@ public class HandDeterminer {
 	
 	
 	
-	private static double FourOfAKind(List<Card> operatingList,
-						   Player player){
+	private static double FourOfAKind(List<Card> operatingList){
 		
 		Collections.sort( operatingList, new SortByRank());
 		
@@ -120,8 +127,7 @@ public class HandDeterminer {
 	
 	
 	
-	private static double FullHouse(List<Card> operatingList,
-			   			   Player player){
+	private static double FullHouse(List<Card> operatingList){
 		Collections.sort( operatingList, new SortByRank());
 		int two = 0;
 		int three = -1;
@@ -169,7 +175,7 @@ public class HandDeterminer {
 	
 	
 	
-	private static double Flush(List<Card> operatingList, Player player){
+	private static double Flush(List<Card> operatingList){
 		Collections.sort(operatingList, new SortBySuitThenRank());
 		int counter = 0;
 		int i = 0 ;
@@ -203,7 +209,7 @@ public class HandDeterminer {
 	
 	
 	
-	private static double Straight(List<Card> operatingList, Player player){
+	private static double Straight(List<Card> operatingList){
 		
 		Collections.sort(operatingList, new SortByRank());
 		int counter = 0;
@@ -244,8 +250,7 @@ public class HandDeterminer {
 	
 	
 	
-	private static double ThreeOfAKind(List<Card> operatingList,
-						   Player player){
+	private static double ThreeOfAKind(List<Card> operatingList){
 		
 		Collections.sort(operatingList, new SortByRank());
 		int counter = 0 ;
@@ -290,8 +295,7 @@ public class HandDeterminer {
 	
 	
 	
-	private static double TwoPair(List<Card> operatingList,
-						   Player player){
+	private static double TwoPair(List<Card> operatingList){
 		Collections.sort(operatingList, new SortByRank());
 		int i = 0;
 		int rank;
@@ -346,8 +350,7 @@ public class HandDeterminer {
 	
 	
 	
-	private static double OnePair(List<Card> operatingList,
-						   Player player ){
+	private static double OnePair(List<Card> operatingList){
 		Collections.sort(operatingList, new SortByRank());
 		
 		int i = 0; 
@@ -392,8 +395,7 @@ public class HandDeterminer {
 	
 	
 	
-	public static double HighCard(List<Card> operatingList,
-					      Player player){
+	public static double HighCard(List<Card> operatingList){
 		Collections.sort(operatingList, new SortByRank());
 		double result;
 		int i = 1;
