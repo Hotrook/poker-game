@@ -19,6 +19,7 @@ public class Player{
 	private boolean stateChanged;
 	private String name;
 	private double power;
+	private AuctionGUI ta;
 	
 	public Player(String name, int tokens, int index, AuctionGUI ta){
 		this.playerName=name;
@@ -34,6 +35,11 @@ public class Player{
 		setDealerButton(false);
 		setStateChanged(false);
 		setName(null);
+		setTa(ta);
+	}
+	
+	public Player makePlayer(String name, int tokens, int index, AuctionGUI ta){
+		return new Player(name, tokens, index, ta);
 	}
 
 ////AUCTION METHODS////
@@ -46,17 +52,19 @@ public class Player{
 	
 	public void Bet(int betValue){
 		setPlayerTokens(getPlayerTokens() - betValue);
-		setCurrentBet(getCurrentBet() + betValue);
+		setCurrentBet(betValue);
 		playerState = ActionTaken.BETING;
 	}
 	
-	public void Call(){
+	public void Call(int auctionBetValue){
+		setCurrentBet(auctionBetValue);
+		setPlayerTokens(getPlayerTokens() - auctionBetValue);
 		playerState = ActionTaken.CALLING;
 	}
 
-	public int Raise(int riseValue){
-		setPlayerTokens(getPlayerTokens() - riseValue);
-		setCurrentBet(getCurrentBet() + riseValue);
+	public int Raise(int auctionBetvalue, int riseValue){
+		setPlayerTokens(getPlayerTokens() - riseValue - auctionBetvalue);
+		setCurrentBet(riseValue + auctionBetvalue);
 		playerState = ActionTaken.RISING;
 		return riseValue;
 	}
@@ -67,8 +75,8 @@ public class Player{
 	
 	public int AllIn(){
 		playerState = ActionTaken.ALLIN;
-		setCurrentBet(getCurrentBet() + getPlayerTokens());
-		setPlayerTokens(0); //hotrook
+		setCurrentBet(getPlayerTokens());
+		setPlayerTokens(0);
 		return this.playerTokens;
 	}
 	
@@ -76,20 +84,11 @@ public class Player{
 	 * based on button pressed, calls one of auction methods
 	 * used in auction to wait for players action
 	 */
-	public void getMovement() {
+	public String getMovement() {
 		while(getName()==null){
 			
 		}
-        switch(name){
-        case "check": Check();
-        case "call": Call();
-        case "bet": Bet(20); //TODO: get bet value from GUI
-        case "raise": Raise(30); //TODO: get raise value from GUI
-        case "fold": Fold();
-        case "allin": AllIn();
-        default: break;
-        }
-        name = null;
+        return name;
 	}
 
 ////GETTERS AND SETTERS////
@@ -204,5 +203,13 @@ public class Player{
 
 	public void setPower(double power) {
 		this.power = power;
+	}
+
+	public AuctionGUI getTa() {
+		return ta;
+	}
+
+	public void setTa(AuctionGUI ta) {
+		this.ta = ta;
 	}
 }
