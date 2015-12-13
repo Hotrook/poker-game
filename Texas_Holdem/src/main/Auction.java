@@ -1,181 +1,186 @@
-package edu.lmu.cs.networking;
+package main;
 
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
-/**
- * A client for the TicTacToe game, modified and extended from the
- * class presented in Deitel and Deitel "Java How to Program" book.
- * I made a bunch of enhancements and rewrote large sections of the
- * code.  In particular I created the TTTP (Tic Tac Toe Protocol)
- * which is entirely text based.  Here are the strings that are sent:
- *
- *  Client -> Server           Server -> Client
- *  ----------------           ----------------
- *  MOVE <n>  (0 <= n <= 8)    WELCOME <char>  (char in {X, O})
- *  QUIT                       VALID_MOVE
- *                             OTHER_PLAYER_MOVED <n>
- *                             VICTORY
- *                             DEFEAT
- *                             TIE
- *                             MESSAGE <text>
- *
- */
-public class TicTacToeClient {
+public class Auction{
+	private List<Player> playerQueue;
+	private List<Player> playersInRound;
+	private int roundNumber;
+	
+	private int currentPot;
+	private int currentBet;
+	
+	public Auction(List<Player> playersInRound){
+		setCurrentPot(0);
+		setRoundNumber(0);
+		playerQueue = new ArrayList<Player>();
+		setPlayersInRound(playersInRound);
+	}
 
-    private JFrame frame = new JFrame("Tic Tac Toe");
-    private JLabel messageLabel = new JLabel("");
-    private ImageIcon icon;
-    private ImageIcon opponentIcon;
+////METHODS USED IN AUCTION////
+	
+	public void setInitialPlayerQueue(List<Player> players){
+		boolean playerAfterBigBlind = false;
+		int firstAddedPlayer = 0;
+		int index = 0;
+		for ( Player player : players){
+			if(player.isBigBlind()){
+				firstAddedPlayer = index;
+				playerAfterBigBlind = true;
+			}
+			else if(playerAfterBigBlind == true){
+				playerQueue.add(player);
+			}
+		index++;
+		}
+		for(int i=0;i<=firstAddedPlayer;i++){
+			playerQueue.add(players.get(i));
+		}
+	}
+	
+	public void setPlayerQueue(List<Player> players){
+		boolean playerAfterSmallBlind = false;
+		int firstAddedPlayer = 0;
+		int index = 0;
+		for ( Player player : players){
+			if(player.isSmallBlind()){
+				playerQueue.add(player);
+				firstAddedPlayer = index;
+			}
+			else if(playerQueue.isEmpty()==false){
+				playerQueue.add(player);
+			}
+		}
+		for(int i=0;i<firstAddedPlayer;i++){
+			playerQueue.add(players.get(i));
+		}
+	}
+	
+	public boolean checkIfBetsAreEqual(List<Player> players){
+		boolean temp = true;
+		int checkingBet = players.get(0).getCurrentBet();
+		for(int i=1; i<players.size(); i++){
+			if(players.get(i).getCurrentBet() != checkingBet){
+				temp = false;
+				break;
+			}
+			checkingBet = players.get(i).getCurrentBet();
+		}
+		return temp;
+	}
+////ACTUAL METHOD FOR STARTING AUCTION////	
+	private boolean endOfAuction = false;
+	private int auctionCounter = 0;
+	private Player currentPlayer = null;
+	
+	public void StartAuction(int round){
+		endOfAuction = false;
+		if(round!=0)
+			setPlayerQueue(playersInRound); //set player queue with players in round
+		else
+			setInitialPlayerQueue(playersInRound);
 
-    private Square[] board = new Square[9];
-    private Square currentSquare;
+			ListIterator<Player> it = playerQueue.listIterator();
+		while(endOfAuction!=true){ //while everyone makes his move and all player's bets are equal
+			if(it.hasNext()){
+				Player player = it.next();
+				currentPlayer = player;
+				if(auctionCounter > 0 && checkIfBetsAreEqual(playerQueue) == true){	//if everyone took his turn and all player's bets are equal
+					endOfAuction=true;
+					break;
+				}
+				
+				//TODO: add big and small blind to the pot, etc 
+				
+				MoveRestrictions.Restrict(); //TODO: implement that class
+				player.getMovement(); //get movement from server 
+				if(player.playerState == ActionTaken.CHECKING){ 
+					continue;
+				}			
+				if(player.playerState == ActionTaken.BETING){
+					setCurrentBet(player.getCurrentBet());
+					setCurrentPot(player.getCurrentBet());
+				}
+				if(player.playerState == ActionTaken.CALLING){
+					player.setCurrentBet(getCurrentBet());
+					player.setPlayerTokens(player.getPlayerTokens() - getCurrentBet());
+					setCurrentPot(getCurrentPot() + player.getCurrentBet());
+				}				
+				if(player.playerState == ActionTaken.RISING){ 
+					player.setPlayerTokens(player.getPlayerTokens() - getCurrentBet());
+					player.setCurrentBet(getCurrentBet() + getCurrentBet());
+					setCurrentBet(player.getCurrentBet());
+					setCurrentPot(getCurrentPot() + player.getCurrentBet()); 
+				}
+				if(player.playerState == ActionTaken.FOLDING){ 
+					playersInRound.remove(player); //if player is folding, remove him from this round and queue
+					it.remove();
+				}
+				if(player.playerState == ActionTaken.ALLIN){ 
+					setCurrentPot(getCurrentPot() + player.getCurrentBet());
+					if(player.getCurrentBet() > getCurrentPot())
+						setCurrentBet(player.getCurrentBet());
+					player.setPlayerTokens(0);
+					it.remove();
+				}
+			}
+			auctionCounter++; 	
+		}
+		//reseting values before next auction
+		//*current bet
+		setCurrentBet(0);
+		//*player queue 
+		playerQueue = null;
+		//*player state for each player left in round
+		for(Player player : playersInRound){
+			player.playerState = null;
+		}
+		//current pot should be reset in round, after saving it's value
+	}
+	
+////GETTERS AND SETTERS////
+	
+	public int getCurrentPot() {
+		return currentPot;
+	}
 
-    private static int PORT = 8900;
-    private Socket socket;
-    private BufferedReader in;
-    private PrintWriter out;
+	public void setCurrentPot(int currentPot) {
+		this.currentPot = currentPot;
+	}
 
-    /**
-     * Constructs the client by connecting to a server, laying out the
-     * GUI and registering GUI listeners.
-     */
-    public TicTacToeClient(String serverAddress) throws Exception {
+	public int getCurrentBet() {
+		return currentBet;
+	}
 
-        // Setup networking
-        socket = new Socket(serverAddress, PORT);
-        in = new BufferedReader(new InputStreamReader(
-            socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream(), true);
+	public void setCurrentBet(int currentBet) {
+		this.currentBet = currentBet;
+	}
 
-        // Layout GUI
-        messageLabel.setBackground(Color.lightGray);
-        frame.getContentPane().add(messageLabel, "South");
+	public int getRoundNumber() {
+		return roundNumber;
+	}
 
-        JPanel boardPanel = new JPanel();
-        boardPanel.setBackground(Color.black);
-        boardPanel.setLayout(new GridLayout(3, 3, 2, 2));
-        for (int i = 0; i < board.length; i++) {
-            final int j = i;
-            board[i] = new Square();
-            board[i].addMouseListener(new MouseAdapter() {
-                public void mousePressed(MouseEvent e) {
-                    currentSquare = board[j];
-                    out.println("MOVE " + j);}});
-            boardPanel.add(board[i]);
-        }
-        frame.getContentPane().add(boardPanel, "Center");
-    }
+	public void setRoundNumber(int roundNumber) {
+		this.roundNumber = roundNumber;
+	}
+	
+	public List<Player> getPlayersInRound() {
+		return playersInRound;
+	}
 
-    /**
-     * The main thread of the client will listen for messages
-     * from the server.  The first message will be a "WELCOME"
-     * message in which we receive our mark.  Then we go into a
-     * loop listening for "VALID_MOVE", "OPPONENT_MOVED", "VICTORY",
-     * "DEFEAT", "TIE", "OPPONENT_QUIT or "MESSAGE" messages,
-     * and handling each message appropriately.  The "VICTORY",
-     * "DEFEAT" and "TIE" ask the user whether or not to play
-     * another game.  If the answer is no, the loop is exited and
-     * the server is sent a "QUIT" message.  If an OPPONENT_QUIT
-     * message is recevied then the loop will exit and the server
-     * will be sent a "QUIT" message also.
-     */
-    public void play() throws Exception {
-        String response;
-        try {
-            response = in.readLine();
-            if (response.startsWith("WELCOME")) {
-                char mark = response.charAt(8);
-                icon = new ImageIcon(mark == 'X' ? "x.gif" : "o.gif");
-                opponentIcon  = new ImageIcon(mark == 'X' ? "o.gif" : "x.gif");
-                frame.setTitle("Tic Tac Toe - Player " + mark);
-            }
-            while (true) {
-                response = in.readLine();
-                if (response.startsWith("VALID_MOVE")) {
-                    messageLabel.setText("Valid move, please wait");
-                    currentSquare.setIcon(icon);
-                    currentSquare.repaint();
-                } else if (response.startsWith("OPPONENT_MOVED")) {
-                    int loc = Integer.parseInt(response.substring(15));
-                    board[loc].setIcon(opponentIcon);
-                    board[loc].repaint();
-                    messageLabel.setText("Opponent moved, your turn");
-                } else if (response.startsWith("VICTORY")) {
-                    messageLabel.setText("You win");
-                    break;
-                } else if (response.startsWith("DEFEAT")) {
-                    messageLabel.setText("You lose");
-                    break;
-                } else if (response.startsWith("TIE")) {
-                    messageLabel.setText("You tied");
-                    break;
-                } else if (response.startsWith("MESSAGE")) {
-                    messageLabel.setText(response.substring(8));
-                }
-            }
-            out.println("QUIT");
-        }
-        finally {
-            socket.close();
-        }
-    }
+	public void setPlayersInRound(List<Player> playersInGame) {
+		this.playersInRound = playersInGame;
+	}
+	
+	public List<Player> getPlayerQueue(){
+		return playerQueue;
+	}
+	
+	public Player getCurrentPlayer(){
+		return currentPlayer;
+	}
 
-    private boolean wantsToPlayAgain() {
-        int response = JOptionPane.showConfirmDialog(frame,
-            "Want to play again?",
-            "Tic Tac Toe is Fun Fun Fun",
-            JOptionPane.YES_NO_OPTION);
-        frame.dispose();
-        return response == JOptionPane.YES_OPTION;
-    }
-
-    /**
-     * Graphical square in the client window.  Each square is
-     * a white panel containing.  A client calls setIcon() to fill
-     * it with an Icon, presumably an X or O.
-     */
-    static class Square extends JPanel {
-        JLabel label = new JLabel((Icon)null);
-
-        public Square() {
-            setBackground(Color.white);
-            add(label);
-        }
-
-        public void setIcon(Icon icon) {
-            label.setIcon(icon);
-        }
-    }
-
-    /**
-     * Runs the client as an application.
-     */
-    public static void main(String[] args) throws Exception {
-        while (true) {
-            String serverAddress = (args.length == 0) ? "localhost" : args[1];
-            TicTacToeClient client = new TicTacToeClient(serverAddress);
-            client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            client.frame.setSize(240, 160);
-            client.frame.setVisible(true);
-            client.frame.setResizable(false);
-            client.play();
-            if (!client.wantsToPlayAgain()) {
-                break;
-            }
-        }
-    }
 }
