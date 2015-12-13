@@ -49,10 +49,12 @@ public class Auction{
 			if(player.isSmallBlind()){
 				playerQueue.add(player);
 				firstAddedPlayer = index;
+				playerAfterSmallBlind = true;
 			}
-			else if(playerQueue.isEmpty()==false){
+			else if(playerAfterSmallBlind == true){
 				playerQueue.add(player);
 			}
+		index++;
 		}
 		for(int i=0;i<firstAddedPlayer;i++){
 			playerQueue.add(players.get(i));
@@ -75,6 +77,8 @@ public class Auction{
 	private boolean endOfAuction = false;
 	private int auctionCounter = 0;
 	private Player currentPlayer = null;
+	private Player previousPlayer = null;
+	public int movesCounter = 0;
 	
 	public void StartAuction(int round){
 		endOfAuction = false;
@@ -87,6 +91,7 @@ public class Auction{
 		while(endOfAuction!=true){ //while everyone makes his move and all player's bets are equal
 			if(it.hasNext()){
 				Player player = it.next();
+				setPreviousPlayer(it.previous());
 				currentPlayer = player;
 				if(auctionCounter > 0 && checkIfBetsAreEqual(playerQueue) == true){	//if everyone took his turn and all player's bets are equal
 					endOfAuction=true;
@@ -95,8 +100,21 @@ public class Auction{
 				
 				//TODO: add big and small blind to the pot, etc 
 				
-				MoveRestrictions.Restrict(); //TODO: implement that class
-				player.getMovement(); //get movement from server 
+				MoveRestrictions.ResetRestrictions(getCurrentPlayer().getTa());
+				MoveRestrictions.Restrict(this); //TODO: implement that class
+				player.setName(player.getMovement()); //get movement from server 
+				MoveRestrictions.RestrictAll(getCurrentPlayer().getTa());
+				
+		        switch(player.getName()){
+		        case "check": player.Check();
+		        case "call": player.Call(getCurrentBet());
+		        case "bet": player.Bet(20); //TODO: get bet value from GUI
+		        case "raise": player.Raise(getCurrentBet(), 30); //TODO: get raise value from GUI
+		        case "fold": player.Fold();
+		        case "allin": player.AllIn();
+		        default: break;
+		        }
+		        
 				if(player.playerState == ActionTaken.CHECKING){ 
 					continue;
 				}			
@@ -105,13 +123,9 @@ public class Auction{
 					setCurrentPot(player.getCurrentBet());
 				}
 				if(player.playerState == ActionTaken.CALLING){
-					player.setCurrentBet(getCurrentBet());
-					player.setPlayerTokens(player.getPlayerTokens() - getCurrentBet());
 					setCurrentPot(getCurrentPot() + player.getCurrentBet());
 				}				
 				if(player.playerState == ActionTaken.RISING){ 
-					player.setPlayerTokens(player.getPlayerTokens() - getCurrentBet());
-					player.setCurrentBet(getCurrentBet() + getCurrentBet());
 					setCurrentBet(player.getCurrentBet());
 					setCurrentPot(getCurrentPot() + player.getCurrentBet()); 
 				}
@@ -126,6 +140,8 @@ public class Auction{
 					player.setPlayerTokens(0);
 					it.remove();
 				}
+				player.setName(null);
+				movesCounter++;
 			}
 			auctionCounter++; 	
 		}
@@ -181,6 +197,14 @@ public class Auction{
 	
 	public Player getCurrentPlayer(){
 		return currentPlayer;
+	}
+
+	public Player getPreviousPlayer() {
+		return previousPlayer;
+	}
+
+	public void setPreviousPlayer(Player previousPlayer) {
+		this.previousPlayer = previousPlayer;
 	}
 
 }
