@@ -94,7 +94,7 @@ public class Game {
 	
 	
 	
-	private void changeSmallBlind() {
+	public void changeSmallBlind() {
 		int counter = 0;
 		
 		while ( counter < players.size() && players.get(counter).isSmallBlind() == false){

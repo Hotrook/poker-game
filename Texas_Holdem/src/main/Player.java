@@ -76,6 +76,7 @@ public class Player{
 	public int AllIn(){
 		playerState = ActionTaken.ALLIN;
 		setCurrentBet(getPlayerTokens());
+		setPlayerTokens(0);
 		return this.playerTokens;
 	}
 	
