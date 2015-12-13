@@ -82,7 +82,9 @@ public class AuctionGUI extends JFrame{
 		call.addActionListener(new myHandler());
 		fold.addActionListener(new myHandler());
 		allin.addActionListener(new myHandler());
-		raise.addActionListener(new myHandler());		
+		raise.addActionListener(new myHandler());	
+		
+		MoveRestrictions.RestrictAll(this);
 	}
 	
 	private class myHandler implements ActionListener{
@@ -90,11 +92,12 @@ public class AuctionGUI extends JFrame{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String name = e.getActionCommand();
-			globalAuction.getCurrentPlayer().setName(name); 
+			//globalAuction.getCurrentPlayer().setName(name); 
 			//System.out.println(name + " by " + globalAuction.getCurrentPlayer().getPlayerName());
 			System.out.println(e.getActionCommand() + " by " + globalAuction.getCurrentPlayer().getPlayerName());
 			txtPula.setText(globalAuction.getCurrentPot()+"");
 			txtStawka.setText(globalAuction.getCurrentBet() + "");
+			globalAuction.getCurrentPlayer().setName(name); 
 		}
 		
 	}

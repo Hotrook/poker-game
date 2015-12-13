@@ -129,23 +129,23 @@ public class TestAuction {
 	@Test
 	public void testStartAuction(){
 		//create mocked players
-		player1 = mock(Player.class);
-		player1.makePlayer("A", 1000, 0, gui1);
-		player2 = mock(Player.class);
-		player2.makePlayer("B", 1000, 1, gui1);
-		player3 = mock(Player.class);
-		player3.makePlayer("C", 1000, 2, gui1);
-		player4 = mock(Player.class);
-		player4.makePlayer("D", 1000, 3, gui1);
-		
-		//remove players from list and add mocked players
-		players = new ArrayList<Player>();
-		players.add(player1);
-		players.add(player2);
-		players.add(player3);
-		players.add(player4);
-		
-		Auction auction = new Auction(players);
+//		player1 = mock(Player.class);
+//		player1.makePlayer("A", 1000, 0, gui1);
+//		player2 = mock(Player.class);
+//		player2.makePlayer("B", 1000, 1, gui1);
+//		player3 = mock(Player.class);
+//		player3.makePlayer("C", 1000, 2, gui1);
+//		player4 = mock(Player.class);
+//		player4.makePlayer("D", 1000, 3, gui1);
+//		
+//		//remove players from list and add mocked players
+//		players = new ArrayList<Player>();
+//		players.add(player1);
+//		players.add(player2);
+//		players.add(player3);
+//		players.add(player4);
+//		
+//		Auction auction = new Auction(players);
 		//This is the part where StartAuction should be tested
 // 		Mockito.when(p1s.getMovement()).thenReturn("bet", "call");
 //		Mockito.when(p2s.getMovement()).thenReturn("call", "call");
@@ -153,6 +153,10 @@ public class TestAuction {
 //		Mockito.when(p4s.getMovement()).thenReturn("call");
 		
 		//auction.StartAuction(0);
+		Auction auction = new Auction(players);
+		Auction spy = spy(auction);
+		doReturn(false).when(spy).checkIfBetsAreEqual(players);
+		//assertEquals(false, auction.checkIfBetsAreEqual(players));
 		
 		//assertEquals(true, auction.checkIfBetsAreEqual(players));
 		
