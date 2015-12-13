@@ -68,6 +68,7 @@ public class Player{
 	public int AllIn(){
 		playerState = ActionTaken.ALLIN;
 		setCurrentBet(getCurrentBet() + getPlayerTokens());
+		setPlayerTokens(0); //hotrook
 		return this.playerTokens;
 	}
 	

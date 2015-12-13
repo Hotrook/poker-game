@@ -47,9 +47,9 @@ public class TestPlayer{
 		Player player = new Player("Adam", 1000, 0,ta);
 		Player player2 = new Player("Tomek", 1000, 1,ta);
 		player.Bet(300);
-		//player2.Raise(player.getCurrentBet(),400);
-		assertEquals(player2.getPlayerTokens(),300);
-		assertEquals(player2.getCurrentBet(),700);
+		player2.Raise(400);
+		assertEquals(player2.getPlayerTokens(),600);
+		assertEquals(player2.getCurrentBet(),400);
 		assertEquals(player2.playerState,ActionTaken.RISING);
 	}
 	
@@ -66,8 +66,8 @@ public class TestPlayer{
 		AuctionGUI ta = new AuctionGUI();
 		Player player = new Player("Adam", 1000, 0,ta);
 		player.AllIn();
-		assertEquals(player.getPlayerTokens(),0);
-		assertEquals(player.getCurrentBet(),1000);
+		assertEquals(0,player.getPlayerTokens());
+		assertEquals(1000, player.getCurrentBet());
 		assertEquals(player.playerState,ActionTaken.ALLIN);		
 	}
 	
