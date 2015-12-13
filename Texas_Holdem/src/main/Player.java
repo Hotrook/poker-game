@@ -85,10 +85,11 @@ public class Player{
 	 * used in auction to wait for players action
 	 */
 	public String getMovement() {
-		while(getName()==null){
-			
-		}
-        return name;
+//		while(getName()==null){
+//			if(getName()!=null)
+//				break;
+//		}
+        return getName();
 	}
 
 ////GETTERS AND SETTERS////

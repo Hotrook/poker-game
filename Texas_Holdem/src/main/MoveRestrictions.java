@@ -41,12 +41,11 @@ public final class MoveRestrictions {
 			gui.bet.setEnabled(false);
 		}
 		
-		//options available after CALL of previous player: RAISE, FOLD, ALL IN
-		//option unavailable: CHECK, BET, CALL
+		//options available after CALL of previous player: RAISE, FOLD, ALL IN, CALL
+		//option unavailable: CHECK, BET
 		if(previousPlayer.playerState == ActionTaken.CALLING){
 			gui.check.setEnabled(false);
 			gui.bet.setEnabled(false);
-			gui.call.setEnabled(false);
 		}
 		
 		//options available after RAISE of previous player: CALL, FOLD, ALL IN, RAISE

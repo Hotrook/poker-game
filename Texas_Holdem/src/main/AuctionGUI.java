@@ -91,7 +91,8 @@ public class AuctionGUI extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			String name = e.getActionCommand();
 			globalAuction.getCurrentPlayer().setName(name); 
-			System.out.println(name + " by " + globalAuction.getCurrentPlayer().getPlayerName());
+			//System.out.println(name + " by " + globalAuction.getCurrentPlayer().getPlayerName());
+			System.out.println(e.getActionCommand() + " by " + globalAuction.getCurrentPlayer().getPlayerName());
 			txtPula.setText(globalAuction.getCurrentPot()+"");
 			txtStawka.setText(globalAuction.getCurrentBet() + "");
 		}
