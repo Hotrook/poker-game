@@ -47,7 +47,7 @@ public class TestPlayer{
 		Player player = new Player("Adam", 1000, 0,ta);
 		Player player2 = new Player("Tomek", 1000, 1,ta);
 		player.Bet(300);
-		//player2.Raise(player.getCurrentBet(),400);
+		player2.Raise(player.getCurrentBet(),400);
 		assertEquals(player2.getPlayerTokens(),300);
 		assertEquals(player2.getCurrentBet(),700);
 		assertEquals(player2.playerState,ActionTaken.RISING);

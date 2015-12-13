@@ -134,7 +134,7 @@ public class Game {
 
 
 
-	private void giveGainToWinners(List<Player> winnersList) {
+	public void giveGainToWinners(List<Player> winnersList) {
 		int[] wagers = new int[players.size()+7];
 		int wager = 0;
 		int lowerRate = 0;
@@ -209,7 +209,7 @@ public class Game {
 
 
 
-	private List<Player> createHelpingList(double power, List<Player> winnersList) {
+	public List<Player> createHelpingList(double power, List<Player> winnersList) {
 		
 		List <Player> helpingList = new ArrayList<Player>();
 		
@@ -272,7 +272,7 @@ public class Game {
 	
 	
 
-	private void removeLosers() {
+	public void removeLosers() {
 		for( Player player : players){
 			if( player.getPlayerTokens() == 0 ){
 				players.remove(player);
