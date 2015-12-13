@@ -34,7 +34,7 @@ public class Game {
 	public void play() throws InvalidNumberOfRankException,
 							  InvalidNumberOfSuitException{
 		players.get(0).setSmallBlind(true);
-		players.get(1).setSmallBlind(true);
+		players.get(1).setBigBlind(true);
 		
 		while( players.size() > 1 ){
 			round();
@@ -65,8 +65,8 @@ public class Game {
 		
 		 winnersList = createSortedWinnersList();
 		 giveGainToWinners(winnersList);
-		 removeLosers(); // smierc frajerom hehe
 		 changeSmallBlind();
+		 removeLosers(); // smierc frajerom hehe
 		 tableCards.clear();
 		 Deck.getInstance().initializeCards();
 		 
@@ -102,21 +102,18 @@ public class Game {
 		}
 		
 		players.get(counter).setSmallBlind(false);
-		if( counter + 1 == players.size() ){
-			counter = 0;
-		}
-		else
-			counter++;
+		
+		
+		do{
+			counter = (counter+1)%players.size();
+		}while( players.get(counter).getPlayerTokens() == 0);
 		
 		players.get(counter).setSmallBlind(true);
 		players.get(counter).setBigBlind(false);
 		
-		if( counter + 1 == players.size() ){
-			counter = 0 ;
-		}
-		else
-			counter++;
-		
+		do{
+			counter = (counter+1)%players.size();
+		}while( players.get(counter).getPlayerTokens() == 0 && players.get(counter).isSmallBlind());
 		players.get(counter).setBigBlind(true);
 		
 		
@@ -136,13 +133,11 @@ public class Game {
 
 	public void giveGainToWinners(List<Player> winnersList) {
 		int[] wagers = new int[players.size()+7];
-		int wager = 0;
 		int lowerRate = 0;
 		int higherRate = 0;
 		int helpingPot = 0;
 		double power = 0 ;
 		List<Player> helpingList = new ArrayList<Player>();
-		List<Player> secondHelpingList = new ArrayList<Player>();
 		
 		for( int i = 0 ; i < players.size() ; ++i ){
 			wagers[i] = players.get(i).getCurrentBet();
@@ -153,33 +148,37 @@ public class Game {
 			
 			helpingList = createHelpingList(power, winnersList);
 			
-			lowerRate = 0 ;
+			
 			higherRate = helpingList.get(0).getCurrentBet(); 
 			
 			while(helpingList.isEmpty() == false ){
 				helpingPot = 0;
 				higherRate = helpingList.get(0).getCurrentBet(); 
 				
-				secondHelpingList = createSecondHelpingList(helpingList , higherRate);
 				
 				for( int i = 0 ; i < players.size() ; ++i ){
-					if( wagers[ i ] > lowerRate ){
+					if( wagers[ i ] > lowerRate ){ 
 						if( wagers[ i ] > higherRate ){
-							helpingPot += higherRate - lowerRate ;
+							helpingPot += (higherRate - lowerRate );
 						}
 						else{
-							helpingPot += wagers[ i ] - lowerRate;
+							helpingPot += (wagers[ i ] - lowerRate);
 						}
 					}
 				}
 				
-				auction.setCurrentBet(auction.getCurrentPot()-helpingPot);
+				auction.setCurrentPot((auction.getCurrentPot()-helpingPot));
 				
-				for( Player player : secondHelpingList){
-					player.setPlayerTokens(player.getPlayerTokens()+helpingPot/secondHelpingList.size());
+				for( Player player : helpingList){
+					player.setPlayerTokens(player.getPlayerTokens()+helpingPot/helpingList.size());
 				}
 				
-				secondHelpingList.clear();
+				while( helpingList.get(0).getCurrentBet() == higherRate ){
+					helpingList.remove(0);
+					if( helpingList.size() == 0){
+						break;
+					}
+				}
 				
 				lowerRate = higherRate;
 				
@@ -190,30 +189,11 @@ public class Game {
 
 
 
-	private List<Player> createSecondHelpingList(List<Player> helpingList, int higherRate) {
-		List<Player> secondHelpingList = new ArrayList<Player>();
-		
-		for( Player player : helpingList){
-			if( player.getCurrentBet() == higherRate ){
-				secondHelpingList.add(player);
-			}
-		}
-		
-		for( Player player : secondHelpingList ){
-			helpingList.remove(player);
-		}
-		
-		return secondHelpingList;
-	}
-
-
-
-
 	public List<Player> createHelpingList(double power, List<Player> winnersList) {
 		
 		List <Player> helpingList = new ArrayList<Player>();
 		
-		for( Player player : players ){
+		for( Player player : winnersList ){
 			if( player.getPower() == power ){
 				helpingList.add(player);
 			}
@@ -273,10 +253,14 @@ public class Game {
 	
 
 	public void removeLosers() {
+		List <Player> toRemove = new ArrayList<Player>();
 		for( Player player : players){
 			if( player.getPlayerTokens() == 0 ){
-				players.remove(player);
+				toRemove.add(player);
 			}
+		}
+		for( Player player : toRemove){
+			players.remove(player);
 		}
 	}
 	
