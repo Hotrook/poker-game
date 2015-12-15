@@ -3,6 +3,7 @@ package main;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.concurrent.CountDownLatch;
 
 
 public class Auction{
@@ -80,7 +81,7 @@ public class Auction{
 	private Player previousPlayer = null;
 	public int movesCounter = 0;
 	
-	public void StartAuction(int round){
+	public void startAuction(int round){
 		endOfAuction = false;
 		if(round!=0)
 			setPlayerQueue(playersInRound); //set player queue with players in round
@@ -104,12 +105,23 @@ public class Auction{
 				
 				MoveRestrictions.ResetRestrictions(getCurrentPlayer().getTa());
 				MoveRestrictions.Restrict(this); //TODO: implement that class
-				while(player.getName()==null){
-					//player.setName(player.getMovement()); //get movement from server 
+				
+				//The actual part of waiting for player's movement
+				try {
+					player.getTa().latch.await();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+				
+				
+				//After player's move, disable entire gui
 				MoveRestrictions.RestrictAll(getCurrentPlayer().getTa());
 				
-		        switch(player.getName()){
+				player.setName(player.getTa().actionName);
+		        player.getTa().latch = new CountDownLatch(1);
+				
+				switch(player.getName()){
 		        case "check": player.Check(); break;
 		        case "call": player.Call(getCurrentBet()); break;
 		        case "bet": player.Bet(20); break; //TODO: get bet value from GUI
@@ -144,12 +156,16 @@ public class Auction{
 					player.setPlayerTokens(0);
 					//it.remove();
 				}
-				player.setName(null);
+				getCurrentPlayer().setName(null);
 				movesCounter++;
 				previousPlayer = player;
+				player.getTa().txtPula.setText(getCurrentPot()+"");
+				player.getTa().txtStawka.setText(getCurrentBet() + "");
 			}
 			auctionCounter++; 	
 		}
+		if(endOfAuction==true)
+			System.out.println("Koniec aukcji!");
 		//reseting values before next auction
 		//*current bet
 		setCurrentBet(0);

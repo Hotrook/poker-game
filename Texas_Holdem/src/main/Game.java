@@ -59,7 +59,7 @@ public class Game {
 		
 		for( int i = 0 ; i <= 3 ; ++i){
 			
-			auction.StartAuction(i);
+			auction.startAuction(i);
 			putCardsOnTheTable(i);
 		}
 		

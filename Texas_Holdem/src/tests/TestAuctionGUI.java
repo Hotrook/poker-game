@@ -41,7 +41,7 @@ public class TestAuctionGUI {
 		//gui3.setVisible(true);
 		//gui4.setVisible(true);
 		//start auction//
-		auction.StartAuction(0);
+		auction.startAuction(0);
 	}
 
 }

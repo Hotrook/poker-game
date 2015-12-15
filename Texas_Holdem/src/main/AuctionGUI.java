@@ -9,13 +9,14 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
+import java.util.concurrent.CountDownLatch;
 import java.awt.event.ActionEvent;
 
 public class AuctionGUI extends JFrame{
 
 	private JPanel contentPane;
-	private JTextField txtPula;
-	private JTextField txtStawka;
+	public JTextField txtPula;
+	public JTextField txtStawka;
 	public Auction globalAuction;
 	public JButton check;
 	public JButton bet;
@@ -86,20 +87,18 @@ public class AuctionGUI extends JFrame{
 		
 		MoveRestrictions.RestrictAll(this);
 	}
+
+	public String actionName;
+	public CountDownLatch latch = new CountDownLatch(1);
 	
 	private class myHandler implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String name = e.getActionCommand();
-			//globalAuction.getCurrentPlayer().setName(name); 
-			//System.out.println(name + " by " + globalAuction.getCurrentPlayer().getPlayerName());
 			System.out.println(e.getActionCommand() + " by " + globalAuction.getCurrentPlayer().getPlayerName());
-			txtPula.setText(globalAuction.getCurrentPot()+"");
-			txtStawka.setText(globalAuction.getCurrentBet() + "");
-			globalAuction.getCurrentPlayer().setName(name); 
-		}
-		
+			actionName = name;
+			latch.countDown();
+		}	
 	}
-
 }

@@ -59,7 +59,7 @@ public class TestStartAuction {
 		gui2.globalAuction = auction;
 		gui3.globalAuction = auction;
 		gui4.globalAuction = auction;
-		auction.StartAuction(0);
+		auction.startAuction(0);
 		
 		
 	}

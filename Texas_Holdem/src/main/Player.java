@@ -84,13 +84,6 @@ public class Player{
 	 * based on button pressed, calls one of auction methods
 	 * used in auction to wait for players action
 	 */
-	public String getMovement() {
-//		while(getName()==null){
-//			if(getName()!=null)
-//				break;
-//		}
-        return getName();
-	}
 
 ////GETTERS AND SETTERS////
 
