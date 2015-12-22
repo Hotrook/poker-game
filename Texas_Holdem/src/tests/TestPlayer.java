@@ -13,7 +13,7 @@ public class TestPlayer{
 	@Test
 	public void test_PlayerConstructor(){
 		AuctionGUI ta = new AuctionGUI();
-		Player player = new Player("Adam", 1000, 0,ta);
+		Player player = new Player("Adam", 1000, 0);
 		assertEquals(player.getPlayerName(),"Adam");
 		assertEquals(player.getPlayerTokens(),1000);
 		assertEquals(player.getPlayerIndex(),0);
@@ -26,7 +26,7 @@ public class TestPlayer{
 	@Test
 	public void test_Check(){
 		AuctionGUI ta = new AuctionGUI();
-		Player player = new Player("Adam",1000,0,ta);
+		Player player = new Player("Adam",1000,0);
 		player.Check();
 		assertEquals(player.playerState,ActionTaken.CHECKING);
 	}
@@ -34,7 +34,7 @@ public class TestPlayer{
 	@Test
 	public void test_Bet(){
 		AuctionGUI ta = new AuctionGUI();
-		Player player = new Player("Adam", 1000, 0,ta);
+		Player player = new Player("Adam", 1000, 0);
 		player.Bet(400);
 		assertEquals(player.getPlayerTokens(),600);
 		assertEquals(player.getCurrentBet(),400);
@@ -44,8 +44,8 @@ public class TestPlayer{
 	@Test
 	public void test_Raise(){
 		AuctionGUI ta = new AuctionGUI();
-		Player player = new Player("Adam", 1000, 0,ta);
-		Player player2 = new Player("Tomek", 1000, 1,ta);
+		Player player = new Player("Adam", 1000, 0);
+		Player player2 = new Player("Tomek", 1000, 1);
 		player.Bet(300);
 		player2.Raise(player.getCurrentBet(),400);
 		assertEquals(player2.getPlayerTokens(),300);
@@ -56,7 +56,7 @@ public class TestPlayer{
 	@Test
 	public void test_Fold(){
 		AuctionGUI ta = new AuctionGUI();
-		Player player = new Player("Adam", 1000, 0,ta);
+		Player player = new Player("Adam", 1000, 0);
 		player.Fold();
 		assertEquals(player.playerState,ActionTaken.FOLDING);
 	}
@@ -64,7 +64,7 @@ public class TestPlayer{
 	@Test
 	public void test_AllIn(){
 		AuctionGUI ta = new AuctionGUI();
-		Player player = new Player("Adam", 1000, 0,ta);
+		Player player = new Player("Adam", 1000, 0);
 		player.AllIn();
 		assertEquals(player.getPlayerTokens(),0);
 		assertEquals(player.getCurrentBet(),1000);

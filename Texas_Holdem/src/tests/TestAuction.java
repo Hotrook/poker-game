@@ -26,17 +26,17 @@ public class TestAuction {
 	@Before
 	public void setUp(){
 		//create gui for players constructors
-		gui1 = new AuctionGUI();
+		
 		
 		//create new list of players
 		players = new ArrayList<Player>();
 		
 		//gui will not be used in these tests
 		//create 4 players 
-		player1 = new Player("A", 1000, 0, gui1);
-		player2 = new Player("B", 1000, 1, gui1);
-		player3 = new Player("C", 1000, 2, gui1);
-		player4 = new Player("D", 1000, 3, gui1);
+		player1 = new Player("A", 1000, 0);
+		player2 = new Player("B", 1000, 1);
+		player3 = new Player("C", 1000, 2);
+		player4 = new Player("D", 1000, 3);
 		
 		//add BB, SB, and DB
 		player2.setDealerButton(true);

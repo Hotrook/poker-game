@@ -229,18 +229,18 @@ public class TestGame {
 		List<Card> playerCards2 = new ArrayList<Card>();
 		List<Card> playerCards3 = new ArrayList<Card>();
 		
-		player = new Player("player0", 6, 0, null);
+		player = new Player("player0", 6, 0);
 		player.setPower(253.100806);
 		player.setCurrentBet(60);
 		
-		player1 = new Player("player1", 6, 1, null);
+		player1 = new Player("player1", 6, 1);
 		player1.setPower(253.100806);
 		player1.setCurrentBet(60);
 		
-		player2 = new Player("player2", 6, 2, null);
+		player2 = new Player("player2", 6, 2);
 		player2.setPower( 253.100806 );
 		
-		player3 = new Player("player3", 6, 3, null);
+		player3 = new Player("player3", 6, 3);
 		
 		playerCards.add( new Card(2,1));
 		playerCards.add( new Card(3,1));

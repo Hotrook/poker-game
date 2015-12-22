@@ -7,7 +7,7 @@ public final class MoveRestrictions {
 	}
 	
 	public static void Restrict(Auction auction){
-		AuctionGUI gui = auction.getCurrentPlayer().getTa();
+		AuctionGUI gui = null;// = auction.getCurrentPlayer().getTa();
 		Player previousPlayer = auction.getPreviousPlayer();
 		
 		//check player's tokens in order to specify options available

@@ -1,34 +1,34 @@
 package main;
 
 public final class Input {
-	private int amoutOfPlayers;
-	private int amountOfBots;
+	private int numberOfPlayers;
+	private int numberOfBots;
 	private int bigBlindValue;
 	private int smallBlindValue;
 	private int initialTokens;
 	//1 - no-limit, 2 - pot-limit, 3 - fixed-limit
-	private int gameType;
+	private GameType gameType;
 	
-	private Input(){
+	public Input(){
 		
 	}
 
 ////GETTERS AND SETTERS////
 	
-	public int getAmoutOfPlayers() {
-		return amoutOfPlayers;
+	public int getNumberOfPlayers() {
+		return numberOfPlayers;
 	}
 
-	public void setAmoutOfPlayers(int amoutOfPlayers) {
-		this.amoutOfPlayers = amoutOfPlayers;
+	public void setNumberOfPlayers(int amoutOfPlayers) {
+		this.numberOfPlayers = amoutOfPlayers;
 	}
 
-	public int getAmountOfBots() {
-		return amountOfBots;
+	public int getNumberOfBots() {
+		return numberOfBots;
 	}
 
-	public void setAmountOfBots(int amountOfBots) {
-		this.amountOfBots = amountOfBots;
+	public void setNumberOfBots(int amountOfBots) {
+		this.numberOfBots = amountOfBots;
 	}
 
 	public int getBigBlindValue() {
@@ -55,11 +55,11 @@ public final class Input {
 		this.initialTokens = initialTokens;
 	}
 
-	public int getGameType() {
+	public GameType getGameType() {
 		return gameType;
 	}
 
-	public void setGameType(int gameType) {
+	public void setGameType(GameType gameType) {
 		this.gameType = gameType;
 	}
 	

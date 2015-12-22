@@ -103,23 +103,27 @@ public class Auction{
 				
 				//TODO: add big and small blind to the pot, etc 
 				
-				MoveRestrictions.ResetRestrictions(getCurrentPlayer().getTa());
+				//MoveRestrictions.ResetRestrictions(getCurrentPlayer().getTa());
 				MoveRestrictions.Restrict(this); //TODO: implement that class
 				
 				//The actual part of waiting for player's movement
-				try {
-					player.getTa().latch.await();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				/**
+				 *  tutaj trzeba pobrać ruch z gracza 
+				 *  w graczu powinna być metoda "GetMovement()" z pętlą, która bierze dane z serwera
+				 */
+//				try {
+//					//player.getTa().latch.await();
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 				
 				
 				//After player's move, disable entire gui
-				MoveRestrictions.RestrictAll(getCurrentPlayer().getTa());
+				//MoveRestrictions.RestrictAll(getCurrentPlayer().getTa());
 				
-				player.setName(player.getTa().actionName);
-		        player.getTa().latch = new CountDownLatch(1);
+				//player.setName(player.getTa().actionName);
+		       // player.getTa().latch = new CountDownLatch(1);
 				
 				switch(player.getName()){
 		        case "check": player.Check(); break;
@@ -159,8 +163,8 @@ public class Auction{
 				getCurrentPlayer().setName(null);
 				movesCounter++;
 				previousPlayer = player;
-				player.getTa().txtPula.setText(getCurrentPot()+"");
-				player.getTa().txtStawka.setText(getCurrentBet() + "");
+			//	player.getTa().txtPula.setText(getCurrentPot()+"");
+			//	player.getTa().txtStawka.setText(getCurrentBet() + "");
 			}
 			auctionCounter++; 	
 		}

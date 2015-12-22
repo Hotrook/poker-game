@@ -1,5 +1,6 @@
 package main;
 
+import java.net.Socket;
 import java.util.List;
 
 public class Player{
@@ -18,13 +19,14 @@ public class Player{
 	private final int playerIndex;
 	private boolean stateChanged;
 	private String name;
+	private GameType gameType;
 	private double power;
-	private AuctionGUI ta;
 	
-	public Player(String name, int tokens, int index, AuctionGUI ta){
+	public Player(Socket socket, int tokens, int index, GameType gameType){
 		this.playerName=name;
 		this.playerIndex=index;
 		this.setPlayerTokens(tokens);
+		setGameType(gameType);
 		setInGame(true);
 		setHand(null);
 		setWinningHand(null);
@@ -35,12 +37,26 @@ public class Player{
 		setDealerButton(false);
 		setStateChanged(false);
 		setName(null);
-		setTa(ta);
 	}
 	
-	public Player makePlayer(String name, int tokens, int index, AuctionGUI ta){
-		return new Player(name, tokens, index, ta);
+	public Player(String name, int tokens, int index){
+		this.playerName=name;
+		this.playerIndex=index;
+		this.setPlayerTokens(tokens);
+		setGameType(gameType);
+		setInGame(true);
+		setHand(null);
+		setWinningHand(null);
+		setDrawCards(null);
+		setCurrentBet(0);
+		setBigBlind(false);
+		setSmallBlind(false);
+		setDealerButton(false);
+		setStateChanged(false);
+		setName(null);
 	}
+	
+
 
 ////AUCTION METHODS////
 	
@@ -199,11 +215,11 @@ public class Player{
 		this.power = power;
 	}
 
-	public AuctionGUI getTa() {
-		return ta;
+	public GameType getGameType() {
+		return gameType;
 	}
 
-	public void setTa(AuctionGUI ta) {
-		this.ta = ta;
+	public void setGameType(GameType gameType) {
+		this.gameType = gameType;
 	}
 }

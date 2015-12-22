@@ -33,10 +33,10 @@ public class TestStartAuction {
 		
 		//gui will not be used in these tests
 		//create 4 players 
-		player1 = new Player("A", 1000, 0, gui1);
-		player2 = new Player("B", 1000, 1, gui2);
-		player3 = new Player("C", 1000, 2, gui3);
-		player4 = new Player("D", 1000, 3, gui4);
+		player1 = new Player("A", 1000, 0);
+		player2 = new Player("B", 1000, 1);
+		player3 = new Player("C", 1000, 2);
+		player4 = new Player("D", 1000, 3);
 		
 		//add BB, SB, and DB
 		player2.setDealerButton(true);
@@ -59,7 +59,7 @@ public class TestStartAuction {
 		gui2.globalAuction = auction;
 		gui3.globalAuction = auction;
 		gui4.globalAuction = auction;
-		auction.startAuction(0);
+		//auction.startAuction(0);
 		
 		
 	}
