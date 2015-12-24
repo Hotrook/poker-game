@@ -145,6 +145,7 @@ public class Player{
 
 	public void setCurrentBet(int currentBet) {
 		this.currentBet = currentBet;
+		// TODO : SET CURRENT BET IN GUI AS WEll
 	}
 
 	public int getCurrentAuctionBet() {
@@ -221,5 +222,15 @@ public class Player{
 
 	public void setGameType(GameType gameType) {
 		this.gameType = gameType;
+	}
+
+	public void setBlocked() {
+		// TODO Auto-generated method stub BLOCK GUI
+		
+	}
+
+	public void setActive() {
+		// TODO Auto-generated method stub SET GUI ACTIVE!
+		
 	}
 }

@@ -1,6 +1,8 @@
 package main;
 
-import java.net.ServerSocket;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * 
@@ -11,8 +13,32 @@ import java.net.ServerSocket;
  */
 public class Messenger {
 
-	public Messenger(ServerSocket listener) {
-		// TODO Auto-generated constructor stub
+	static Messenger messenger;
+	BufferedReader input;
+    PrintWriter output;
+    
+	private Messenger() {
+		
+	}
+
+	public static Messenger getInstance() {
+		if( Messenger.messenger == null ){
+			synchronized(Deck.class){
+				if(  Messenger.messenger == null )
+					Messenger.messenger = new Messenger();
+			}
+		}
+		return Messenger.messenger;
+	}
+
+	public void setCurrentPot(int currentPot, Object players) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setCurrentBet(int currentBet, List<Player> playerQueue) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

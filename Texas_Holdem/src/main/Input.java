@@ -18,6 +18,10 @@ public final class Input {
 	public int getNumberOfPlayers() {
 		return numberOfPlayers;
 	}
+	
+	public int getAllPlayers(){
+		return numberOfPlayers + numberOfBots;
+	}
 
 	public void setNumberOfPlayers(int amoutOfPlayers) {
 		this.numberOfPlayers = amoutOfPlayers;

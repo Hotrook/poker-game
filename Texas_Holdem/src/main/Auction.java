@@ -96,6 +96,7 @@ public class Auction{
 				//Player player = it.next();
 				//setPreviousPlayer(it.previous());
 				currentPlayer = player;
+				currentPlayer.setActive();
 				if(auctionCounter > 0 && checkIfBetsAreEqual(playerQueue) == true){	//if everyone took his turn and all player's bets are equal
 					endOfAuction=true;
 					break;
@@ -106,24 +107,7 @@ public class Auction{
 				//MoveRestrictions.ResetRestrictions(getCurrentPlayer().getTa());
 				MoveRestrictions.Restrict(this); //TODO: implement that class
 				
-				//The actual part of waiting for player's movement
-				/**
-				 *  tutaj trzeba pobrać ruch z gracza 
-				 *  w graczu powinna być metoda "GetMovement()" z pętlą, która bierze dane z serwera
-				 */
-//				try {
-//					//player.getTa().latch.await();
-//				} catch (InterruptedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
 				
-				
-				//After player's move, disable entire gui
-				//MoveRestrictions.RestrictAll(getCurrentPlayer().getTa());
-				
-				//player.setName(player.getTa().actionName);
-		       // player.getTa().latch = new CountDownLatch(1);
 				
 				switch(player.getName()){
 		        case "check": player.Check(); break;
@@ -160,11 +144,12 @@ public class Auction{
 					player.setPlayerTokens(0);
 					//it.remove();
 				}
+				currentPlayer.setBlocked();
 				getCurrentPlayer().setName(null);
 				movesCounter++;
-				previousPlayer = player;
-			//	player.getTa().txtPula.setText(getCurrentPot()+"");
-			//	player.getTa().txtStawka.setText(getCurrentBet() + "");
+				previousPlayer = currentPlayer;
+				Messenger.getInstance().setCurrentPot(getCurrentPot(),playerQueue);
+				Messenger.getInstance().setCurrentBet(getCurrentBet(),playerQueue);
 			}
 			auctionCounter++; 	
 		}
