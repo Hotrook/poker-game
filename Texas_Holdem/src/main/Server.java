@@ -65,7 +65,7 @@ public class Server {
 		data = in.nextInt();
 		
 		while ( data != 1 && data != 2 && data != 3 ){
-			System.out.println("Spróbuj jeszcze raz: ");
+			System.out.println("Sprobuj jeszcze raz: ");
 			data = in.nextInt();
 		}
 		
@@ -80,26 +80,26 @@ public class Server {
 		}
 		
 		
-		System.out.println("Podaj liczbę graczy(2-10): ");
+		System.out.println("Podaj liczbe graczy(2-10): ");
 		
 		numOfPlayers = in.nextInt();
 		
 		while( numOfPlayers < 2  || numOfPlayers > 10){
-			System.out.println("Spróbuj jeszcze raz: ");
+			System.out.println("Sprobuj jeszcze raz: ");
 			numOfPlayers = in.nextInt();
 		}
 		
 		input.setNumberOfPlayers(numOfPlayers);
 		
 		if ( numOfPlayers != 10 ){
-			System.out.println("Podaj liczbę botów, ale pamiętaj, że łączna suma "
-					+ "graczy i botów nie może być większa niż 10: ");
+			System.out.println("Podaj liczbe botow, ale pamietaj, ze laczna suma "
+					+ "graczy i botow nie moze byc wieksza niz 10: ");
 			
 			data = in.nextInt();
 			
 		
 			while( data + numOfPlayers <= 10 ){
-				System.out.println("Spróbuj jeszcze raz: ");
+				System.out.println("Sprobuj jeszcze raz: ");
 				data = in.nextInt();
 			}
 			
@@ -109,7 +109,7 @@ public class Server {
 			input.setNumberOfBots(0);
 		}
 		
-		System.out.println("Podaj z jaką stawką zaczynają gracze: ");
+		System.out.println("Podaj z jaka stawka zaczynaja gracze: ");
 		data = in.nextInt();
 		
 		input.setInitialTokens(data);
