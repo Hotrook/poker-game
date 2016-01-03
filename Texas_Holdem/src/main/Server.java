@@ -1,10 +1,16 @@
 package main;
 
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import exceptions.InvalidNumberOfRankException;
+import exceptions.InvalidNumberOfSuitException;
 
 public class Server {
 	
@@ -13,7 +19,8 @@ public class Server {
 	private static Input input ;
 	private static List<Player> players;
 	private final static int SOCKET_NUMBER = 8901;
-	
+	public static List<PrintWriter> writers = new ArrayList<PrintWriter>();
+	public static List<BufferedReader> readers = new ArrayList<BufferedReader>();
 	
 	
 	public static void  main(String[] args) throws IOException{
@@ -24,6 +31,17 @@ public class Server {
 		getInputData();
 		connectPlayers();
 		
+		
+		//Let's play
+		try {
+			Game game = new Game(players);
+			System.out.println("Starting game");
+			game.play();
+		} catch (InvalidNumberOfRankException e) {
+			System.out.println(e.getMessage());
+		} catch (InvalidNumberOfSuitException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	
@@ -36,6 +54,8 @@ public class Server {
 		
 		while( counter < input.getNumberOfPlayers()){
 			Player player = new Player(listener.accept(), input.getInitialTokens(), counter, input.getGameType() );
+	        player.setPlayerName(player.in.readLine());
+			System.out.println("Connected player " + player.getPlayerName());
 			players.add(player);
 			counter++;
 		}
@@ -98,7 +118,7 @@ public class Server {
 			data = in.nextInt();
 			
 		
-			while( data + numOfPlayers <= 10 ){
+			while( data + numOfPlayers > 10 ){
 				System.out.println("Sprobuj jeszcze raz: ");
 				data = in.nextInt();
 			}

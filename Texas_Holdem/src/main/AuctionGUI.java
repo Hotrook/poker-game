@@ -17,13 +17,14 @@ public class AuctionGUI extends JFrame{
 	private JPanel contentPane;
 	public JTextField txtPula;
 	public JTextField txtStawka;
-	public Auction globalAuction;
+	//public Auction globalAuction;
 	public JButton check;
 	public JButton bet;
 	public JButton call;
 	public JButton raise;
 	public JButton fold;
 	public JButton allin;
+	public JTextArea turn;
 	
 	/**
 	 * Create the frame.
@@ -74,7 +75,7 @@ public class AuctionGUI extends JFrame{
 		JPanel panel_2 = new JPanel();
 		contentPane.add(panel_2, BorderLayout.CENTER);
 		
-		JTextArea turn = new JTextArea();
+		turn = new JTextArea();
 		turn.setText("Ruch gracza nr: ");
 		panel_2.add(turn);
 		
@@ -89,16 +90,16 @@ public class AuctionGUI extends JFrame{
 	}
 
 	public String actionName;
-	public CountDownLatch latch = new CountDownLatch(1);
+	//public CountDownLatch latch = new CountDownLatch(1);
 	
 	private class myHandler implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String name = e.getActionCommand();
-			System.out.println(e.getActionCommand() + " by " + globalAuction.getCurrentPlayer().getPlayerName());
+			//System.out.println(e.getActionCommand() + " by " + globalAuction.getCurrentPlayer().getPlayerName());
 			actionName = name;
-			latch.countDown();
+		//	latch.countDown();
 		}	
 	}
 }

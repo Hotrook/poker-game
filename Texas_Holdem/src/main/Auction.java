@@ -1,9 +1,9 @@
 package main;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.concurrent.CountDownLatch;
 
 
 public class Auction{
@@ -74,6 +74,31 @@ public class Auction{
 		}
 		return temp;
 	}
+	
+	//method used to send data from each player to his client
+	private void sendDataToEachClient(List<Player> players){
+		for(PrintWriter writer : Server.writers){
+			writer.println(createDataPackage(players));
+		}
+	}
+	
+	//modify this method when more data is needed on client side
+	//the data format is: x;y;z
+	// ';' as a default delimiter
+	//package contains: "data", current player's name, current bet, current pot, each player's (left in game) name and tokens
+	public String createDataPackage(List<Player> players){
+		String data;
+		data = "data";
+		data += ";" + getCurrentPlayer().getPlayerName();
+		data += ";" + getCurrentBet();
+		data += ";" + getCurrentPot();
+		
+		for(Player pl : players){
+			data += ";" + pl.getPlayerName();
+			data += ";" + pl.getPlayerTokens();
+		}
+		return data;
+	}
 ////ACTUAL METHOD FOR STARTING AUCTION////	
 	private boolean endOfAuction = false;
 	private int auctionCounter = 0;
@@ -89,27 +114,36 @@ public class Auction{
 			setInitialPlayerQueue(playersInRound);
 
 			previousPlayer = playerQueue.get(0);
-			//ListIterator<Player> it = playerQueue.listIterator();
+			ListIterator<Player> it = playerQueue.listIterator();
 		while(endOfAuction!=true){ //while everyone makes his move and all player's bets are equal
-			//if(it.hasNext()){
-			for(Player player : playerQueue){
-				//Player player = it.next();
-				//setPreviousPlayer(it.previous());
+			if(it.hasNext()){
+			//for(Player player : playerQueue){
+				
+				Player player = it.next();
+				setPreviousPlayer(it.previous());
 				currentPlayer = player;
+				
+				//send data seen on table to each player in game 
+				sendDataToEachClient(playerQueue);
+				
+				//activate current player
 				currentPlayer.setActive();
+				currentPlayer.getMovement();
+				
 				if(auctionCounter > 0 && checkIfBetsAreEqual(playerQueue) == true){	//if everyone took his turn and all player's bets are equal
 					endOfAuction=true;
 					break;
 				}
 				
+				
 				//TODO: add big and small blind to the pot, etc 
 				
 				//MoveRestrictions.ResetRestrictions(getCurrentPlayer().getTa());
-				MoveRestrictions.Restrict(this); //TODO: implement that class
+				//MoveRestrictions.Restrict(this); //TODO: implement that class
 				
 				
 				
-				switch(player.getName()){
+				switch(player.getActionName()){
 		        case "check": player.Check(); break;
 		        case "call": player.Call(getCurrentBet()); break;
 		        case "bet": player.Bet(20); break; //TODO: get bet value from GUI
@@ -135,17 +169,17 @@ public class Auction{
 				}
 				if(player.playerState == ActionTaken.FOLDING){ 
 					playersInRound.remove(player); //if player is folding, remove him from this round and queue
-					//it.remove();
+					it.remove();
 				}
 				if(player.playerState == ActionTaken.ALLIN){ 
 					setCurrentPot(getCurrentPot() + player.getCurrentBet());
 					if(player.getCurrentBet() > getCurrentPot())
 						setCurrentBet(player.getCurrentBet());
 					player.setPlayerTokens(0);
-					//it.remove();
+					it.remove();
 				}
 				currentPlayer.setBlocked();
-				getCurrentPlayer().setName(null);
+				getCurrentPlayer().setActionName(null);
 				movesCounter++;
 				previousPlayer = currentPlayer;
 				Messenger.getInstance().setCurrentPot(getCurrentPot(),playerQueue);
@@ -207,6 +241,10 @@ public class Auction{
 	
 	public Player getCurrentPlayer(){
 		return currentPlayer;
+	}
+	
+	public void setCurrentPlayer(Player player){
+		this.currentPlayer = player;
 	}
 
 	public Player getPreviousPlayer() {

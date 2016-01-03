@@ -1,11 +1,15 @@
 package main;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
 public class Player{
 
-	private final String playerName;
+	private String playerName;
 	private List<Card> hand;
 	private List<Card> winningHand;
 	private List<Card> drawCards;
@@ -18,12 +22,14 @@ public class Player{
 	private int currentAuctionBet;
 	private final int playerIndex;
 	private boolean stateChanged;
-	private String name;
+	private String actionName;
 	private GameType gameType;
 	private double power;
+	public static BufferedReader in;
+	public static PrintWriter out;
 	
 	public Player(Socket socket, int tokens, int index, GameType gameType){
-		this.playerName=name;
+		this.playerName=actionName;
 		this.playerIndex=index;
 		this.setPlayerTokens(tokens);
 		setGameType(gameType);
@@ -36,7 +42,15 @@ public class Player{
 		setSmallBlind(false);
 		setDealerButton(false);
 		setStateChanged(false);
-		setName(null);
+		setActionName(null);
+        try {
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			out = new PrintWriter(socket.getOutputStream(),true);
+			Server.writers.add(out);
+			Server.readers.add(in);
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	public Player(String name, int tokens, int index){
@@ -53,11 +67,18 @@ public class Player{
 		setSmallBlind(false);
 		setDealerButton(false);
 		setStateChanged(false);
-		setName(null);
+		setActionName(null);
 	}
 	
-
-
+	
+	public void getMovement(){
+		try {
+			setActionName(Server.readers.get(getPlayerIndex()).readLine());
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
 ////AUCTION METHODS////
 	
 	public ActionTaken playerState;
@@ -105,6 +126,10 @@ public class Player{
 
 	public String getPlayerName() {
 		return playerName;
+	}
+	
+	public void setPlayerName(String name){
+		this.playerName = name;
 	}
 
 	public List<Card> getHand() {
@@ -200,12 +225,12 @@ public class Player{
 		this.stateChanged = stateChanged;
 	}
 
-	public String getName() {
-		return name;
+	public String getActionName() {
+		return actionName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setActionName(String name) {
+		this.actionName = name;
 	}
 
 	public double getPower() {
@@ -225,12 +250,11 @@ public class Player{
 	}
 
 	public void setBlocked() {
-		// TODO Auto-generated method stub BLOCK GUI
-		
+		Server.writers.get(getPlayerIndex()).println("set blocked");
 	}
 
 	public void setActive() {
-		// TODO Auto-generated method stub SET GUI ACTIVE!
-		
+		System.out.println("Activating player: " + getPlayerName());
+		Server.writers.get(getPlayerIndex()).println("set active");
 	}
 }
