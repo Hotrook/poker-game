@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.concurrent.CountDownLatch;
 
 import javax.swing.JOptionPane;
 
@@ -54,7 +55,7 @@ public class Client {
 	
 	
 	
-	//show dialog collecting IP adress of a server
+	//show dialog collecting IP address of a server
 	private static void getIPAdress(){
 		IP_ADRESS = JOptionPane.showInputDialog(
 				gui,
@@ -83,6 +84,11 @@ public class Client {
 				
 				if(separatedInput[0].equals("set active")){
 					MoveRestrictions.ResetRestrictions(gui);
+				/*	MoveRestrictions.Restrict(gui, 
+							Integer.parseInt(separatedInput[2]), 
+							Integer.parseInt(separatedInput[5]), 
+							ActionTaken.valueOf(separatedInput[3]), 
+							Integer.parseInt(separatedInput[4]));*/
 					getMovementFromButton();
 				}
 					
@@ -110,19 +116,22 @@ public class Client {
 	
 	private static void DisplayData(String[] data){
 		gui.turn.setText("Ruch gracza: " + data[1]);
-		gui.txtStawka.setText(data[2]);
-		gui.txtPula.setText(data[3]);
+		gui.txtStawka.setText(data[5]);
+		gui.txtPula.setText(data[6]);
 	}
 	
 	
 	private static void getMovementFromButton(){
 		//wait for player's action
-		while(gui.actionName==null){
-			
+		try {
+			gui.latch.await();
+		} catch (InterruptedException e) {
+			System.out.println(e.getMessage());
 		}
 		//send information about player's move
 		out.println(gui.actionName);
 		//reset player's move state
 		gui.actionName = null;
+		gui.latch = new CountDownLatch(1);
 	}
 }

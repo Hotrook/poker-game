@@ -72,8 +72,15 @@ public class Player{
 	
 	
 	public void getMovement(){
+		String action;
 		try {
-			setActionName(Server.readers.get(getPlayerIndex()).readLine());
+			while(true){
+				action = Server.readers.get(playerIndex).readLine();
+				if(action!=null){
+					setActionName(action);
+					break;
+				}
+			}
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
@@ -254,7 +261,7 @@ public class Player{
 	}
 
 	public void setActive() {
-		System.out.println("Activating player: " + getPlayerName());
 		Server.writers.get(getPlayerIndex()).println("set active");
+		getMovement();
 	}
 }

@@ -90,7 +90,7 @@ public class AuctionGUI extends JFrame{
 	}
 
 	public String actionName;
-	//public CountDownLatch latch = new CountDownLatch(1);
+	public CountDownLatch latch = new CountDownLatch(1);
 	
 	private class myHandler implements ActionListener{
 
@@ -99,7 +99,7 @@ public class AuctionGUI extends JFrame{
 			String name = e.getActionCommand();
 			//System.out.println(e.getActionCommand() + " by " + globalAuction.getCurrentPlayer().getPlayerName());
 			actionName = name;
-		//	latch.countDown();
+			latch.countDown();
 		}	
 	}
 }

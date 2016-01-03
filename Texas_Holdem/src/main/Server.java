@@ -54,7 +54,7 @@ public class Server {
 		
 		while( counter < input.getNumberOfPlayers()){
 			Player player = new Player(listener.accept(), input.getInitialTokens(), counter, input.getGameType() );
-	        player.setPlayerName(player.in.readLine());
+	        player.setPlayerName(readers.get(player.getPlayerIndex()).readLine());
 			System.out.println("Connected player " + player.getPlayerName());
 			players.add(player);
 			counter++;
@@ -134,7 +134,7 @@ public class Server {
 		
 		input.setInitialTokens(data);
 		
-		
+		in.close();
 		
 		
 		

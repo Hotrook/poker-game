@@ -86,10 +86,14 @@ public class Auction{
 	//the data format is: x;y;z
 	// ';' as a default delimiter
 	//package contains: "data", current player's name, current bet, current pot, each player's (left in game) name and tokens
+	//0-data,1-CPname,2-CPtokens,3-PPaction,4-moves_counter,5-bet,6-pot,7-...
 	public String createDataPackage(List<Player> players){
 		String data;
 		data = "data";
 		data += ";" + getCurrentPlayer().getPlayerName();
+		data += ";" + getCurrentPlayer().getPlayerTokens();
+		data += ";" + getPreviousPlayer().getActionName();
+		data += ";" + movesCounter;
 		data += ";" + getCurrentBet();
 		data += ";" + getCurrentPot();
 		
@@ -114,13 +118,13 @@ public class Auction{
 			setInitialPlayerQueue(playersInRound);
 
 			previousPlayer = playerQueue.get(0);
-			ListIterator<Player> it = playerQueue.listIterator();
+			ListIterator<Player> it;// = playerQueue.listIterator();
 		while(endOfAuction!=true){ //while everyone makes his move and all player's bets are equal
-			if(it.hasNext()){
+			it = playerQueue.listIterator();
+			while(it.hasNext()){
 			//for(Player player : playerQueue){
 				
 				Player player = it.next();
-				setPreviousPlayer(it.previous());
 				currentPlayer = player;
 				
 				//send data seen on table to each player in game 
@@ -128,7 +132,6 @@ public class Auction{
 				
 				//activate current player
 				currentPlayer.setActive();
-				currentPlayer.getMovement();
 				
 				if(auctionCounter > 0 && checkIfBetsAreEqual(playerQueue) == true){	//if everyone took his turn and all player's bets are equal
 					endOfAuction=true;
@@ -138,11 +141,7 @@ public class Auction{
 				
 				//TODO: add big and small blind to the pot, etc 
 				
-				//MoveRestrictions.ResetRestrictions(getCurrentPlayer().getTa());
-				//MoveRestrictions.Restrict(this); //TODO: implement that class
-				
-				
-				
+
 				switch(player.getActionName()){
 		        case "check": player.Check(); break;
 		        case "call": player.Call(getCurrentBet()); break;
@@ -170,6 +169,7 @@ public class Auction{
 				if(player.playerState == ActionTaken.FOLDING){ 
 					playersInRound.remove(player); //if player is folding, remove him from this round and queue
 					it.remove();
+					playerQueue.remove(player);
 				}
 				if(player.playerState == ActionTaken.ALLIN){ 
 					setCurrentPot(getCurrentPot() + player.getCurrentBet());
@@ -177,6 +177,7 @@ public class Auction{
 						setCurrentBet(player.getCurrentBet());
 					player.setPlayerTokens(0);
 					it.remove();
+					playerQueue.remove(player);
 				}
 				currentPlayer.setBlocked();
 				getCurrentPlayer().setActionName(null);
@@ -186,6 +187,7 @@ public class Auction{
 				Messenger.getInstance().setCurrentBet(getCurrentBet(),playerQueue);
 			}
 			auctionCounter++; 	
+			movesCounter = 0;
 		}
 		if(endOfAuction==true)
 			System.out.println("Koniec aukcji!");
@@ -193,7 +195,7 @@ public class Auction{
 		//*current bet
 		setCurrentBet(0);
 		//*player queue 
-		playerQueue = null;
+		playerQueue = new ArrayList<Player>();
 		//*player state for each player left in round
 		for(Player player : playersInRound){
 			player.playerState = null;
