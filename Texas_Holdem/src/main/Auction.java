@@ -130,11 +130,6 @@ public class Auction{
 			while(it.hasNext()){
 			//for(Player player : playerQueue){
 				
-
-				if(movesCounter >= playerQueue.size()-1 && checkIfBetsAreEqual(playerQueue) == true){	//if everyone took his turn and all player's bets are equal
-					endOfAuction=true;
-					break;
-				}
 				
 				Player player = it.next();
 				currentPlayer = player;
@@ -162,28 +157,30 @@ public class Auction{
 		        default: break;
 		        }
 		        
+				//wykaszam getcurrenttotalbet >> getcurrentbet
+				
 				if(player.playerState == ActionTaken.CHECKING){ 
 					//do nothing important
 				}			
 				if(player.playerState == ActionTaken.BETING){
-					setCurrentBet(player.getCurrentTotalBet());
-					setCurrentPot(player.getCurrentTotalBet());
+					setCurrentBet(player.getCurrentBet());
+					setCurrentPot(player.getCurrentBet());
 				}
 				if(player.playerState == ActionTaken.CALLING){
-					setCurrentPot(getCurrentPot() + player.getCurrentTotalBet());
+					setCurrentPot(getCurrentPot() + player.getCurrentBet());
 				}				
 				if(player.playerState == ActionTaken.RISING){ 
-					setCurrentBet(player.getCurrentTotalBet());
-					setCurrentPot(getCurrentPot() + player.getCurrentTotalBet()); 
+					setCurrentBet(player.getCurrentBet());
+					setCurrentPot(getCurrentPot() + player.getCurrentBet()); 
 				}
 				if(player.playerState == ActionTaken.FOLDING){ 
 					playersInRound.remove(player); //if player is folding, remove him from this round and queue
 					playerQueue.remove(player);
 				}
 				if(player.playerState == ActionTaken.ALLIN){ 
-					setCurrentPot(getCurrentPot() + player.getCurrentTotalBet());
+					setCurrentPot(getCurrentPot() + player.getCurrentBet());
 					if(player.getCurrentTotalBet() > getCurrentPot())
-						setCurrentBet(player.getCurrentTotalBet());
+						setCurrentBet(player.getCurrentBet());
 					player.setPlayerTokens(0);
 					playerQueue.remove(player);
 				}
@@ -193,8 +190,17 @@ public class Auction{
 				previousPlayer = currentPlayer;
 				Messenger.getInstance().setCurrentPot(getCurrentPot(),playerQueue);
 				Messenger.getInstance().setCurrentBet(getCurrentBet(),playerQueue);
+
+				
+				if(movesCounter >= playerQueue.size()  && checkIfBetsAreEqual(playerQueue) == true){	//if everyone took his turn and all player's bets are equal
+					endOfAuction=true;
+					break;
+				}
 			}
 			movesCounter = 0;
+			for(Player pl : playerQueue){
+				pl.setCurrentBet(0);
+			}
 		}
 		if(endOfAuction==true)
 			System.out.println("Koniec aukcji!");
