@@ -106,6 +106,7 @@ public class TestAuction {
 		//initial assertion, each player has bet equal to 0
 		assertEquals(true, auction.checkIfBetsAreEqual(players));
 		
+		
 		//example situation of betting 
 		//SCENARIO:
 		//1. player1 bets 50				|A - 50, B - 0, C - 0, D - 0
