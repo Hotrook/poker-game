@@ -101,7 +101,7 @@ public class AuctionGUI extends JFrame{
 		txtPula.setColumns(10);
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(Color.RED);
+		panel_2.setBackground(new Color(128, 0, 0));
 		contentPane.add(panel_2, BorderLayout.CENTER);
 		panel_2.setLayout(null);
 		
@@ -111,7 +111,7 @@ public class AuctionGUI extends JFrame{
 		turn.setEditable(false);
 		panel_2.add(turn);
 		
-		playerCard1 = new JLabel("7\u2663");
+		playerCard1 = new JLabel("");
 		playerCard1.setFont(new Font("Times New Roman", Font.BOLD, 40));
 		playerCard1.setBackground(Color.WHITE);
 		playerCard1.setOpaque(true);
@@ -120,7 +120,7 @@ public class AuctionGUI extends JFrame{
 		playerCard1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		panel_2.add(playerCard1);
 		
-		playerCard2 = new JLabel("K\u2663");
+		playerCard2 = new JLabel("");
 		playerCard2.setBackground(Color.WHITE);
 		playerCard2.setOpaque(true);
 		playerCard2.setFont(new Font("Times New Roman", Font.BOLD, 40));
@@ -129,7 +129,7 @@ public class AuctionGUI extends JFrame{
 		playerCard2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		panel_2.add(playerCard2);
 		
-		card1 = new JLabel("7\u2663");
+		card1 = new JLabel("");
 		card1.setFont(new Font("Times New Roman", Font.BOLD, 25));
 		card1.setBackground(Color.WHITE);
 		card1.setOpaque(true);
@@ -138,7 +138,7 @@ public class AuctionGUI extends JFrame{
 		card1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		panel_2.add(card1);
 		
-		card2 = new JLabel("7\u2663");
+		card2 = new JLabel("");
 		card2.setFont(new Font("Times New Roman", Font.BOLD, 25));
 		card2.setBackground(Color.WHITE);
 		card2.setOpaque(true);
@@ -147,7 +147,7 @@ public class AuctionGUI extends JFrame{
 		card2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		panel_2.add(card2);
 		
-		card3 = new JLabel("7\u2663");
+		card3 = new JLabel("");
 		card3.setFont(new Font("Times New Roman", Font.BOLD, 25));
 		card3.setBackground(Color.WHITE);
 		card3.setOpaque(true);
@@ -156,7 +156,7 @@ public class AuctionGUI extends JFrame{
 		card3.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		panel_2.add(card3);
 		
-		card4 = new JLabel("7\u2663");
+		card4 = new JLabel("");
 		card4.setFont(new Font("Times New Roman", Font.BOLD, 25));
 		card4.setBackground(Color.WHITE);
 		card4.setOpaque(true);
@@ -165,7 +165,7 @@ public class AuctionGUI extends JFrame{
 		card4.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		panel_2.add(card4);
 		
-		card5 = new JLabel("7\u2663");
+		card5 = new JLabel("");
 		card5.setFont(new Font("Times New Roman", Font.BOLD, 25));
 		card5.setBackground(Color.WHITE);
 		card5.setOpaque(true);

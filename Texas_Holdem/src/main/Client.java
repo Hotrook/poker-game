@@ -185,7 +185,7 @@ public class Client {
 		switch(suit){
 		case "0" : temp = "\u2663"; break;
 		case "1" : temp = "\u2666"; break;
-		case "2" : temp = "\u2764"; break;
+		case "2" : temp = "\u2665"; break;
 		case "3" : temp = "\u2660"; break;
 		}
 		

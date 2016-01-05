@@ -51,6 +51,7 @@ public class Server {
 		int counter = 0 ; 
 		players = new ArrayList<Player>();
 		
+		System.out.println("Waiting for players...");
 		
 		while( counter < input.getNumberOfPlayers()){
 			Player player = new Player(listener.accept(), input.getInitialTokens(), counter, input.getGameType() );
