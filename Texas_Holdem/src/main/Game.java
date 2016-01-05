@@ -61,6 +61,7 @@ public class Game {
 			
 			auction.startAuction(i);
 			putCardsOnTheTable(i);
+			showCardsOnTableToEachPlayer(players);
 		}
 		
 		 winnersList = createSortedWinnersList();
@@ -75,6 +76,21 @@ public class Game {
 	
 	
 	
+	private void showCardsOnTableToEachPlayer(List<Player> players) {
+		String cards;
+		cards = "table cards";
+		for(Card card : tableCards){
+			cards += ";" + card.getRank() + ";" + card.getSuit();
+		}
+		
+		for(Player player : players){
+			Server.writers.get(player.getPlayerIndex()).println(cards);
+		}
+	}
+
+
+
+
 	public List<Player> getPlayers(){
 		return players;
 	}

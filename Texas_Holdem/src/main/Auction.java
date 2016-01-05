@@ -82,6 +82,13 @@ public class Auction{
 		}
 	}
 	
+	
+	private void sendHandInfoToEachClient(List<Player> players){
+		for(Player player : players){
+			player.sendHandInfoToClient();
+		}
+	}
+	
 	//modify this method when more data is needed on client side
 	//the data format is: x;y;z
 	// ';' as a default delimiter
@@ -130,8 +137,11 @@ public class Auction{
 				//send data seen on table to each player in game 
 				sendDataToEachClient(playerQueue);
 				
+				//send hand info to each player
+				sendHandInfoToEachClient(playerQueue);
+				
 				//activate current player
-				currentPlayer.setActive();
+				currentPlayer.setActive(createDataPackage(playerQueue));
 				
 				if(auctionCounter > 0 && checkIfBetsAreEqual(playerQueue) == true){	//if everyone took his turn and all player's bets are equal
 					endOfAuction=true;

@@ -71,6 +71,17 @@ public class Player{
 	}
 	
 	
+	public void sendHandInfoToClient(){
+		String handInfo = null;
+		handInfo = "hand";
+		for(Card card : getHand()){
+			handInfo += ";" + card.getRank() + ";" + card.getSuit();
+		}
+		
+		Server.writers.get(getPlayerIndex()).println(handInfo);
+	}
+	
+	
 	public void getMovement(){
 		String action;
 		try {
@@ -260,8 +271,8 @@ public class Player{
 		Server.writers.get(getPlayerIndex()).println("set blocked");
 	}
 
-	public void setActive() {
-		Server.writers.get(getPlayerIndex()).println("set active");
+	public void setActive(String data) {
+		Server.writers.get(getPlayerIndex()).println("set active;" + data);
 		getMovement();
 	}
 }
