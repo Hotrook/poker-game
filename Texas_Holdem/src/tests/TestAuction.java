@@ -131,8 +131,10 @@ public class TestAuction {
 		Auction auction = new Auction(players);
 		auction.setCurrentBet(100);
 		auction.setCurrentPot(500);
+		auction.setPreviousPlayer(player4);
+		player4.setActionName("");
 		auction.setCurrentPlayer(player1);
 		String data = auction.createDataPackage(players);
-		assertEquals("data;A;100;500;A;1000;B;1000;C;1000;D;1000",data);
+		assertEquals("data;A;1000;;0;100;500;A;1000;B;1000;C;1000;D;1000",data);
 	}
 }

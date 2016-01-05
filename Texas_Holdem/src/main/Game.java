@@ -67,7 +67,7 @@ public class Game {
 		 winnersList = createSortedWinnersList();
 		 giveGainToWinners(winnersList);
 		 changeSmallBlind();
-		 removeLosers(); // smierc frajerom hehe
+		 removeLosers(); 
 		 tableCards.clear();
 		 Deck.getInstance().initializeCards();
 		 
