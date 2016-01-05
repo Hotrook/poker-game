@@ -67,7 +67,6 @@ public class Game {
 		 winnersList = createSortedWinnersList();
 		 giveGainToWinners(winnersList);
 		 changeSmallBlind();
-
 		 removeLosers(); 
 		 tableCards.clear();
 		 Deck.getInstance().initializeCards();
