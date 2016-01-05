@@ -18,8 +18,9 @@ public class Player{
 	private boolean isSmallBlind;
 	private boolean isBigBlind;
 	private boolean isDealerButton;
-	private int currentBet;
+	private int currentTotalBet;
 	private int currentAuctionBet;
+	private int currentBet;
 	private final int playerIndex;
 	private boolean stateChanged;
 	private String actionName;
@@ -37,6 +38,7 @@ public class Player{
 		setHand(null);
 		setWinningHand(null);
 		setDrawCards(null);
+		setCurrentTotalBet(0);
 		setCurrentBet(0);
 		setBigBlind(false);
 		setSmallBlind(false);
@@ -62,6 +64,7 @@ public class Player{
 		setHand(null);
 		setWinningHand(null);
 		setDrawCards(null);
+		setCurrentTotalBet(0);
 		setCurrentBet(0);
 		setBigBlind(false);
 		setSmallBlind(false);
@@ -107,19 +110,22 @@ public class Player{
 	
 	public void Bet(int betValue){
 		setPlayerTokens(getPlayerTokens() - betValue);
+		setCurrentTotalBet(getCurrentTotalBet() + betValue);
 		setCurrentBet(betValue);
 		playerState = ActionTaken.BETING;
 	}
 	
 	public void Call(int auctionBetValue){
-		setCurrentBet(auctionBetValue);
+		setCurrentTotalBet(getCurrentTotalBet() + auctionBetValue);
 		setPlayerTokens(getPlayerTokens() - auctionBetValue);
+		setCurrentBet(auctionBetValue);
 		playerState = ActionTaken.CALLING;
 	}
 
 	public int Raise(int auctionBetvalue, int riseValue){
 		setPlayerTokens(getPlayerTokens() - riseValue - auctionBetvalue);
-		setCurrentBet(riseValue + auctionBetvalue);
+		setCurrentTotalBet(getCurrentTotalBet() + riseValue + auctionBetvalue);
+		setCurrentBet(auctionBetvalue + riseValue);
 		playerState = ActionTaken.RISING;
 		return riseValue;
 	}
@@ -130,6 +136,7 @@ public class Player{
 	
 	public int AllIn(){
 		playerState = ActionTaken.ALLIN;
+		setCurrentTotalBet(getCurrentTotalBet() + getPlayerTokens());
 		setCurrentBet(getPlayerTokens());
 		setPlayerTokens(0);
 		return this.playerTokens;
@@ -182,12 +189,12 @@ public class Player{
 		this.playerTokens = playerTokens;
 	}
 
-	public int getCurrentBet() {
-		return currentBet;
+	public int getCurrentTotalBet() {
+		return currentTotalBet;
 	}
 
-	public void setCurrentBet(int currentBet) {
-		this.currentBet = currentBet;
+	public void setCurrentTotalBet(int currentBet) {
+		this.currentTotalBet = currentBet;
 		// TODO : SET CURRENT BET IN GUI AS WEll
 	}
 
@@ -197,6 +204,14 @@ public class Player{
 
 	public void setCurrentAuctionBet(int currentAuctionBet) {
 		this.currentAuctionBet = currentAuctionBet;
+	}
+
+	public int getCurrentBet() {
+		return currentBet;
+	}
+
+	public void setCurrentBet(int currentBet) {
+		this.currentBet = currentBet;
 	}
 
 	public boolean isSmallBlind() {

@@ -135,9 +135,9 @@ public class TestGame {
 		Auction auction = new Auction(players);
 		
 		auction.setCurrentPot(50+70+120);
-		player.setCurrentBet(50);
-		player1.setCurrentBet(70);
-		player2.setCurrentBet(120);
+		player.setCurrentTotalBet(50);
+		player1.setCurrentTotalBet(70);
+		player2.setCurrentTotalBet(120);
 		
 		initializeCards();
 		game.auction = auction;
@@ -179,7 +179,7 @@ public class TestGame {
 		
 		player3.setInGame(true);
 		player2.setPower(1000);
-		player1.setCurrentBet(70);
+		player1.setCurrentTotalBet(70);
 		player3.setPower(1999);
 		
 		List <Player> winners = new ArrayList<Player>();
@@ -231,11 +231,11 @@ public class TestGame {
 		
 		player = new Player("player0", 6, 0);
 		player.setPower(253.100806);
-		player.setCurrentBet(60);
+		player.setCurrentTotalBet(60);
 		
 		player1 = new Player("player1", 6, 1);
 		player1.setPower(253.100806);
-		player1.setCurrentBet(60);
+		player1.setCurrentTotalBet(60);
 		
 		player2 = new Player("player2", 6, 2);
 		player2.setPower( 253.100806 );

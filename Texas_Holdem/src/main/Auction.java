@@ -112,7 +112,6 @@ public class Auction{
 	}
 ////ACTUAL METHOD FOR STARTING AUCTION////	
 	private boolean endOfAuction = false;
-	private int auctionCounter = 0;
 	private Player currentPlayer = null;
 	private Player previousPlayer = null;
 	public int movesCounter = 0;
@@ -131,6 +130,12 @@ public class Auction{
 			while(it.hasNext()){
 			//for(Player player : playerQueue){
 				
+
+				if(movesCounter >= playerQueue.size()-1 && checkIfBetsAreEqual(playerQueue) == true){	//if everyone took his turn and all player's bets are equal
+					endOfAuction=true;
+					break;
+				}
+				
 				Player player = it.next();
 				currentPlayer = player;
 				
@@ -142,11 +147,6 @@ public class Auction{
 				
 				//activate current player
 				currentPlayer.setActive(createDataPackage(playerQueue));
-				
-				if(auctionCounter > 0 && checkIfBetsAreEqual(playerQueue) == true){	//if everyone took his turn and all player's bets are equal
-					endOfAuction=true;
-					break;
-				}
 				
 				
 				//TODO: add big and small blind to the pot, etc 
@@ -166,27 +166,25 @@ public class Auction{
 					//do nothing important
 				}			
 				if(player.playerState == ActionTaken.BETING){
-					setCurrentBet(player.getCurrentBet());
-					setCurrentPot(player.getCurrentBet());
+					setCurrentBet(player.getCurrentTotalBet());
+					setCurrentPot(player.getCurrentTotalBet());
 				}
 				if(player.playerState == ActionTaken.CALLING){
-					setCurrentPot(getCurrentPot() + player.getCurrentBet());
+					setCurrentPot(getCurrentPot() + player.getCurrentTotalBet());
 				}				
 				if(player.playerState == ActionTaken.RISING){ 
-					setCurrentBet(player.getCurrentBet());
-					setCurrentPot(getCurrentPot() + player.getCurrentBet()); 
+					setCurrentBet(player.getCurrentTotalBet());
+					setCurrentPot(getCurrentPot() + player.getCurrentTotalBet()); 
 				}
 				if(player.playerState == ActionTaken.FOLDING){ 
 					playersInRound.remove(player); //if player is folding, remove him from this round and queue
-					it.remove();
 					playerQueue.remove(player);
 				}
 				if(player.playerState == ActionTaken.ALLIN){ 
-					setCurrentPot(getCurrentPot() + player.getCurrentBet());
-					if(player.getCurrentBet() > getCurrentPot())
-						setCurrentBet(player.getCurrentBet());
+					setCurrentPot(getCurrentPot() + player.getCurrentTotalBet());
+					if(player.getCurrentTotalBet() > getCurrentPot())
+						setCurrentBet(player.getCurrentTotalBet());
 					player.setPlayerTokens(0);
-					it.remove();
 					playerQueue.remove(player);
 				}
 				currentPlayer.setBlocked();
@@ -196,7 +194,6 @@ public class Auction{
 				Messenger.getInstance().setCurrentPot(getCurrentPot(),playerQueue);
 				Messenger.getInstance().setCurrentBet(getCurrentBet(),playerQueue);
 			}
-			auctionCounter++; 	
 			movesCounter = 0;
 		}
 		if(endOfAuction==true)
@@ -209,6 +206,7 @@ public class Auction{
 		//*player state for each player left in round
 		for(Player player : playersInRound){
 			player.playerState = null;
+			player.setCurrentBet(0);
 		}
 		//current pot should be reset in round, after saving it's value
 	}

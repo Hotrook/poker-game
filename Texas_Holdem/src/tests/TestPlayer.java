@@ -37,7 +37,7 @@ public class TestPlayer{
 		Player player = new Player("Adam", 1000, 0);
 		player.Bet(400);
 		assertEquals(player.getPlayerTokens(),600);
-		assertEquals(player.getCurrentBet(),400);
+		assertEquals(player.getCurrentTotalBet(),400);
 		assertEquals(player.playerState,ActionTaken.BETING);
 	}
 	
@@ -47,9 +47,9 @@ public class TestPlayer{
 		Player player = new Player("Adam", 1000, 0);
 		Player player2 = new Player("Tomek", 1000, 1);
 		player.Bet(300);
-		player2.Raise(player.getCurrentBet(),400);
+		player2.Raise(player.getCurrentTotalBet(),400);
 		assertEquals(player2.getPlayerTokens(),300);
-		assertEquals(player2.getCurrentBet(),700);
+		assertEquals(player2.getCurrentTotalBet(),700);
 		assertEquals(player2.playerState,ActionTaken.RISING);
 	}
 	
@@ -67,7 +67,7 @@ public class TestPlayer{
 		Player player = new Player("Adam", 1000, 0);
 		player.AllIn();
 		assertEquals(player.getPlayerTokens(),0);
-		assertEquals(player.getCurrentBet(),1000);
+		assertEquals(player.getCurrentTotalBet(),1000);
 		assertEquals(player.playerState,ActionTaken.ALLIN);		
 	}
 	

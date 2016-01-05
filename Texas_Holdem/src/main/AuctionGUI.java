@@ -67,11 +67,19 @@ public class AuctionGUI extends JFrame{
 		bet = new JButton("bet");
 		panel.add(bet);
 		
+		textField = new JTextField();
+		panel.add(textField);
+		textField.setColumns(5);
+		
 		call = new JButton("call");
 		panel.add(call);
 		
 		raise = new JButton("raise");
 		panel.add(raise);
+		
+		textField_1 = new JTextField();
+		panel.add(textField_1);
+		textField_1.setColumns(5);
 		
 		fold = new JButton("fold");
 		panel.add(fold);
@@ -186,6 +194,8 @@ public class AuctionGUI extends JFrame{
 
 	public String actionName;
 	public CountDownLatch latch = new CountDownLatch(1);
+	private JTextField textField;
+	private JTextField textField_1;
 	
 	private class myHandler implements ActionListener{
 

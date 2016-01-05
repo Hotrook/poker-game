@@ -67,7 +67,8 @@ public class Game {
 		 winnersList = createSortedWinnersList();
 		 giveGainToWinners(winnersList);
 		 changeSmallBlind();
-		 removeLosers(); // smierc frajerom hehe
+
+		 removeLosers(); 
 		 tableCards.clear();
 		 Deck.getInstance().initializeCards();
 		 
@@ -156,7 +157,7 @@ public class Game {
 		List<Player> helpingList = new ArrayList<Player>();
 		
 		for( int i = 0 ; i < players.size() ; ++i ){
-			wagers[i] = players.get(i).getCurrentBet();
+			wagers[i] = players.get(i).getCurrentTotalBet();
 		}
 		
 		while( auction.getCurrentPot() > 0 ){
@@ -165,11 +166,11 @@ public class Game {
 			helpingList = createHelpingList(power, winnersList);
 			
 			
-			higherRate = helpingList.get(0).getCurrentBet(); 
+			higherRate = helpingList.get(0).getCurrentTotalBet(); 
 			
 			while(helpingList.isEmpty() == false ){
 				helpingPot = 0;
-				higherRate = helpingList.get(0).getCurrentBet(); 
+				higherRate = helpingList.get(0).getCurrentTotalBet(); 
 				
 				
 				for( int i = 0 ; i < players.size() ; ++i ){
@@ -189,7 +190,7 @@ public class Game {
 					player.setPlayerTokens(player.getPlayerTokens()+helpingPot/helpingList.size());
 				}
 				
-				while( helpingList.get(0).getCurrentBet() == higherRate ){
+				while( helpingList.get(0).getCurrentTotalBet() == higherRate ){
 					helpingList.remove(0);
 					if( helpingList.size() == 0){
 						break;
@@ -294,10 +295,10 @@ public class Game {
 				return -1;
 			}
 			else {
-				if( o1.getCurrentBet() > o2.getCurrentBet() ){
+				if( o1.getCurrentTotalBet() > o2.getCurrentTotalBet() ){
 					return 1;
 				}
-				else if( o1.getCurrentBet() < o2.getCurrentBet() ){
+				else if( o1.getCurrentTotalBet() < o2.getCurrentTotalBet() ){
 					return -1;
 				}
 				else
