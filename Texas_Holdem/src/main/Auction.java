@@ -150,13 +150,12 @@ public class Auction{
 				switch(player.getActionName()){
 		        case "check": player.Check(); break;
 		        case "call": player.Call(getCurrentBet()); break;
-		        case "bet": player.Bet(20); break; //TODO: get bet value from GUI
-		        case "raise": player.Raise(getCurrentBet(), 30); break;//TODO: get raise value from GUI
+		        case "bet": player.Bet(player.getCurrentBet()); break; 
+		        case "raise": player.Raise(player.getCurrentBet()); break;
 		        case "fold": player.Fold(); break;
 		        case "allin": player.AllIn(); break;
 		        default: break;
 		        }
-		        
 				//wykaszam getcurrenttotalbet >> getcurrentbet
 				
 				if(player.playerState == ActionTaken.CHECKING){ 
@@ -184,12 +183,12 @@ public class Auction{
 					player.setPlayerTokens(0);
 					playerQueue.remove(player);
 				}
+				System.out.println(getCurrentBet());
+				sendDataToEachClient(playerQueue);
 				currentPlayer.setBlocked();
 				getCurrentPlayer().setActionName(null);
 				movesCounter++;
 				previousPlayer = currentPlayer;
-				Messenger.getInstance().setCurrentPot(getCurrentPot(),playerQueue);
-				Messenger.getInstance().setCurrentBet(getCurrentBet(),playerQueue);
 
 				
 				if(movesCounter >= playerQueue.size()  && checkIfBetsAreEqual(playerQueue) == true){	//if everyone took his turn and all player's bets are equal

@@ -84,11 +84,11 @@ public class Client {
 				
 				if(separatedInput[0].equals("set active")){
 					MoveRestrictions.ResetRestrictions(gui);
-					/*MoveRestrictions.Restrict(gui, 
+					MoveRestrictions.Restrict(gui, 
 							Integer.parseInt(separatedInput[3]), 
 							Integer.parseInt(separatedInput[6]), 
 							separatedInput[4].equals("null")?ActionTaken.NONE:ActionTaken.valueOf(separatedInput[4]), 
-							Integer.parseInt(separatedInput[5]));*/
+							Integer.parseInt(separatedInput[5]));
 					getMovementFromButton();
 				}
 					
@@ -194,15 +194,33 @@ public class Client {
 	
 	private static void getMovementFromButton(){
 		//wait for player's action
-		try {
-			gui.latch.await();
-		} catch (InterruptedException e) {
-			System.out.println(e.getMessage());
-		}
+		do{
+			
+			try {
+				gui.latch.await();
+			} catch (InterruptedException e) {
+				System.out.println(e.getMessage());
+			}
+			gui.latch = new CountDownLatch(1);
+		}while(illegalMove(gui));
 		//send information about player's move
-		out.println(gui.actionName);
+		
+		if( gui.actionName == "bet" || gui.actionName == "raise")
+			out.println(gui.actionName + ";" + gui.getCurrentPlayerBet());
+		else 
+			out.println(gui.actionName);
 		//reset player's move state
 		gui.actionName = null;
 		gui.latch = new CountDownLatch(1);
 	}
+
+
+
+	private static boolean illegalMove(AuctionGUI gui2) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
 }

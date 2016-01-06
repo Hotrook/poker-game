@@ -8,6 +8,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+
+import exceptions.IncorrectInputException;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -43,7 +46,7 @@ public class AuctionGUI extends JFrame{
 	public JLabel card5;
 	private JLabel lblCurrentBet;
 	private JLabel lblCurrentPot;
-	
+	private int currentPlayerBet;
 	
 	/**
 	 * Create the frame.
@@ -77,9 +80,9 @@ public class AuctionGUI extends JFrame{
 		raise = new JButton("raise");
 		panel.add(raise);
 		
-		textField_1 = new JTextField();
-		panel.add(textField_1);
-		textField_1.setColumns(5);
+		textField1 = new JTextField();
+		panel.add(textField1);
+		textField1.setColumns(5);
 		
 		fold = new JButton("fold");
 		panel.add(fold);
@@ -192,10 +195,11 @@ public class AuctionGUI extends JFrame{
 		MoveRestrictions.RestrictAll(this);
 	}
 
+
 	public String actionName;
 	public CountDownLatch latch = new CountDownLatch(1);
 	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField textField1;
 	
 	private class myHandler implements ActionListener{
 
@@ -204,7 +208,31 @@ public class AuctionGUI extends JFrame{
 			String name = e.getActionCommand();
 			//System.out.println(e.getActionCommand() + " by " + globalAuction.getCurrentPlayer().getPlayerName());
 			actionName = name;
+			if( name == "bet" ){
+				if(textField.getText() != "" )
+					setCurrentPlayerBet(Integer.parseInt(textField.getText()));
+				else{
+					try {
+						throw new IncorrectInputException();
+					} catch (IncorrectInputException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+			else if( name == "raise"){
+				setCurrentPlayerBet(Integer.parseInt(textField1.getText()));
+			}
 			latch.countDown();
 		}	
+	}
+	
+
+	public int getCurrentPlayerBet() {
+		return currentPlayerBet;
+	}
+
+	public void setCurrentPlayerBet(int currentPlayerBet) {
+		this.currentPlayerBet = currentPlayerBet;
 	}
 }

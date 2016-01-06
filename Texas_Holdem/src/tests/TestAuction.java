@@ -117,7 +117,7 @@ public class TestAuction {
 		//bets should be equal
 		player1.Bet(50);
 		player2.Call(player1.getCurrentBet());
-		player3.Raise(player2.getCurrentBet(),30);
+		player3.Raise(100);
 		player4.Call(player3.getCurrentBet());
 		assertEquals(false, auction.checkIfBetsAreEqual(players));
 		player1.Call(player4.getCurrentBet());

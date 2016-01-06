@@ -86,12 +86,17 @@ public class Player{
 	
 	
 	public void getMovement(){
-		String action;
+		String[] action;
 		try {
 			while(true){
-				action = Server.readers.get(playerIndex).readLine();
+				action = Server.readers.get(playerIndex).readLine().split(";");
 				if(action!=null){
-					setActionName(action);
+					setActionName(action[0]);
+					
+					if(action.length > 1){
+						System.out.println("turutr");
+						setCurrentBet(Integer.parseInt(action[1]));
+					}
 					break;
 				}
 			}
@@ -122,12 +127,11 @@ public class Player{
 		playerState = ActionTaken.CALLING;
 	}
 
-	public int Raise(int auctionBetvalue, int riseValue){
-		setPlayerTokens(getPlayerTokens() - riseValue - auctionBetvalue);
-		setCurrentTotalBet(getCurrentTotalBet() + riseValue + auctionBetvalue);
-		setCurrentBet(auctionBetvalue + riseValue);
+	public void Raise(int auctionBetvalue){
+		setPlayerTokens(getPlayerTokens() - auctionBetvalue);
+		setCurrentTotalBet(getCurrentTotalBet() + auctionBetvalue);
+		setCurrentBet(auctionBetvalue );
 		playerState = ActionTaken.RISING;
-		return riseValue;
 	}
 
 	public void Fold(){
