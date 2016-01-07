@@ -2,11 +2,8 @@ package main;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.LayoutManager;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import exceptions.IncorrectInputException;
@@ -14,14 +11,16 @@ import exceptions.IncorrectInputException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JTextField;
-import javax.swing.LayoutStyle;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import javax.swing.border.LineBorder;
 
 public class AuctionGUI extends JFrame{
 
@@ -48,58 +47,99 @@ public class AuctionGUI extends JFrame{
 	private JLabel lblCurrentPot;
 	private int currentPlayerBet;
 	
+
+	private JTextField textField;
+	private JTextField textField1;
+	private JPanel panel_4;
+	private JPanel panel_3;
+	private JLabel lblNewLabel;
+	public JLabel playerTokens;
+	public JTextArea player1;
+	public JTextArea player2;
+	public JTextArea player3;
+	public JTextArea player4;
+	public JTextArea player5;
+	public JTextArea player6;
+	public JTextArea player7;
+	public JTextArea player8;
+	public JTextArea player9;
+	public JTextArea player10;
+	
+	public List<JTextArea> players;
+	
 	/**
 	 * Create the frame.
 	 */
 	public AuctionGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 641, 537);
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.DARK_GRAY);
+		contentPane.setBackground(new Color(0, 0, 0));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
+		contentPane.setLayout(new BorderLayout(20, 0));
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(0, 128, 0));
+		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		panel.setBackground(new Color(128, 0, 0));
 		contentPane.add(panel, BorderLayout.SOUTH);
 		
 		check = new JButton("check");
+		//check.setBackground(new Color(139, 0, 0));
+		//check.setContentAreaFilled(false);
+		//check.setOpaque(true);
 		panel.add(check);
 		
 		bet = new JButton("bet");
+		//bet.setBackground(new Color(139, 0, 0));
+		//bet.setContentAreaFilled(false);
+		//bet.setOpaque(true);
 		panel.add(bet);
 		
 		textField = new JTextField();
 		panel.add(textField);
-		textField.setColumns(5);
+		textField.setColumns(8);
 		
 		call = new JButton("call");
+		//call.setBackground(new Color(139, 0, 0));
+		//call.setContentAreaFilled(false);
+		//call.setOpaque(true);
 		panel.add(call);
 		
 		raise = new JButton("raise");
+		//raise.setBackground(new Color(139, 0, 0));
+		//raise.setContentAreaFilled(false);
+		//raise.setOpaque(true);
 		panel.add(raise);
 		
 		textField1 = new JTextField();
 		panel.add(textField1);
-		textField1.setColumns(5);
+		textField1.setColumns(8);
 		
 		fold = new JButton("fold");
+		//fold.setBackground(new Color(139, 0, 0));
+		//fold.setContentAreaFilled(false);
+		//fold.setOpaque(true);
 		panel.add(fold);
 		
 		
 		allin = new JButton("allin");
+		//allin.setBackground(new Color(139, 0, 0));
+		//allin.setContentAreaFilled(false);
+		//allin.setOpaque(true);
 		panel.add(allin);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(34, 139, 34));
+		panel_1.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		panel_1.setBackground(new Color(128, 0, 0));
 		contentPane.add(panel_1, BorderLayout.NORTH);
 		
 		lblCurrentBet = new JLabel("Current Bet");
 		panel_1.add(lblCurrentBet);
 		
 		txtStawka = new JTextField();
-		txtStawka.setText("STAWKA");
+		txtStawka.setEditable(false);
+		txtStawka.setText("BET");
 		panel_1.add(txtStawka);
 		txtStawka.setColumns(10);
 		
@@ -107,45 +147,30 @@ public class AuctionGUI extends JFrame{
 		panel_1.add(lblCurrentPot);
 		
 		txtPula = new JTextField();
-		txtPula.setText("PULA");
+		txtPula.setEditable(false);
+		txtPula.setText("POT");
 		panel_1.add(txtPula);
 		txtPula.setColumns(10);
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(128, 0, 0));
+		panel_2.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		panel_2.setBackground(new Color(0, 100, 0));
 		contentPane.add(panel_2, BorderLayout.CENTER);
 		panel_2.setLayout(null);
 		
 		turn = new JTextField();
-		turn.setBounds(10, 11, 404, 16);
-		turn.setText("Ruch gracza nr: ");
+		turn.setHorizontalAlignment(SwingConstants.CENTER);
+		turn.setBounds(10, 11, 595, 16);
+		turn.setText("WAITING FOR OTHER PLAYERS...");
 		turn.setEditable(false);
 		panel_2.add(turn);
-		
-		playerCard1 = new JLabel("");
-		playerCard1.setFont(new Font("Times New Roman", Font.BOLD, 40));
-		playerCard1.setBackground(Color.WHITE);
-		playerCard1.setOpaque(true);
-		playerCard1.setHorizontalAlignment(SwingConstants.CENTER);
-		playerCard1.setBounds(132, 117, 80, 60);
-		playerCard1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		panel_2.add(playerCard1);
-		
-		playerCard2 = new JLabel("");
-		playerCard2.setBackground(Color.WHITE);
-		playerCard2.setOpaque(true);
-		playerCard2.setFont(new Font("Times New Roman", Font.BOLD, 40));
-		playerCard2.setHorizontalAlignment(SwingConstants.CENTER);
-		playerCard2.setBounds(222, 117, 80, 60);
-		playerCard2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		panel_2.add(playerCard2);
 		
 		card1 = new JLabel("");
 		card1.setFont(new Font("Times New Roman", Font.BOLD, 25));
 		card1.setBackground(Color.WHITE);
 		card1.setOpaque(true);
 		card1.setHorizontalAlignment(SwingConstants.CENTER);
-		card1.setBounds(10, 55, 60, 40);
+		card1.setBounds(123, 126, 60, 66);
 		card1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		panel_2.add(card1);
 		
@@ -154,7 +179,7 @@ public class AuctionGUI extends JFrame{
 		card2.setBackground(Color.WHITE);
 		card2.setOpaque(true);
 		card2.setHorizontalAlignment(SwingConstants.CENTER);
-		card2.setBounds(80, 55, 60, 40);
+		card2.setBounds(195, 126, 60, 66);
 		card2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		panel_2.add(card2);
 		
@@ -163,7 +188,7 @@ public class AuctionGUI extends JFrame{
 		card3.setBackground(Color.WHITE);
 		card3.setOpaque(true);
 		card3.setHorizontalAlignment(SwingConstants.CENTER);
-		card3.setBounds(152, 55, 60, 40);
+		card3.setBounds(265, 126, 60, 66);
 		card3.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		panel_2.add(card3);
 		
@@ -172,7 +197,7 @@ public class AuctionGUI extends JFrame{
 		card4.setBackground(Color.WHITE);
 		card4.setOpaque(true);
 		card4.setHorizontalAlignment(SwingConstants.CENTER);
-		card4.setBounds(249, 55, 60, 40);
+		card4.setBounds(353, 126, 60, 66);
 		card4.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		panel_2.add(card4);
 		
@@ -181,9 +206,122 @@ public class AuctionGUI extends JFrame{
 		card5.setBackground(Color.WHITE);
 		card5.setOpaque(true);
 		card5.setHorizontalAlignment(SwingConstants.CENTER);
-		card5.setBounds(343, 55, 60, 40);
+		card5.setBounds(435, 126, 60, 66);
 		card5.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		panel_2.add(card5);
+		
+		player9 = new JTextArea();
+		player9.setBackground(new Color(192, 192, 192));
+		player9.setBorder(new LineBorder(new Color(0, 0, 0)));
+		player9.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		player9.setBounds(46, 76, 103, 32);
+		panel_2.add(player9);
+		
+		player10 = new JTextArea();
+		player10.setBackground(new Color(192, 192, 192));
+		player10.setBorder(new LineBorder(new Color(0, 0, 0)));
+		player10.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		player10.setBounds(187, 62, 103, 32);
+		panel_2.add(player10);
+		
+		player1 = new JTextArea();
+		player1.setBackground(new Color(192, 192, 192));
+		player1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		player1.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		player1.setBounds(326, 62, 103, 32);
+		panel_2.add(player1);
+		
+		player2 = new JTextArea();
+		player2.setBackground(new Color(192, 192, 192));
+		player2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		player2.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		player2.setBounds(467, 76, 103, 32);
+		panel_2.add(player2);
+		
+		player7 = new JTextArea();
+		player7.setBackground(new Color(192, 192, 192));
+		player7.setBorder(new LineBorder(new Color(0, 0, 0)));
+		player7.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		player7.setBounds(46, 214, 103, 32);
+		panel_2.add(player7);
+		
+		player6 = new JTextArea();
+		player6.setBackground(new Color(192, 192, 192));
+		player6.setBorder(new LineBorder(new Color(0, 0, 0)));
+		player6.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		player6.setBounds(187, 233, 103, 32);
+		panel_2.add(player6);
+		
+		player5 = new JTextArea();
+		player5.setBackground(new Color(192, 192, 192));
+		player5.setBorder(new LineBorder(new Color(0, 0, 0)));
+		player5.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		player5.setBounds(326, 233, 103, 32);
+		panel_2.add(player5);
+		
+		player4 = new JTextArea();
+		player4.setBackground(new Color(192, 192, 192));
+		player4.setBorder(new LineBorder(new Color(0, 0, 0)));
+		player4.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		player4.setBounds(467, 214, 103, 32);
+		panel_2.add(player4);
+		
+		panel_4 = new JPanel();
+		panel_4.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		panel_4.setBackground(new Color(128, 0, 0));
+		panel_4.setBounds(0, 301, 615, 120);
+		panel_2.add(panel_4);
+		panel_4.setLayout(null);
+		
+		playerCard1 = new JLabel("");
+		playerCard1.setBounds(421, 10, 80, 100);
+		panel_4.add(playerCard1);
+		playerCard1.setFont(new Font("Times New Roman", Font.BOLD, 40));
+		playerCard1.setBackground(Color.WHITE);
+		playerCard1.setOpaque(true);
+		playerCard1.setHorizontalAlignment(SwingConstants.CENTER);
+		playerCard1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		
+		playerCard2 = new JLabel("");
+		playerCard2.setBounds(511, 10, 80, 100);
+		panel_4.add(playerCard2);
+		playerCard2.setBackground(Color.WHITE);
+		playerCard2.setOpaque(true);
+		playerCard2.setFont(new Font("Times New Roman", Font.BOLD, 40));
+		playerCard2.setHorizontalAlignment(SwingConstants.CENTER);
+		playerCard2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		
+		panel_3 = new JPanel();
+		panel_3.setBackground(Color.LIGHT_GRAY);
+		panel_3.setBounds(23, 10, 388, 100);
+		panel_4.add(panel_3);
+		panel_3.setLayout(null);
+		
+		lblNewLabel = new JLabel("Your Balance");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(10, 11, 368, 37);
+		panel_3.add(lblNewLabel);
+		
+		playerTokens = new JLabel("0");
+		playerTokens.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		playerTokens.setHorizontalAlignment(SwingConstants.CENTER);
+		playerTokens.setBounds(10, 59, 368, 30);
+		panel_3.add(playerTokens);
+		
+		player8 = new JTextArea();
+		player8.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		player8.setBorder(new LineBorder(new Color(0, 0, 0)));
+		player8.setBackground(Color.LIGHT_GRAY);
+		player8.setBounds(10, 145, 103, 32);
+		panel_2.add(player8);
+		
+		player3 = new JTextArea();
+		player3.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		player3.setBorder(new LineBorder(new Color(0, 0, 0)));
+		player3.setBackground(Color.LIGHT_GRAY);
+		player3.setBounds(502, 146, 103, 32);
+		panel_2.add(player3);
 		
 		check.addActionListener(new myHandler());
 		bet.addActionListener(new myHandler());
@@ -192,14 +330,26 @@ public class AuctionGUI extends JFrame{
 		allin.addActionListener(new myHandler());
 		raise.addActionListener(new myHandler());	
 		
+		
+		//create list of player's info note
+		players = new ArrayList<JTextArea>();
+		players.add(player1);
+		players.add(player2);
+		players.add(player3);
+		players.add(player4);
+		players.add(player5);
+		players.add(player6);
+		players.add(player7);
+		players.add(player8);
+		players.add(player9);
+		players.add(player10);
+		
 		MoveRestrictions.RestrictAll(this);
 	}
 
-
 	public String actionName;
 	public CountDownLatch latch = new CountDownLatch(1);
-	private JTextField textField;
-	private JTextField textField1;
+	
 	
 	private class myHandler implements ActionListener{
 

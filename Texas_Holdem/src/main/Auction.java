@@ -13,6 +13,8 @@ public class Auction{
 	
 	private int currentPot;
 	private int currentBet;
+	private int raiseValue;
+	private int difference;
 	
 	public Auction(List<Player> playersInRound){
 		setCurrentPot(0);
@@ -99,7 +101,7 @@ public class Auction{
 		data = "data";
 		data += ";" + getCurrentPlayer().getPlayerName();
 		data += ";" + getCurrentPlayer().getPlayerTokens();
-		data += ";" + getPreviousPlayer().getActionName();
+		data += ";" + PP_action;
 		data += ";" + movesCounter;
 		data += ";" + getCurrentBet();
 		data += ";" + getCurrentPot();
@@ -115,6 +117,7 @@ public class Auction{
 	private Player currentPlayer = null;
 	private Player previousPlayer = null;
 	public int movesCounter = 0;
+	private ActionTaken PP_action = null;
 	
 	public void startAuction(int round){
 		endOfAuction = false;
@@ -146,12 +149,13 @@ public class Auction{
 				
 				//TODO: add big and small blind to the pot, etc 
 				
-
+				difference = getCurrentBet() - player.getCurrentBet();
+				
 				switch(player.getActionName()){
 		        case "check": player.Check(); break;
-		        case "call": player.Call(getCurrentBet()); break;
+		        case "call": player.Call(difference); break;
 		        case "bet": player.Bet(player.getCurrentBet()); break; 
-		        case "raise": player.Raise(player.getCurrentBet()); break;
+		        case "raise": player.Raise(player.getCurrentBet() + getCurrentBet()); break;
 		        case "fold": player.Fold(); break;
 		        case "allin": player.AllIn(); break;
 		        default: break;
@@ -163,12 +167,13 @@ public class Auction{
 				}			
 				if(player.playerState == ActionTaken.BETING){
 					setCurrentBet(player.getCurrentBet());
-					setCurrentPot(player.getCurrentBet());
+					setCurrentPot(getCurrentPot() + player.getCurrentBet());
 				}
 				if(player.playerState == ActionTaken.CALLING){
-					setCurrentPot(getCurrentPot() + player.getCurrentBet());
+					setCurrentPot(getCurrentPot() + difference);
 				}				
 				if(player.playerState == ActionTaken.RISING){ 
+					//setRaiseValue(player.getCurrentBet());
 					setCurrentBet(player.getCurrentBet());
 					setCurrentPot(getCurrentPot() + player.getCurrentBet()); 
 				}
@@ -183,36 +188,40 @@ public class Auction{
 					player.setPlayerTokens(0);
 					playerQueue.remove(player);
 				}
-				System.out.println(getCurrentBet());
-				sendDataToEachClient(playerQueue);
-				currentPlayer.setBlocked();
-				getCurrentPlayer().setActionName(null);
-				movesCounter++;
-				previousPlayer = currentPlayer;
-
 				
+				
+				//moved to the beginning of auction
+				//sendDataToEachClient(playerQueue);
+				currentPlayer.setBlocked();
+				movesCounter++;
+				PP_action = getCurrentPlayer().playerState;
+				getCurrentPlayer().playerState = null;
+				//previousPlayer = currentPlayer;
+				getCurrentPlayer().setActionName(null);
+
+				for(Player pl : playerQueue)
+					System.out.print(pl.getCurrentBet() + " ");
+				System.out.println();
 				if(movesCounter >= playerQueue.size()  && checkIfBetsAreEqual(playerQueue) == true){	//if everyone took his turn and all player's bets are equal
 					endOfAuction=true;
 					break;
 				}
 			}
-			movesCounter = 0;
-			for(Player pl : playerQueue){
-				pl.setCurrentBet(0);
-			}
 		}
 		if(endOfAuction==true)
 			System.out.println("Koniec aukcji!");
+		movesCounter = 0;
+		PP_action = null;
 		//reseting values before next auction
 		//*current bet
 		setCurrentBet(0);
-		//*player queue 
-		playerQueue = new ArrayList<Player>();
-		//*player state for each player left in round
-		for(Player player : playersInRound){
+		//*player state and his bet for each player left in round
+		for(Player player : playerQueue){
 			player.playerState = null;
 			player.setCurrentBet(0);
 		}
+		//*player queue 
+		playerQueue = new ArrayList<Player>();
 		//current pot should be reset in round, after saving it's value
 	}
 	
@@ -232,6 +241,22 @@ public class Auction{
 
 	public void setCurrentBet(int currentBet) {
 		this.currentBet = currentBet;
+	}
+
+	public int getRaiseValue() {
+		return raiseValue;
+	}
+
+	public void setRaiseValue(int raiseValue) {
+		this.raiseValue = raiseValue;
+	}
+
+	public int getDifference() {
+		return difference;
+	}
+
+	public void setDifference(int difference) {
+		this.difference = difference;
 	}
 
 	public int getRoundNumber() {

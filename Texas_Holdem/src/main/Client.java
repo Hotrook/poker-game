@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.concurrent.CountDownLatch;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 public class Client {
 	
@@ -92,7 +93,7 @@ public class Client {
 					getMovementFromButton();
 				}
 					
-				if(separatedInput[0].equals("set disabled")){
+				if(separatedInput[0].equals("set blocked")){
 					MoveRestrictions.RestrictAll(gui);
 				}
 				
@@ -126,6 +127,17 @@ public class Client {
 		gui.turn.setText("Ruch gracza: " + data[1]);
 		gui.txtStawka.setText(data[5]);
 		gui.txtPula.setText(data[6]);
+		gui.playerTokens.setText(data[2]);
+		//players start with index 7
+		//7-player1, 8-player1's tokens, 9-player2, ...
+		int i = 7;
+		for(JTextArea plInfo : gui.players){
+			if(i<=data.length-1)
+			plInfo.setText(data[i] + '\n' + data[i+1]);
+			else
+			plInfo.setText("EMPTY CHAIR");
+			i+=2;
+		}
 	}
 	
 	
@@ -211,6 +223,7 @@ public class Client {
 			out.println(gui.actionName);
 		//reset player's move state
 		gui.actionName = null;
+		gui.setCurrentPlayerBet(0);
 		gui.latch = new CountDownLatch(1);
 	}
 

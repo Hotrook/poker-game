@@ -94,7 +94,6 @@ public class Player{
 					setActionName(action[0]);
 					
 					if(action.length > 1){
-						System.out.println("turutr");
 						setCurrentBet(Integer.parseInt(action[1]));
 					}
 					break;
@@ -120,17 +119,17 @@ public class Player{
 		playerState = ActionTaken.BETING;
 	}
 	
-	public void Call(int auctionBetValue){
-		setCurrentTotalBet(getCurrentTotalBet() + auctionBetValue);
-		setPlayerTokens(getPlayerTokens() - auctionBetValue);
-		setCurrentBet(auctionBetValue);
+	public void Call(int difference){
+		setCurrentTotalBet(getCurrentTotalBet() + difference);
+		setPlayerTokens(getPlayerTokens() - difference);
+		setCurrentBet(getCurrentBet() + difference);
 		playerState = ActionTaken.CALLING;
 	}
 
 	public void Raise(int auctionBetvalue){
 		setPlayerTokens(getPlayerTokens() - auctionBetvalue);
 		setCurrentTotalBet(getCurrentTotalBet() + auctionBetvalue);
-		setCurrentBet(auctionBetvalue );
+		setCurrentBet(auctionBetvalue);
 		playerState = ActionTaken.RISING;
 	}
 
