@@ -71,6 +71,9 @@ public class Game {
 		 tableCards.clear();
 		 Deck.getInstance().initializeCards();
 		 
+		 //clear the table
+		 clearTableViewForEachPlayer(players);
+		 
 	}
 	
 	
@@ -82,6 +85,23 @@ public class Game {
 		for(Card card : tableCards){
 			cards += ";" + card.getRank() + ";" + card.getSuit();
 		}
+		
+		for(Player player : players){
+			Server.writers.get(player.getPlayerIndex()).println(cards);
+		}
+	}
+	
+	
+	
+	
+	private void clearTableViewForEachPlayer(List<Player> players) {
+		String cards;
+		cards = "table cards";
+		cards += "; " + "; ";
+		cards += "; " + "; ";
+		cards += "; " + "; ";
+		cards += "; " + "; ";
+		cards += "; " + "; ";
 		
 		for(Player player : players){
 			Server.writers.get(player.getPlayerIndex()).println(cards);

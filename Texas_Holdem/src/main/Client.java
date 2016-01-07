@@ -127,7 +127,6 @@ public class Client {
 		gui.turn.setText("Ruch gracza: " + data[1]);
 		gui.txtStawka.setText(data[5]);
 		gui.txtPula.setText(data[6]);
-		gui.playerTokens.setText(data[2]);
 		//players start with index 7
 		//7-player1, 8-player1's tokens, 9-player2, ...
 		int i = 7;
@@ -137,6 +136,15 @@ public class Client {
 			else
 			plInfo.setText("EMPTY CHAIR");
 			i+=2;
+		}
+		
+		int counter = 0;
+		for(String part : data){
+			if(part.equals(playerName)){
+				gui.playerTokens.setText(data[counter+1]);	
+				break;
+			}
+			counter++;
 		}
 	}
 	
@@ -172,20 +180,20 @@ public class Client {
 	private static String DetermineRank(String rank){
 		String temp = null;
 		switch(rank){
-		case "0": temp = "1"; break;
-		case "1": temp = "2"; break;
-		case "2": temp = "3"; break;
-		case "3": temp = "4"; break;
-		case "4": temp = "5"; break;
-		case "5": temp = "6"; break;
-		case "6": temp = "7"; break;
-		case "7": temp = "8"; break;
-		case "8": temp = "9"; break;
-		case "9": temp = "10"; break;
-		case "10": temp = "J"; break;
-		case "11": temp = "Q"; break;
-		case "12": temp = "K"; break;
-		case "13": temp = "A"; break;
+		case "0": temp = "2"; break;
+		case "1": temp = "3"; break;
+		case "2": temp = "4"; break;
+		case "3": temp = "5"; break;
+		case "4": temp = "6"; break;
+		case "5": temp = "7"; break;
+		case "6": temp = "8"; break;
+		case "7": temp = "9"; break;
+		case "8": temp = "10"; break;
+		case "9": temp = "J"; break;
+		case "10": temp = "Q"; break;
+		case "11": temp = "K"; break;
+		case "12": temp = "A"; break;
+		case " ": temp = " "; break;
 		}
 		
 		return temp;
@@ -199,6 +207,7 @@ public class Client {
 		case "1" : temp = "\u2666"; break;
 		case "2" : temp = "\u2665"; break;
 		case "3" : temp = "\u2660"; break;
+		case " ": temp = " "; break;
 		}
 		
 		return temp;

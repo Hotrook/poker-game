@@ -178,7 +178,7 @@ public class Auction{
 					setCurrentPot(getCurrentPot() + player.getCurrentBet()); 
 				}
 				if(player.playerState == ActionTaken.FOLDING){ 
-					playersInRound.remove(player); //if player is folding, remove him from this round and queue
+					//playersInRound.remove(player); //if player is folding, remove him from this round and queue
 					playerQueue.remove(player);
 				}
 				if(player.playerState == ActionTaken.ALLIN){ 
