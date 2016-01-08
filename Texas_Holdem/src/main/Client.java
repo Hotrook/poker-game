@@ -118,7 +118,6 @@ public class Client {
 					setGametype(GameType.valueOf(separatedInput[1]));
 					if(gametype.equals(GameType.FIXLIMIT))
 						limit = Integer.parseInt(separatedInput[2]);
-					System.out.println(separatedInput[1] + " " + gametype + separatedInput[2] + " " + Integer.parseInt(separatedInput[2]) + " " + limit);
 				}
 			}
 		}
@@ -156,9 +155,15 @@ public class Client {
 		}
 		
 		for(int counter = 7; counter <= data.length; counter++){
-			if(data[counter].equals(playerName)){
+			if(data[counter].equals(playerName) && data[counter+1].endsWith(")") == true){
 				gui.playerTokens.setText(data[counter+1].substring(0, data[counter+1].length()-5));
 				playerTokens = Integer.parseInt(data[counter+1].substring(0, data[counter+1].length()-5));
+				break;
+			}
+			else
+			if(data[counter].equals(playerName)){
+				gui.playerTokens.setText(data[counter+1]);
+				playerTokens = Integer.parseInt(data[counter+1]);
 				break;
 			}
 		}
