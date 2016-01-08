@@ -69,6 +69,21 @@ public class Game {
 			auction.startAuction(i);
 			putCardsOnTheTable(i);
 			showCardsOnTableToEachPlayer(players);
+			if( auction.getPlayersInRound().size() == 1 ){
+				i = 4; // end of for
+			}
+			else{
+				int counter = 0 ;
+				for( int j = 0 ; j < auction.getPlayersInRound().size(); ++j){
+					if( auction.getPlayersInRound().get(j).getActionName() != "allin" ){
+						counter++;
+					}
+				}
+				
+				if ( counter == 0 ){
+					i = 4; // end of for 
+				}
+			}
 		}
 		
 		 winnersList = createSortedWinnersList();
