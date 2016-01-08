@@ -127,10 +127,13 @@ public class Client {
 	}
 	
 	
+	private static int currentBet = 0;
+	private static int playerTokens = 0;
 	
 	private static void DisplayData(String[] data){
 		gui.turn.setText("Ruch gracza: " + data[1]);
 		gui.txtStawka.setText(data[5]);
+		currentBet = Integer.parseInt(data[5]);
 		gui.txtPula.setText(data[6]);
 		//players start with index 7
 		//7-player1, 8-player1's tokens, 9-player2, ...
@@ -145,7 +148,8 @@ public class Client {
 		
 		for(int counter = 7; counter <= data.length; counter++){
 			if(data[counter].equals(playerName)){
-				gui.playerTokens.setText(data[counter+1].substring(0, data[counter+1].length()-4));	
+				gui.playerTokens.setText(data[counter+1].substring(0, data[counter+1].length()-5));
+				playerTokens = Integer.parseInt(data[counter+1].substring(0, data[counter+1].length()-5));
 				break;
 			}
 		}
@@ -226,6 +230,7 @@ public class Client {
 				System.out.println(e.getMessage());
 			}
 			gui.latch = new CountDownLatch(1);
+			
 		}while(illegalMove(gui));
 		//send information about player's move
 		
@@ -242,8 +247,16 @@ public class Client {
 
 
 	private static boolean illegalMove(AuctionGUI gui2) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean checkMove = true;
+		
+		if(gui2.actionName == "bet" && gui2.getCurrentPlayerBet() > playerTokens)
+			checkMove = true;
+		else if(gui2.actionName == "raise" && gui2.getCurrentPlayerBet() >= (playerTokens + currentBet))
+			checkMove = true;
+		else
+			checkMove = false;
+			
+		return checkMove;
 	}
 
 

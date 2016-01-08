@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-
 public class Auction{
 	private List<Player> playerQueue;
 	private List<Player> playersInRound;
@@ -99,23 +98,41 @@ public class Auction{
 		
 		
 		//placing blinds on table
-		for(Player pl: playerQueue){
+		ListIterator<Player> it = playerQueue.listIterator();
+		Player pl = null;
+		while(it.hasNext()){
+			pl = it.next();
 			if(pl.isBigBlind() == true){
-				setCurrentPot(getCurrentPot() + bbvalue); 
-				setCurrentBet(bbvalue);
-				pl.setCurrentBet(bbvalue);
-				pl.setCurrentTotalBet(pl.getCurrentTotalBet() + bbvalue);
-				pl.playerState = ActionTaken.BETING;
-				pl.setPlayerTokens(pl.getPlayerTokens() - bbvalue);
+				if(pl.getPlayerTokens() >= bbvalue){
+					setCurrentPot(getCurrentPot() + bbvalue); 
+					setCurrentBet(bbvalue);
+					pl.setCurrentBet(bbvalue);
+					pl.setCurrentTotalBet(pl.getCurrentTotalBet() + bbvalue);
+					pl.playerState = ActionTaken.BETING;
+					pl.setPlayerTokens(pl.getPlayerTokens() - bbvalue);
+				}
+				else
+					it.remove();
 			}
 			if(pl.isSmallBlind() == true){
-				setCurrentPot(getCurrentPot() + sbvalue); 
-				pl.setCurrentBet(sbvalue);
-				pl.setCurrentTotalBet(pl.getCurrentTotalBet() + sbvalue);
-				//pl.playerState = ActionTaken.BETING;
-				pl.setPlayerTokens(pl.getPlayerTokens() - sbvalue);
+				if(pl.getPlayerTokens() >= sbvalue){
+					setCurrentPot(getCurrentPot() + sbvalue); 
+					pl.setCurrentBet(sbvalue);
+					pl.setCurrentTotalBet(pl.getCurrentTotalBet() + sbvalue);
+					//pl.playerState = ActionTaken.BETING;
+					pl.setPlayerTokens(pl.getPlayerTokens() - sbvalue);
+				}
+				else
+					it.remove();
 			}	
-		}	
+		}
+		for(int i=0; i<playerQueue.size(); i++)
+			it.previous();
+		
+		playerQueue = new ArrayList<>();
+		while(it.hasNext()){
+			playerQueue.add(it.next());
+		}
 	}
 	
 	//modify this method when more data is needed on client side

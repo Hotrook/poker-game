@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.border.LineBorder;
@@ -48,8 +49,8 @@ public class AuctionGUI extends JFrame{
 	private int currentPlayerBet;
 	
 
-	private JTextField textField;
-	private JTextField textField1;
+	public JTextField textField;
+	public JTextField textField1;
 	private JPanel panel_4;
 	private JPanel panel_3;
 	private JLabel lblNewLabel;
@@ -357,24 +358,37 @@ public class AuctionGUI extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			String name = e.getActionCommand();
 			//System.out.println(e.getActionCommand() + " by " + globalAuction.getCurrentPlayer().getPlayerName());
-			actionName = name;
-			if( name == "bet" ){
-				if(textField.getText() != "" )
-					setCurrentPlayerBet(Integer.parseInt(textField.getText()));
-				else{
-					try {
-						throw new IncorrectInputException();
-					} catch (IncorrectInputException e1) {
-						// TODO Auto-generated catch bloc
-						e1.printStackTrace();
-					}
+			//actionName = name;
+			int value=0;
+			
+			if(name == "bet"){
+				try{
+					value = Integer.parseInt(textField.getText());
+					actionName = name;
+					latch.countDown();
+					setCurrentPlayerBet(value);
+				}
+				catch(NumberFormatException ex){
+					textField.setText("");
 				}
 			}
-			else if( name == "raise"){
-				setCurrentPlayerBet(Integer.parseInt(textField1.getText()));
+			else if(name == "raise"){
+				try{
+					value = Integer.parseInt(textField1.getText());
+					actionName = name;
+					latch.countDown();
+					setCurrentPlayerBet(value);
+				}
+				catch(NumberFormatException ex){
+					textField1.setText("");
+				}
+			}	
+			else {
+				latch.countDown();
+				actionName = name;
 			}
-			latch.countDown();
 		}	
+	
 	}
 	
 
