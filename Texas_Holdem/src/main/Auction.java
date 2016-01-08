@@ -146,7 +146,7 @@ public class Auction{
 			else if(pl.isSmallBlind())
 				data += ";" + pl.getPlayerTokens() + " (SB)";
 			else
-				data +=  pl.getPlayerTokens(); 
+				data += ";" + pl.getPlayerTokens(); 
 		}
 		return data;
 	}

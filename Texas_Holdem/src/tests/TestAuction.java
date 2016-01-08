@@ -120,8 +120,8 @@ public class TestAuction {
 		player3.Raise(100);
 		player4.Call(player3.getCurrentBet());
 		assertEquals(false, auction.checkIfBetsAreEqual(players));
-		player1.Call(player4.getCurrentBet());
-		player2.Call(player1.getCurrentBet());
+		player1.Call(player4.getCurrentBet()-player1.getCurrentBet());
+		player2.Call(player1.getCurrentBet()-player2.getCurrentBet());
 		assertEquals(true, auction.checkIfBetsAreEqual(players));
 	}
 	
@@ -135,6 +135,6 @@ public class TestAuction {
 		player4.setActionName("");
 		auction.setCurrentPlayer(player1);
 		String data = auction.createDataPackage(players);
-		assertEquals("data;A;1000;null;0;100;500;A;1000;B;1000;C;1000;D;1000",data);
+		assertEquals("data;A;1000;null;0;100;500;A;1000;B;1000;C;1000 (SB);D;1000 (BB)",data);
 	}
 }
