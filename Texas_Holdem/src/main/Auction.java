@@ -134,6 +134,7 @@ public class Auction{
 			data += ";" + "BB";
 		else 
 			data += ";" + PP_action;
+
 		data += ";" + movesCounter;
 		data += ";" + getCurrentBet();
 		data += ";" + getCurrentPot();
