@@ -365,7 +365,7 @@ public class AuctionGUI extends JFrame{
 					try {
 						throw new IncorrectInputException();
 					} catch (IncorrectInputException e1) {
-						// TODO Auto-generated catch block
+						// TODO Auto-generated catch bloc
 						e1.printStackTrace();
 					}
 				}

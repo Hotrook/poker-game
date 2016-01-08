@@ -25,7 +25,7 @@ public final class MoveRestrictions {
 		//options available for first player in his first move: CHECK, BET, FOLD, ALL IN
 		//option unavailable: RAISE, CALL
 		//if(auction.movesCounter == 0){
-		if(movesCounter == 0){	
+		if(movesCounter == 0 && PP_action == null){	
 			gui.raise.setEnabled(false);
 			gui.call.setEnabled(false);
 		}
@@ -35,6 +35,12 @@ public final class MoveRestrictions {
 		//if(previousPlayer.playerState == ActionTaken.CHECKING){
 		if(PP_action == ActionTaken.CHECKING){
 			gui.raise.setEnabled(false);
+			gui.call.setEnabled(false);
+		}
+		
+		if(PP_action == ActionTaken.BB){
+			MoveRestrictions.ResetRestrictions(gui);
+			gui.bet.setEnabled(false);
 			gui.call.setEnabled(false);
 		}
 		

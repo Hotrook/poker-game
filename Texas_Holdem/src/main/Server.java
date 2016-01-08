@@ -16,7 +16,7 @@ public class Server {
 	
 	//private static GameType gameType;
 	private static ServerSocket listener;
-	private static Input input ;
+	public static Input input ;
 	private static List<Player> players;
 	private final static int SOCKET_NUMBER = 8901;
 	public static List<PrintWriter> writers = new ArrayList<PrintWriter>();
@@ -135,13 +135,20 @@ public class Server {
 		
 		input.setInitialTokens(data);
 		
+		
+		System.out.println("Podaj wartosc duzej ciemnej: ");
+		data = in.nextInt();
+		
+		input.setBigBlindValue(data);
+		
+		
+		System.out.println("Podaj wartosc malej ciemnej: ");
+		data = in.nextInt();
+		
+		input.setSmallBlindValue(data);
+		
+		
 		in.close();
-		
-		
-		
-		
-		
-		
 	}
 
 }

@@ -91,6 +91,33 @@ public class Auction{
 		}
 	}
 	
+	
+	
+	public void placeBlindsOnTable(){
+		int bbvalue = Server.input.getBigBlindValue();
+		int sbvalue = Server.input.getSmallBlindValue();
+		
+		
+		//placing blinds on table
+		for(Player pl: playerQueue){
+			if(pl.isBigBlind() == true){
+				setCurrentPot(getCurrentPot() + bbvalue); 
+				setCurrentBet(bbvalue);
+				pl.setCurrentBet(bbvalue);
+				pl.setCurrentTotalBet(pl.getCurrentTotalBet() + bbvalue);
+				pl.playerState = ActionTaken.BETING;
+				pl.setPlayerTokens(pl.getPlayerTokens() - bbvalue);
+			}
+			if(pl.isSmallBlind() == true){
+				setCurrentPot(getCurrentPot() + sbvalue); 
+				pl.setCurrentBet(sbvalue);
+				pl.setCurrentTotalBet(pl.getCurrentTotalBet() + sbvalue);
+				//pl.playerState = ActionTaken.BETING;
+				pl.setPlayerTokens(pl.getPlayerTokens() - sbvalue);
+			}	
+		}	
+	}
+	
 	//modify this method when more data is needed on client side
 	//the data format is: x;y;z
 	// ';' as a default delimiter
@@ -101,14 +128,24 @@ public class Auction{
 		data = "data";
 		data += ";" + getCurrentPlayer().getPlayerName();
 		data += ";" + getCurrentPlayer().getPlayerTokens();
-		data += ";" + PP_action;
+		if(getCurrentPlayer().isBigBlind() == true && getRoundNumber() == 0 && getCurrentBet() > getCurrentPlayer().getCurrentBet())
+			data += ";" + "BETING";
+		else if(getCurrentPlayer().isBigBlind() == true && getRoundNumber() == 0 && getCurrentBet() <= getCurrentPlayer().getCurrentBet())
+			data += ";" + "BB";
+		else 
+			data += ";" + PP_action;
 		data += ";" + movesCounter;
 		data += ";" + getCurrentBet();
 		data += ";" + getCurrentPot();
 		
 		for(Player pl : players){
 			data += ";" + pl.getPlayerName();
-			data += ";" + pl.getPlayerTokens();
+			if(pl.isBigBlind())
+				data += ";" + pl.getPlayerTokens() + " (BB)";
+			else if(pl.isSmallBlind())
+				data += ";" + pl.getPlayerTokens() + " (SB)";
+			else
+				data +=  pl.getPlayerTokens(); 
 		}
 		return data;
 	}
@@ -120,13 +157,17 @@ public class Auction{
 	private ActionTaken PP_action = null;
 	
 	public void startAuction(int round){
+		setRoundNumber(round);
 		endOfAuction = false;
 		if(round!=0)
 			setPlayerQueue(playersInRound); //set player queue with players in round
 		else
 			setInitialPlayerQueue(playersInRound);
 
-			previousPlayer = playerQueue.get(0);
+			
+		if(round == 0)
+			placeBlindsOnTable();
+			
 			ListIterator<Player> it;// = playerQueue.listIterator();
 		while(endOfAuction!=true){ //while everyone makes his move and all player's bets are equal
 			it = playerQueue.listIterator();
@@ -137,6 +178,15 @@ public class Auction{
 				Player player = it.next();
 				currentPlayer = player;
 				
+				
+				//set previous player
+				if(currentPlayer.getPlayerIndex() == 0)
+					previousPlayer = playerQueue.get(playerQueue.size()-1);
+				else
+					previousPlayer = playerQueue.get(currentPlayer.getPlayerIndex() -1);
+				
+				PP_action = previousPlayer.playerState;
+				
 				//send data seen on table to each player in game 
 				sendDataToEachClient(playerQueue);
 				
@@ -146,8 +196,6 @@ public class Auction{
 				//activate current player
 				currentPlayer.setActive(createDataPackage(playerQueue));
 				
-				
-				//TODO: add big and small blind to the pot, etc 
 				
 				difference = getCurrentBet() - player.getCurrentBet();
 				
@@ -178,12 +226,12 @@ public class Auction{
 					setCurrentPot(getCurrentPot() + player.getCurrentBet()); 
 				}
 				if(player.playerState == ActionTaken.FOLDING){ 
-					//playersInRound.remove(player); //if player is folding, remove him from this round and queue
+					playersInRound.remove(player); //if player is folding, remove him from this round and queue
 					playerQueue.remove(player);
 				}
 				if(player.playerState == ActionTaken.ALLIN){ 
 					setCurrentPot(getCurrentPot() + player.getCurrentBet());
-					if(player.getCurrentTotalBet() > getCurrentPot())
+					if(player.getCurrentBet() > getCurrentBet())
 						setCurrentBet(player.getCurrentBet());
 					player.setPlayerTokens(0);
 					playerQueue.remove(player);
@@ -194,8 +242,7 @@ public class Auction{
 				//sendDataToEachClient(playerQueue);
 				currentPlayer.setBlocked();
 				movesCounter++;
-				PP_action = getCurrentPlayer().playerState;
-				getCurrentPlayer().playerState = null;
+				//getCurrentPlayer().playerState = null;
 				//previousPlayer = currentPlayer;
 				getCurrentPlayer().setActionName(null);
 
@@ -204,6 +251,10 @@ public class Auction{
 				System.out.println();
 				if(movesCounter >= playerQueue.size()  && checkIfBetsAreEqual(playerQueue) == true){	//if everyone took his turn and all player's bets are equal
 					endOfAuction=true;
+					break;
+				}
+				if(playerQueue.size() <= 1){
+					endOfAuction = true;
 					break;
 				}
 			}

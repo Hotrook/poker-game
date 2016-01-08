@@ -40,10 +40,17 @@ public class Game {
 			round();
 		}
 		
-		//TODO : implement what's goin'  on after determining winner
-	
+		endGame();
 	}
 	
+	
+	
+	private void endGame(){
+		for(Player player : auction.getPlayersInRound()){
+			Server.writers.get(player.getPlayerIndex()).println("end");
+		}
+		System.exit(0);
+	}
 	
 	
 	
@@ -57,8 +64,8 @@ public class Game {
 		
 		auction = new Auction(players);
 		
+		
 		for( int i = 0 ; i <= 3 ; ++i){
-			
 			auction.startAuction(i);
 			putCardsOnTheTable(i);
 			showCardsOnTableToEachPlayer(players);

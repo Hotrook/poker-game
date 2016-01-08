@@ -7,5 +7,6 @@ public enum ActionTaken {
 	ALLIN,
 	CHECKING,
 	FOLDING,
-	NONE;
+	NONE,
+	BB;
 }

@@ -108,6 +108,11 @@ public class Client {
 				if(separatedInput[0].equals("table cards")){
 					DisplayTableCards(separatedInput);
 				}
+				
+				if(separatedInput[0].equals("end")){
+					JOptionPane.showMessageDialog(gui, "Game has ended, becouse there were no player's left.");
+					System.exit(0);
+				}
 			}
 		}
 		catch(Exception ex){
@@ -138,13 +143,11 @@ public class Client {
 			i+=2;
 		}
 		
-		int counter = 0;
-		for(String part : data){
-			if(part.equals(playerName)){
-				gui.playerTokens.setText(data[counter+1]);	
+		for(int counter = 7; counter <= data.length; counter++){
+			if(data[counter].equals(playerName)){
+				gui.playerTokens.setText(data[counter+1].substring(0, data[counter+1].length()-4));	
 				break;
 			}
-			counter++;
 		}
 	}
 	
