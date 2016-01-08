@@ -36,6 +36,13 @@ public class Game {
 		players.get(0).setSmallBlind(true);
 		players.get(1).setBigBlind(true);
 		
+		for(Player player : players){
+			if(Server.input.getGameType().equals(GameType.FIXLIMIT))
+				Server.writers.get(player.getPlayerIndex()).println("game type;" + Server.input.getGameType().toString() + ";" + Server.input.getLimit());
+			else
+				Server.writers.get(player.getPlayerIndex()).println("game type;" + Server.input.getGameType());
+		}
+		
 		while( players.size() > 1 ){
 			round();
 		}

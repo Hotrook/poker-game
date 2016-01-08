@@ -18,7 +18,8 @@ public class Client {
 	private static String playerName;
 	private static BufferedReader in;
 	private static PrintWriter out;
-	
+	private static GameType gametype;
+	private static int limit;
 	
 	public static void main(String[] args) {
 		
@@ -113,6 +114,12 @@ public class Client {
 					JOptionPane.showMessageDialog(gui, "Game has ended, becouse there were no player's left.");
 					System.exit(0);
 				}
+				if(separatedInput[0].equals("game type")){
+					setGametype(GameType.valueOf(separatedInput[1]));
+					if(gametype.equals(GameType.FIXLIMIT))
+						limit = Integer.parseInt(separatedInput[2]);
+					System.out.println(separatedInput[1] + " " + gametype + separatedInput[2] + " " + Integer.parseInt(separatedInput[2]) + " " + limit);
+				}
 			}
 		}
 		catch(Exception ex){
@@ -129,12 +136,14 @@ public class Client {
 	
 	private static int currentBet = 0;
 	private static int playerTokens = 0;
+	private static int currentPot = 0;
 	
 	private static void DisplayData(String[] data){
 		gui.turn.setText("Ruch gracza: " + data[1]);
 		gui.txtStawka.setText(data[5]);
 		currentBet = Integer.parseInt(data[5]);
 		gui.txtPula.setText(data[6]);
+		currentPot = Integer.parseInt(data[6]);
 		//players start with index 7
 		//7-player1, 8-player1's tokens, 9-player2, ...
 		int i = 7;
@@ -255,10 +264,26 @@ public class Client {
 			checkMove = true;
 		else
 			checkMove = false;
+		
+		if(gametype.equals(GameType.FIXLIMIT) && gui2.getCurrentPlayerBet() > limit && gui2.actionName == "raise")
+			checkMove = true;
+		if(gametype.equals(GameType.POTLIMIT) && gui2.getCurrentPlayerBet() > currentPot && gui2.actionName == "raise")
+			checkMove = true;
 			
 		return checkMove;
 	}
 
+
+
+	public static GameType getGametype() {
+		return gametype;
+	}
+
+
+
+	public static void setGametype(GameType gametype) {
+		Client.gametype = gametype;
+	}
 
 
 }

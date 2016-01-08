@@ -8,6 +8,7 @@ public final class Input {
 	private int initialTokens;
 	//1 - no-limit, 2 - pot-limit, 3 - fixed-limit
 	private GameType gameType;
+	private int limit;
 	
 	public Input(){
 		
@@ -65,6 +66,14 @@ public final class Input {
 
 	public void setGameType(GameType gameType) {
 		this.gameType = gameType;
+	}
+
+	public int getLimit() {
+		return limit;
+	}
+
+	public void setLimit(int limit) {
+		this.limit = limit;
 	}
 	
 	

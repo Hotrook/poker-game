@@ -95,6 +95,9 @@ public class Server {
 		}
 		else if(data == 2){
 			input.setGameType(GameType.FIXLIMIT);
+			System.out.println("Podaj limit stawki");
+			data = in.nextInt();
+			input.setLimit(data);
 		}
 		else if(data == 3){
 			input.setGameType(GameType.POTLIMIT);
