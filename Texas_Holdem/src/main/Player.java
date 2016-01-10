@@ -18,6 +18,7 @@ public class Player{
 	private boolean isSmallBlind;
 	private boolean isBigBlind;
 	private boolean isDealerButton;
+	private boolean isBot;
 	private int currentTotalBet;
 	private int currentAuctionBet;
 	private int currentBet;
@@ -28,11 +29,12 @@ public class Player{
 	private double power;
 	public static BufferedReader in;
 	public static PrintWriter out;
-	
+
 	public Player(Socket socket, int tokens, int index, GameType gameType){
 		this.playerName=actionName;
 		this.playerIndex=index;
 		this.setPlayerTokens(tokens);
+		setBot(false);
 		setGameType(gameType);
 		setInGame(true);
 		setHand(null);
@@ -82,6 +84,10 @@ public class Player{
 		}
 		
 		Server.writers.get(getPlayerIndex()).println(handInfo);
+	}
+	
+	public void sendDataToEachClient(String dataPackage){
+		Server.writers.get(getPlayerIndex()).println(dataPackage);
 	}
 	
 	
@@ -289,8 +295,23 @@ public class Player{
 		Server.writers.get(getPlayerIndex()).println("set blocked");
 	}
 
-	public void setActive(String data) {
+	public void setActive(String data, int round) {
 		Server.writers.get(getPlayerIndex()).println("set active;" + data);
 		getMovement();
 	}
+
+	public boolean isBot() {
+		return isBot;
+	}
+
+	public void setBot(boolean isBot) {
+		this.isBot = isBot;
+	}
+
+	public void setTableCards(List<Card> tableCards) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+
 public class Auction{
 	private List<Player> playerQueue;
 	private List<Player> playersInRound;
@@ -78,15 +79,16 @@ public class Auction{
 	
 	//method used to send data from each player to his client
 	private void sendDataToEachClient(List<Player> players){
-		for(PrintWriter writer : Server.writers){
-			writer.println(createDataPackage(players));
+		for(Player player : players){ // TODO: modify to use bot
+			player.sendDataToEachClient(createDataPackage(players));
+		
 		}
 	}
 	
 	
 	private void sendHandInfoToEachClient(List<Player> players){
 		for(Player player : players){
-			player.sendHandInfoToClient();
+				player.sendHandInfoToClient();
 		}
 	}
 	
@@ -98,41 +100,23 @@ public class Auction{
 		
 		
 		//placing blinds on table
-		ListIterator<Player> it = playerQueue.listIterator();
-		Player pl = null;
-		while(it.hasNext()){
-			pl = it.next();
+		for(Player pl: playerQueue){
 			if(pl.isBigBlind() == true){
-				if(pl.getPlayerTokens() >= bbvalue){
-					setCurrentPot(getCurrentPot() + bbvalue); 
-					setCurrentBet(bbvalue);
-					pl.setCurrentBet(bbvalue);
-					pl.setCurrentTotalBet(pl.getCurrentTotalBet() + bbvalue);
-					pl.playerState = ActionTaken.BETING;
-					pl.setPlayerTokens(pl.getPlayerTokens() - bbvalue);
-				}
-				else
-					it.remove();
+				setCurrentPot(getCurrentPot() + bbvalue); 
+				setCurrentBet(bbvalue);
+				pl.setCurrentBet(bbvalue);
+				pl.setCurrentTotalBet(pl.getCurrentTotalBet() + bbvalue);
+				pl.playerState = ActionTaken.BETING;
+				pl.setPlayerTokens(pl.getPlayerTokens() - bbvalue);
 			}
 			if(pl.isSmallBlind() == true){
-				if(pl.getPlayerTokens() >= sbvalue){
-					setCurrentPot(getCurrentPot() + sbvalue); 
-					pl.setCurrentBet(sbvalue);
-					pl.setCurrentTotalBet(pl.getCurrentTotalBet() + sbvalue);
-					//pl.playerState = ActionTaken.BETING;
-					pl.setPlayerTokens(pl.getPlayerTokens() - sbvalue);
-				}
-				else
-					it.remove();
+				setCurrentPot(getCurrentPot() + sbvalue); 
+				pl.setCurrentBet(sbvalue);
+				pl.setCurrentTotalBet(pl.getCurrentTotalBet() + sbvalue);
+				//pl.playerState = ActionTaken.BETING;
+				pl.setPlayerTokens(pl.getPlayerTokens() - sbvalue);
 			}	
-		}
-		for(int i=0; i<playerQueue.size(); i++)
-			it.previous();
-		
-		playerQueue = new ArrayList<>();
-		while(it.hasNext()){
-			playerQueue.add(it.next());
-		}
+		}	
 	}
 	
 	//modify this method when more data is needed on client side
@@ -167,7 +151,10 @@ public class Auction{
 		}
 		return data;
 	}
-////ACTUAL METHOD FOR STARTING AUCTION////	
+	
+	
+	
+////ACTUAL METHOD FOR STARTING AUCTION/////////////////////////////////////////////////////////////
 	private boolean endOfAuction = false;
 	private Player currentPlayer = null;
 	private Player previousPlayer = null;
@@ -205,15 +192,10 @@ public class Auction{
 				
 				PP_action = previousPlayer.playerState;
 				
-				//send data seen on table to each player in game 
+
 				sendDataToEachClient(playerQueue);
-				
-				//send hand info to each player
 				sendHandInfoToEachClient(playerQueue);
-				
-				//activate current player
-				currentPlayer.setActive(createDataPackage(playerQueue));
-				
+				currentPlayer.setActive(createDataPackage(playerQueue),round);
 				
 				difference = getCurrentBet() - player.getCurrentBet();
 				
@@ -265,9 +247,7 @@ public class Auction{
 				//previousPlayer = currentPlayer;
 				getCurrentPlayer().setActionName(null);
 
-				for(Player pl : playerQueue)
-					System.out.print(pl.getCurrentBet() + " ");
-				System.out.println();
+				
 				if(movesCounter >= playerQueue.size()  && checkIfBetsAreEqual(playerQueue) == true){	//if everyone took his turn and all player's bets are equal
 					endOfAuction=true;
 					break;

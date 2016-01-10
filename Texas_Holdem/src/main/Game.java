@@ -116,7 +116,12 @@ public class Game {
 		}
 		
 		for(Player player : players){
-			Server.writers.get(player.getPlayerIndex()).println(cards);
+			if( player.isBot() == false){
+				Server.writers.get(player.getPlayerIndex()).println(cards);
+			}
+			else{
+				player.setTableCards(tableCards);
+			}
 		}
 	}
 	

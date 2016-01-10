@@ -2,10 +2,13 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.net.Socket;
+
 import org.junit.Test;
 
 import main.ActionTaken;
 import main.AuctionGUI;
+import main.GameType;
 import main.Player;
 
 public class TestPlayer{
@@ -13,6 +16,8 @@ public class TestPlayer{
 	@Test
 	public void test_PlayerConstructor(){
 		Player player = new Player("Adam", 1000, 0);
+		Player player1 = new Player(new Socket(), 123, 2, GameType.FIXLIMIT);
+		assertEquals(123,player1.getPlayerTokens());
 		assertEquals(player.getPlayerName(),"Adam");
 		assertEquals(player.getPlayerTokens(),1000);
 		assertEquals(player.getPlayerIndex(),0);
