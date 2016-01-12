@@ -54,14 +54,15 @@ public class Server {
 		System.out.println("Waiting for players...");
 		
 		while( counter < input.getNumberOfPlayers()){
-			Player player = new Player(listener.accept(), input.getInitialTokens(), counter, input.getGameType() );
+			Player player = new Player(listener.accept(), input.getInitialTokens(), counter, input.getGameType() ,false );
 	        player.setPlayerName(readers.get(player.getPlayerIndex()).readLine());
 			System.out.println("Connected player " + player.getPlayerName());
 			players.add(player);
 			counter++;
 		}
 		while( counter < input.getNumberOfPlayers() + input.getNumberOfBots()){
-			Player player = new Bot( null, input.getInitialTokens(), counter, input.getGameType() );
+			Bot player = new Bot( null, input.getInitialTokens(), counter, input.getGameType() , true);
+			System.out.println("Bots are connected");
 			players.add(player);
 			counter++;
 		}
@@ -108,7 +109,7 @@ public class Server {
 		
 		numOfPlayers = in.nextInt();
 		
-		while( numOfPlayers < 2  || numOfPlayers > 10){
+		while( numOfPlayers < 0  || numOfPlayers > 10){
 			System.out.println("Sprobuj jeszcze raz: ");
 			numOfPlayers = in.nextInt();
 		}

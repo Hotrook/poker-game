@@ -80,7 +80,11 @@ public class Auction{
 	//method used to send data from each player to his client
 	private void sendDataToEachClient(List<Player> players){
 		for(Player player : players){ // TODO: modify to use bot
-			player.sendDataToEachClient(createDataPackage(players));
+			if( player.isBot() == false )
+				player.sendDataToEachClient(createDataPackage(players));
+			else{
+				player.setCurrentBet(currentPlayer.getCurrentBet());
+			}
 		
 		}
 	}
@@ -185,10 +189,14 @@ public class Auction{
 				
 				
 				//set previous player
-				if(currentPlayer.getPlayerIndex() == 0)
+				// change couse it may couse some bugs when previous player was removed
+				if(playerQueue.indexOf(currentPlayer) == 0)
 					previousPlayer = playerQueue.get(playerQueue.size()-1);
-				else
-					previousPlayer = playerQueue.get(currentPlayer.getPlayerIndex() -1);
+				else{
+					int index = playerQueue.indexOf(currentPlayer);
+					
+					previousPlayer = playerQueue.get(index -1);
+				}
 				
 				PP_action = previousPlayer.playerState;
 				
@@ -199,13 +207,13 @@ public class Auction{
 				
 				difference = getCurrentBet() - player.getCurrentBet();
 				
-				switch(player.getActionName()){
-		        case "check": player.Check(); break;
-		        case "call": player.Call(difference); break;
-		        case "bet": player.Bet(player.getCurrentBet()); break; 
-		        case "raise": player.Raise(player.getCurrentBet() + getCurrentBet()); break;
-		        case "fold": player.Fold(); break;
-		        case "allin": player.AllIn(); break;
+				switch(currentPlayer.getActionName()){
+		        case "check": currentPlayer.Check(); break;
+		        case "call": currentPlayer.Call(difference); break;
+		        case "bet": currentPlayer.Bet(currentPlayer.getCurrentBet()); break; 
+		        case "raise": currentPlayer.Raise(currentPlayer.getCurrentBet() + getCurrentBet()); break;
+		        case "fold": currentPlayer.Fold(); break;
+		        case "allin": currentPlayer.AllIn(); break;
 		        default: break;
 		        }
 				//wykaszam getcurrenttotalbet >> getcurrentbet
@@ -239,12 +247,9 @@ public class Auction{
 				}
 				
 				
-				//moved to the beginning of auction
-				//sendDataToEachClient(playerQueue);
+
 				currentPlayer.setBlocked();
 				movesCounter++;
-				//getCurrentPlayer().playerState = null;
-				//previousPlayer = currentPlayer;
 				getCurrentPlayer().setActionName(null);
 
 				

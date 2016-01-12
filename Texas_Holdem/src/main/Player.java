@@ -9,32 +9,32 @@ import java.util.List;
 
 public class Player{
 
-	private String playerName;
-	private List<Card> hand;
-	private List<Card> winningHand;
-	private List<Card> drawCards;
-	private boolean isInGame;
-	private int playerTokens; //possibly List<Token>, where Token has it's value and amount
-	private boolean isSmallBlind;
-	private boolean isBigBlind;
-	private boolean isDealerButton;
-	private boolean isBot;
-	private int currentTotalBet;
-	private int currentAuctionBet;
-	private int currentBet;
-	private final int playerIndex;
-	private boolean stateChanged;
-	private String actionName;
-	private GameType gameType;
-	private double power;
+	protected String playerName;
+	protected List<Card> hand;
+	protected List<Card> winningHand;
+	protected List<Card> drawCards;
+	protected boolean isInGame;
+	protected int playerTokens; //possibly List<Token>, where Token has it's value and amount
+	protected boolean isSmallBlind;
+	protected boolean isBigBlind;
+	protected boolean isDealerButton;
+	protected boolean isBot;
+	protected int currentTotalBet;
+	protected int currentAuctionBet;
+	protected int currentBet;
+	protected final int playerIndex;
+	protected boolean stateChanged;
+	protected String actionName;
+	protected GameType gameType;
+	protected double power;
 	public static BufferedReader in;
 	public static PrintWriter out;
 
-	public Player(Socket socket, int tokens, int index, GameType gameType){
+	public Player(Socket socket, int tokens, int index, GameType gameType, boolean isBot){
 		this.playerName=actionName;
 		this.playerIndex=index;
 		this.setPlayerTokens(tokens);
-		setBot(false);
+		setBot(isBot);
 		setGameType(gameType);
 		setInGame(true);
 		setHand(null);
@@ -47,13 +47,15 @@ public class Player{
 		setDealerButton(false);
 		setStateChanged(false);
 		setActionName(null);
-        try {
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			out = new PrintWriter(socket.getOutputStream(),true);
-			Server.writers.add(out);
-			Server.readers.add(in);
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
+		if( isBot() == false ){
+	        try {
+				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				out = new PrintWriter(socket.getOutputStream(),true);
+				Server.writers.add(out);
+				Server.readers.add(in);
+			} catch (IOException e) {
+				System.out.println(e.getMessage());
+			}
 		}
 	}
 	
@@ -87,7 +89,7 @@ public class Player{
 	}
 	
 	public void sendDataToEachClient(String dataPackage){
-		Server.writers.get(getPlayerIndex()).println(dataPackage);
+
 	}
 	
 	
@@ -309,6 +311,11 @@ public class Player{
 	}
 
 	public void setTableCards(List<Card> tableCards) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void sendDataToEachClient() {
 		// TODO Auto-generated method stub
 		
 	}

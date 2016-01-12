@@ -16,7 +16,7 @@ public class TestPlayer{
 	@Test
 	public void test_PlayerConstructor(){
 		Player player = new Player("Adam", 1000, 0);
-		Player player1 = new Player(new Socket(), 123, 2, GameType.FIXLIMIT);
+		Player player1 = new Player(new Socket(), 123, 2, GameType.FIXLIMIT,false);
 		assertEquals(123,player1.getPlayerTokens());
 		assertEquals(player.getPlayerName(),"Adam");
 		assertEquals(player.getPlayerTokens(),1000);

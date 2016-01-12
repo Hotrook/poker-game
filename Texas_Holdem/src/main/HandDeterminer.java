@@ -15,7 +15,8 @@ public class HandDeterminer {
 		double power;
 		operatingList.clear();
 		operatingList.addAll(playerCards);
-		operatingList.addAll(tableCards);
+		if( tableCards != null )
+			operatingList.addAll(tableCards);
 		
 		
 		if( (power = HandDeterminer.StraightFlush(operatingList)) > 0){
