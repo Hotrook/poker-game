@@ -218,13 +218,13 @@ public class Game {
 		int helpingPot = 0;
 		double power = 0 ;
 		List<Player> helpingList = new ArrayList<Player>();
-		List<Card> cardst = tableCards;
 		for( int i = 0 ; i < players.size() ; ++i ){
 			wagers[i] = players.get(i).getCurrentTotalBet();
 		}
 		
 		while( auction.getCurrentPot() > 0 ){
 			int temp = auction.getCurrentPot();
+			
 			power = winnersList.get(0).getPower(); // naprawic to 
 			
 			helpingList = createHelpingList(power, winnersList);
