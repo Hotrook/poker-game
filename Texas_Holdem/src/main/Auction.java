@@ -74,7 +74,7 @@ public class Auction{
 		boolean temp = true;
 		int checkingBet = players.get(0).getCurrentBet();
 		for(int i=1; i<players.size(); i++){
-			if(players.get(i).getCurrentBet() != checkingBet){
+			if(players.get(i).getCurrentBet() != checkingBet && players.get(i).isInRound() == true){
 				temp = false;
 				break;
 			}
@@ -196,7 +196,8 @@ public class Auction{
 				Player player = it.next();
 				currentPlayer = player;
 				
-				
+				if( currentPlayer.isInGame() == false || player.isInRound() == false)
+					continue;
 				//set previous player
 				// change couse it may couse some bugs when previous player was removed
 				if(playerQueue.indexOf(currentPlayer) == 0)
@@ -243,9 +244,10 @@ public class Auction{
 					setCurrentPot(getCurrentPot() - player.getCurrentPlayerBet()+ player.getCurrentBet()); 
 				}
 				if(player.playerState == ActionTaken.FOLDING){ 
-					playersInRound.remove(player); //if player is folding, remove him from this round and queue
+					//playersInRound.remove(player); //if player is folding, remove him from this round and queue
 					//playerQueue.remove(player);
-					it.remove();
+					//it.remove();
+					player.setInRound(false);
 					player.setInGame(false); // for needs of game
 				}
 				if(player.playerState == ActionTaken.ALLIN){ 
@@ -254,7 +256,8 @@ public class Auction{
 						setCurrentBet(player.getCurrentBet());
 					player.setPlayerTokens(0);
 					//playerQueue.remove(player);
-					it.remove();
+					//it.remove();
+					player.setInRound(false);
 				}
 				
 				
