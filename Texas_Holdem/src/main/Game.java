@@ -90,13 +90,13 @@ public class Game {
 			}
 			else{
 				int counter = 0 ;
-				for( int j = 0 ; j < auction.getPlayersInRound().size(); ++j){
-					if( auction.getPlayersInRound().get(j).getActionName() != "allin" ){
+				for( int j = 0 ; j < players.size(); ++j){
+					if( players.get(j).isInRound() == true ){
 						counter++;
 					}
 				}
 				
-				if ( counter == 0 ){
+				if ( counter <= 1 ){
 					i = 4; // end of for 
 				}
 			}
