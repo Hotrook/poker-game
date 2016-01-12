@@ -245,7 +245,8 @@ public class Auction{
 				}
 				if(player.playerState == ActionTaken.FOLDING){ 
 					playersInRound.remove(player); //if player is folding, remove him from this round and queue
-					playerQueue.remove(player);
+					//playerQueue.remove(player);
+					it.remove();
 					player.setInGame(false); // for needs of game
 				}
 				if(player.playerState == ActionTaken.ALLIN){ 
@@ -253,7 +254,8 @@ public class Auction{
 					if(player.getCurrentBet() > getCurrentBet())
 						setCurrentBet(player.getCurrentBet());
 					player.setPlayerTokens(0);
-					playerQueue.remove(player);
+					//playerQueue.remove(player);
+					it.remove();
 				}
 				
 				
@@ -265,9 +267,9 @@ public class Auction{
 				//previousPlayer = currentPlayer;
 				getCurrentPlayer().setActionName(null);
 
-				for(Player pl : playerQueue)
-					System.out.print(pl.getCurrentBet() + " ");
-				System.out.println();
+				//for(Player pl : playerQueue)
+				//	System.out.print(pl.getCurrentBet() + " ");
+				//System.out.println();
 				if(movesCounter >= playerQueue.size()  && checkIfBetsAreEqual(playerQueue) == true){	//if everyone took his turn and all player's bets are equal
 					endOfAuction=true;
 					break;
@@ -277,6 +279,15 @@ public class Auction{
 					break;
 				}
 			}
+			
+			//rewrite iterator to playerQueue
+			while(it.hasPrevious())
+				it.previous();
+			
+			playerQueue = new ArrayList<>();
+			
+			while(it.hasNext())
+				playerQueue.add(it.next());
 		}
 		if(endOfAuction==true)
 			System.out.println("Koniec aukcji!");
