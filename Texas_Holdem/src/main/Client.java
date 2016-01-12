@@ -167,6 +167,8 @@ public class Client {
 				break;
 			}
 		}
+		if( data[1].equals(playerName))
+			gui.playerTokens.setText(data[2]);
 	}
 	
 	
@@ -248,8 +250,9 @@ public class Client {
 		}while(illegalMove(gui));
 		//send information about player's move
 		
-		if( gui.actionName == "bet" || gui.actionName == "raise")
+		if( gui.actionName == "bet" || gui.actionName == "raise"){
 			out.println(gui.actionName + ";" + gui.getCurrentPlayerBet());
+		}
 		else 
 			out.println(gui.actionName);
 		//reset player's move state

@@ -21,6 +21,12 @@ public class Auction{
 		setRoundNumber(0);
 		playerQueue = new ArrayList<Player>();
 		setPlayersInRound(playersInRound);
+		for( Player player : playersInRound ){
+			player.setCurrentPot(0);
+			player.setCurrentBet(0);
+			player.setCurrentPlayerBet(0);
+			player.setCurrentTotalBet(0);
+		}
 	}
 
 ////METHODS USED IN AUCTION////
@@ -84,6 +90,7 @@ public class Auction{
 				player.sendDataToEachClient(createDataPackage(players));
 			else{
 				player.setCurrentBet(currentPlayer.getCurrentBet());
+				player.setCurrentPot(getCurrentPot());
 			}
 		
 		}
@@ -106,6 +113,7 @@ public class Auction{
 		//placing blinds on table
 		for(Player pl: playerQueue){
 			if(pl.isBigBlind() == true){
+				pl.setCurrentPlayerBet(bbvalue);
 				setCurrentPot(getCurrentPot() + bbvalue); 
 				setCurrentBet(bbvalue);
 				pl.setCurrentBet(bbvalue);
@@ -114,6 +122,7 @@ public class Auction{
 				pl.setPlayerTokens(pl.getPlayerTokens() - bbvalue);
 			}
 			if(pl.isSmallBlind() == true){
+				pl.setCurrentPlayerBet(sbvalue);
 				setCurrentPot(getCurrentPot() + sbvalue); 
 				pl.setCurrentBet(sbvalue);
 				pl.setCurrentTotalBet(pl.getCurrentTotalBet() + sbvalue);
@@ -211,7 +220,7 @@ public class Auction{
 		        case "check": currentPlayer.Check(); break;
 		        case "call": currentPlayer.Call(difference); break;
 		        case "bet": currentPlayer.Bet(currentPlayer.getCurrentBet()); break; 
-		        case "raise": currentPlayer.Raise(currentPlayer.getCurrentBet() + getCurrentBet()); break;
+		        case "raise": currentPlayer.Raise(currentPlayer.getCurrentBet()); break;
 		        case "fold": currentPlayer.Fold(); break;
 		        case "allin": currentPlayer.AllIn(); break;
 		        default: break;
@@ -231,7 +240,7 @@ public class Auction{
 				if(player.playerState == ActionTaken.RISING){ 
 					//setRaiseValue(player.getCurrentBet());
 					setCurrentBet(player.getCurrentBet());
-					setCurrentPot(getCurrentPot() + player.getCurrentBet()); 
+					setCurrentPot(getCurrentPot() - player.getCurrentPlayerBet()+ player.getCurrentBet()); 
 				}
 				if(player.playerState == ActionTaken.FOLDING){ 
 					playersInRound.remove(player); //if player is folding, remove him from this round and queue
@@ -258,7 +267,7 @@ public class Auction{
 				//for(Player pl : playerQueue)
 				//	System.out.print(pl.getCurrentBet() + " ");
 				//System.out.println();
-
+				sendDataToEachClient(playerQueue);
 				if(movesCounter >= playerQueue.size()  && checkIfBetsAreEqual(playerQueue) == true){	//if everyone took his turn and all player's bets are equal
 					endOfAuction=true;
 					break;

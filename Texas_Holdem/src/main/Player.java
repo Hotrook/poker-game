@@ -22,10 +22,13 @@ public class Player{
 	protected int currentTotalBet;
 	protected int currentAuctionBet;
 	protected int currentBet;
+	protected int currentPlayerBet;
+	protected int currentPot;
 	protected final int playerIndex;
 	protected boolean stateChanged;
 	protected String actionName;
 	protected GameType gameType;
+	protected int limit ;
 	protected double power;
 	public static BufferedReader in;
 	public static PrintWriter out;
@@ -89,7 +92,8 @@ public class Player{
 	}
 	
 	public void sendDataToEachClient(String dataPackage){
-
+		System.out.println(getPlayerName() + " " + dataPackage);
+		Server.writers.get(getPlayerIndex()).println(dataPackage);
 	}
 	
 	
@@ -100,9 +104,11 @@ public class Player{
 				action = Server.readers.get(playerIndex).readLine().split(";");
 				if(action!=null){
 					setActionName(action[0]);
+					System.out.print(getPlayerName() + " " +  action[0]);
 					
 					if(action.length > 1){
 						setCurrentBet(Integer.parseInt(action[1]));
+						System.out.println(" " + action[1]);
 					}
 					break;
 				}
@@ -134,10 +140,11 @@ public class Player{
 		playerState = ActionTaken.CALLING;
 	}
 
-	public void Raise(int auctionBetvalue){
-		setPlayerTokens(getPlayerTokens() - auctionBetvalue);
-		setCurrentTotalBet(getCurrentTotalBet() + auctionBetvalue);
-		setCurrentBet(auctionBetvalue);
+	public void Raise(int auctionBetValue){
+		setPlayerTokens(getPlayerTokens() - (auctionBetValue - getCurrentPlayerBet()));
+		setCurrentTotalBet(getCurrentTotalBet() + (auctionBetValue - getCurrentPlayerBet()));
+		setCurrentBet(auctionBetValue);
+		//setCurrentPlayerBet(auctionBetValue);
 		playerState = ActionTaken.RISING;
 	}
 
@@ -294,10 +301,13 @@ public class Player{
 	}
 
 	public void setBlocked() {
+		setCurrentPlayerBet(getCurrentBet());
 		Server.writers.get(getPlayerIndex()).println("set blocked");
 	}
 
 	public void setActive(String data, int round) {
+		if( (isBigBlind() == false && isSmallBlind() == false) || round > 0 )
+			setCurrentPlayerBet(0);
 		Server.writers.get(getPlayerIndex()).println("set active;" + data);
 		getMovement();
 	}
@@ -310,15 +320,31 @@ public class Player{
 		this.isBot = isBot;
 	}
 
-	public void setTableCards(List<Card> tableCards) {
-		// TODO Auto-generated method stub
-		
+	public void setTableCards(List<Card> tableCards) {}
+	
+	public void setLimit(int limit ){
+		this.limit = limit;
+	}
+	
+	public int getLimit(){
+		return limit;
 	}
 
-	public void sendDataToEachClient() {
-		// TODO Auto-generated method stub
-		
+	public void setCurrentPot(int currentPot2) {
+		this.currentPot = currentPot2;
 	}
-
+	
+	public int getCurrentPot(){
+		return currentPot;
+	}
+	
+	public void setCurrentPlayerBet(int value){
+		this.currentPlayerBet = value;
+	}
+	
+	public int getCurrentPlayerBet(){
+		return currentPlayerBet;
+	}
+	
 	
 }

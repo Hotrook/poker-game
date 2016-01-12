@@ -44,6 +44,12 @@ public class Game {
 				else
 					Server.writers.get(player.getPlayerIndex()).println("game type;" + Server.input.getGameType());
 			}
+			else{
+				player.setGameType(Server.input.getGameType());
+				if(Server.input.getGameType().equals(GameType.FIXLIMIT)){
+					player.setLimit(Server.input.getLimit());
+				}
+			}
 		}
 		
 		while( players.size() > 1 ){
@@ -218,7 +224,7 @@ public class Game {
 		}
 		
 		while( auction.getCurrentPot() > 0 ){
-			power = winnersList.get(0).getPower();
+			power = winnersList.get(0).getPower(); // naprawic to 
 			
 			helpingList = createHelpingList(power, winnersList);
 			
@@ -244,7 +250,9 @@ public class Game {
 				auction.setCurrentPot((auction.getCurrentPot()-helpingPot));
 				
 				for( Player player : helpingList){
+					System.out.println("gracz " + player.getPlayerName() + "dostal " + helpingPot/helpingList.size());
 					player.setPlayerTokens(player.getPlayerTokens()+helpingPot/helpingList.size());
+					
 				}
 				
 				while( helpingList.get(0).getCurrentTotalBet() == higherRate ){
