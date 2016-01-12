@@ -218,12 +218,13 @@ public class Game {
 		int helpingPot = 0;
 		double power = 0 ;
 		List<Player> helpingList = new ArrayList<Player>();
-		
+		List<Card> cardst = tableCards;
 		for( int i = 0 ; i < players.size() ; ++i ){
 			wagers[i] = players.get(i).getCurrentTotalBet();
 		}
 		
 		while( auction.getCurrentPot() > 0 ){
+			int temp = auction.getCurrentPot();
 			power = winnersList.get(0).getPower(); // naprawic to 
 			
 			helpingList = createHelpingList(power, winnersList);
@@ -311,14 +312,18 @@ public class Game {
 
 
 	public void putCardsOnTheTable(int i) throws InvalidNumberOfRankException, 
-												  InvalidNumberOfSuitException{
-		if( i == 0 ){
-			tableCards.addAll( Deck.getInstance().giveCards( 3 ));
+										  InvalidNumberOfSuitException{
+		if( i == 3){
+			//ignore, this is the last round of auction, where all cards are already on table
 		}
 		else{
-			tableCards.addAll( Deck.getInstance().giveCards( 1 ));
+			if( i == 0 ){
+				tableCards.addAll( Deck.getInstance().giveCards( 3 ));
+			}
+			else{
+				tableCards.addAll( Deck.getInstance().giveCards( 1 ));
+			}
 		}
-		
 	}
 
 	
