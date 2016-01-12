@@ -19,6 +19,7 @@ public class Player{
 	protected boolean isBigBlind;
 	protected boolean isDealerButton;
 	protected boolean isBot;
+	protected boolean inRound;
 	protected int currentTotalBet;
 	protected int currentAuctionBet;
 	protected int currentBet;
@@ -344,6 +345,14 @@ public class Player{
 	
 	public int getCurrentPlayerBet(){
 		return currentPlayerBet;
+	}
+	
+	public void setInRound(boolean x){
+		this.inRound = x;
+	}
+	
+	public boolean isInRound(){
+		return inRound;
 	}
 	
 	

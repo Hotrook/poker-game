@@ -205,6 +205,7 @@ public class Game {
 	public void makePlayersInGame() {
 		for( Player player : players){
 			player.setInGame(true);
+			player.setInRound(true);
 		}
 	}
 
@@ -224,6 +225,7 @@ public class Game {
 		}
 		
 		while( auction.getCurrentPot() > 0 ){
+			System.out.println("LALAL    " + auction.getCurrentPot());
 			power = winnersList.get(0).getPower(); // naprawic to 
 			
 			helpingList = createHelpingList(power, winnersList);
@@ -237,6 +239,7 @@ public class Game {
 				
 				
 				for( int i = 0 ; i < players.size() ; ++i ){
+					System.out.println("playery " +  players.get(i).getPlayerName());
 					if( wagers[ i ] > lowerRate ){ 
 						if( wagers[ i ] > higherRate ){
 							helpingPot += (higherRate - lowerRate );
