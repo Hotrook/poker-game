@@ -14,6 +14,7 @@ public class Bot extends Player {
 	public Bot( Socket socket ,int initialTokensy, int index, GameType gameType, boolean isBot) {
 		super(socket, initialTokensy, index, gameType, isBot);
 		generator = new Random();
+		setPlayerName("BOT");
 	}
 	
 	
