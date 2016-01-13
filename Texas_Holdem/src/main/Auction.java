@@ -192,6 +192,7 @@ public class Auction{
 			//for(Player player : playerQueue){
 				
 				
+				
 				Player player = it.next();
 				currentPlayer = player;
 				
