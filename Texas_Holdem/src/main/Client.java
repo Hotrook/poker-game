@@ -152,9 +152,9 @@ public class Client {
 		int i = 7;
 		for(JTextArea plInfo : gui.players){
 			if(i<=data.length-1)
-			plInfo.setText(data[i] + '\n' + data[i+1]);
+				plInfo.setText(data[i] + '\n' + data[i+1]);
 			else
-			plInfo.setText("EMPTY CHAIR");
+				plInfo.setText("EMPTY CHAIR");
 			i+=2;
 		}
 		
