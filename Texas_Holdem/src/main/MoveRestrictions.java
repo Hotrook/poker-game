@@ -69,13 +69,21 @@ public final class MoveRestrictions {
 		//options available after FOLD of previous player: 
 		//option unavailable: CHECK, BET, CALL, FOLD, ALL IN, RAISE
 		if(PP_action == ActionTaken.FOLDING){
-			MoveRestrictions.RestrictAll(gui);
+			if(currentBet!=0){
+				gui.check.setEnabled(false);
+				gui.bet.setEnabled(false);
+			}
+			else{
+				gui.call.setEnabled(false);
+				gui.raise.setEnabled(false);
+			}
 		}
 		
 		//options available after ALLIN of previous player: 
 		//option unavailable: CHECK, BET, CALL, FOLD, ALL IN, RAISE
 		if(PP_action == ActionTaken.ALLIN){
-			MoveRestrictions.RestrictAll(gui);
+			gui.check.setEnabled(false);
+			gui.bet.setEnabled(false);
 		}
 		
 		
