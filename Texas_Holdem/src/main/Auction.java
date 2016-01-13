@@ -182,6 +182,7 @@ public class Auction{
 			setInitialPlayerQueue(playersInRound);
 
 			
+		
 		if(round == 0)
 			placeBlindsOnTable();
 			
