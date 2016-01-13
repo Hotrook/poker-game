@@ -182,10 +182,11 @@ public class Auction{
 			setInitialPlayerQueue(playersInRound);
 
 			
-		
+		 
 		if(round == 0)
 			placeBlindsOnTable();
-			
+			 
+		
 			ListIterator<Player> it;// = playerQueue.listIterator();
 		while(endOfAuction!=true){ //while everyone makes his move and all player's bets are equal
 			it = playerQueue.listIterator();
