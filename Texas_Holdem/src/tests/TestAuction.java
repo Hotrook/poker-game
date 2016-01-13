@@ -12,7 +12,9 @@ import org.mockito.Mockito;
 
 import main.Auction;
 import main.AuctionGUI;
+import main.Input;
 import main.Player;
+import main.Server;
 
 public class TestAuction {
 	private List<Player> players;
@@ -48,6 +50,12 @@ public class TestAuction {
 		players.add(player2);
 		players.add(player3);
 		players.add(player4);
+		
+		player3.setInGame(true);
+		player1.setInRound(true);
+		player2.setInRound(true);
+		player3.setInRound(true);
+		player4.setInRound(true);
 	}
 	
 	
@@ -137,4 +145,24 @@ public class TestAuction {
 		String data = auction.createDataPackage(players);
 		assertEquals("data;A;1000;null;0;100;500;A;1000;B;1000;C;1000 (SB);D;1000 (BB)",data);
 	}
+
+	@Test
+	public void testPlaceBlindsOnTheTable(){
+		//Server server = new Server();
+		Server.input = new Input();
+		Server.input.setNumberOfBots(0);
+		Server.input.setNumberOfPlayers(4);
+		Server.input.setBigBlindValue(50);
+		Server.input.setSmallBlindValue(10);
+		
+		Auction auction = new Auction(players);
+		
+		auction.setPlayerQueue(auction.getPlayersInRound());
+		auction.placeBlindsOnTable();
+		
+		assertEquals( 10,player3.getCurrentBet());
+		assertEquals( 50, player4.getCurrentBet());
+	}
+	
+	
 }

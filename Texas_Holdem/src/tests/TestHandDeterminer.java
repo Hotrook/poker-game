@@ -49,6 +49,7 @@ public class TestHandDeterminer {
 		DummyPlayerCards.add(card7);
 		
 		player = new Player("Siemanko",123,123);
+		player.setTableCards(DummyCards);
 	}
 	
 	
