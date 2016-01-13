@@ -110,8 +110,12 @@ public class Client {
 					DisplayTableCards(separatedInput);
 				}
 				
-				if(separatedInput[0].equals("end")){
-					JOptionPane.showMessageDialog(gui, "Game has ended, becouse there were no player's left.");
+				if(separatedInput[0].equals("win")){
+					JOptionPane.showMessageDialog(gui, "Game has ended, becouse there were no players left. You win!");
+					System.exit(0);
+				}
+				if(separatedInput[0].equals("lose")){
+					JOptionPane.showMessageDialog(gui, "You lose, because you have no tokens left!");
 					System.exit(0);
 				}
 				if(separatedInput[0].equals("game type")){

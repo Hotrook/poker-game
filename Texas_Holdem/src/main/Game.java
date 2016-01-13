@@ -63,7 +63,7 @@ public class Game {
 	
 	private void endGame(){
 		for(Player player : auction.getPlayersInRound()){
-			Server.writers.get(player.getPlayerIndex()).println("end");
+			Server.writers.get(player.getPlayerIndex()).println("win");
 		}
 		System.exit(0);
 	}
@@ -353,6 +353,9 @@ public class Game {
 		}
 		for( Player player : toRemove){
 			players.remove(player);
+			
+			//inform loser about his lose
+			Server.writers.get(player.getPlayerIndex()).println("lose");
 		}
 	}
 	
