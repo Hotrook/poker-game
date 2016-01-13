@@ -152,7 +152,7 @@ public class Auction{
 		data += ";" + getCurrentBet();
 		data += ";" + getCurrentPot();
 		
-		for(Player pl : players){
+		for(Player pl : playersInRound){
 			data += ";" + pl.getPlayerName();
 			if(pl.isBigBlind())
 				data += ";" + pl.getPlayerTokens() + " (BB)";
@@ -209,7 +209,6 @@ public class Auction{
 				
 				PP_action = previousPlayer.playerState;
 				
-
 				sendDataToEachClient(playerQueue);
 				sendHandInfoToEachClient(playerQueue);
 				currentPlayer.setActive(createDataPackage(playerQueue),round);
