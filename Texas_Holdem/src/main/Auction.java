@@ -178,9 +178,13 @@ public class Auction{
 		endOfAuction = false;
 		if(round!=0)
 			setPlayerQueue(playersInRound); //set player queue with players in round
-		else
+		else{
 			setInitialPlayerQueue(playersInRound);
-
+			for (Player plallin : playerQueue){
+				plallin.actionName = null;
+				plallin.setActionName(null);
+			}
+		}
 			
 		 
 		if(round == 0)
@@ -214,7 +218,9 @@ public class Auction{
 				
 				sendDataToEachClient(playerQueue);
 				sendHandInfoToEachClient(playerQueue);
-				currentPlayer.setActive(createDataPackage(playerQueue),round);
+				
+				if(currentPlayer.playerState != ActionTaken.ALLIN)
+					currentPlayer.setActive(createDataPackage(playerQueue),round);
 				
 				difference = getCurrentBet() - player.getCurrentBet();
 				try{
@@ -265,15 +271,17 @@ public class Auction{
 						setCurrentBet(player.getCurrentBet());
 					player.setPlayerTokens(0);
 					//playerQueue.remove(player);
-					it.remove();
-					//player.setInRound(false);
+					//it.remove();
+					player.setInRound(false);
 				}
 				
 				
 
 				currentPlayer.setBlocked();
 				movesCounter++;
-				getCurrentPlayer().setActionName(null);
+				
+				if(currentPlayer.playerState != ActionTaken.ALLIN)
+					getCurrentPlayer().setActionName(null);
 
 
 				//for(Player pl : playerQueue)
@@ -309,7 +317,9 @@ public class Auction{
 		setCurrentBet(0);
 		//*player state and his bet for each player left in round
 		for(Player player : playerQueue){
-			player.playerState = null;
+			if(player.playerState!=ActionTaken.ALLIN)
+				player.playerState = null;
+			
 			player.setCurrentBet(0);
 		}
 		//*player queue 
