@@ -14,18 +14,18 @@ public final class MoveRestrictions {
 		//check player's tokens in order to specify options available
 		//in case of bet > player tokens, player can only do AllIn action
 		//if(auction.getCurrentPlayer().getPlayerTokens() < auction.getCurrentBet()){
-		//if(playerTokens < currentBet){
-		//	gui.bet.setEnabled(false);
-		//	gui.check.setEnabled(false);
-		//	gui.call.setEnabled(false);
-		//	gui.raise.setEnabled(false);
+		if(playerTokens < currentBet){
+			gui.bet.setEnabled(false);
+			gui.check.setEnabled(false);
+			gui.call.setEnabled(false);
+			gui.raise.setEnabled(false);
 		//	gui.fold.setEnabled(false);
-		//}
+		}
 		
 		//options available for first player in his first move: CHECK, BET, FOLD, ALL IN
 		//option unavailable: RAISE, CALL
 		//if(auction.movesCounter == 0){
-		if(movesCounter == 0 && PP_action == null){	
+		if(movesCounter == 0 && PP_action == ActionTaken.NONE){	
 			gui.raise.setEnabled(false);
 			gui.call.setEnabled(false);
 		}
