@@ -17,6 +17,11 @@ public class TestPlayer{
 	public void test_PlayerConstructor(){
 		Player player = new Player("Adam", 1000, 0);
 		Player player1 = new Player(new Socket(), 123, 2, GameType.FIXLIMIT,false);
+		player1.setLimit(10);
+		assertEquals(GameType.FIXLIMIT,player1.getGameType());
+		assertEquals(false,player1.isStateChanged());
+		assertEquals(0,player1.getCurrentPot());
+		assertEquals(10,player1.getLimit());
 		assertEquals(123,player1.getPlayerTokens());
 		assertEquals(player.getPlayerName(),"Adam");
 		assertEquals(player.getPlayerTokens(),1000);
@@ -69,6 +74,7 @@ public class TestPlayer{
 		assertEquals(player.getCurrentTotalBet(),1000);
 		assertEquals(player.playerState,ActionTaken.ALLIN);		
 	}
+	
 	
 	
 	
