@@ -214,16 +214,24 @@ public class Auction{
 				currentPlayer.setActive(createDataPackage(playerQueue),round);
 				
 				difference = getCurrentBet() - player.getCurrentBet();
-				
-				switch(currentPlayer.getActionName()){
-		        case "check": currentPlayer.Check(); break;
-		        case "call": currentPlayer.Call(difference); break;
-		        case "bet": currentPlayer.Bet(currentPlayer.getCurrentBet()); break; 
-		        case "raise": currentPlayer.Raise(currentPlayer.getCurrentBet()); break;
-		        case "fold": currentPlayer.Fold(); break;
-		        case "allin": currentPlayer.AllIn(); break;
-		        default: break;
-		        }
+				try{
+					switch(currentPlayer.getActionName()){
+					case "check": currentPlayer.Check(); break;
+					case "call": currentPlayer.Call(difference); break;
+					case "bet": currentPlayer.Bet(currentPlayer.getCurrentBet()); break; 
+					case "raise": currentPlayer.Raise(currentPlayer.getCurrentBet()); break;
+					case "fold": currentPlayer.Fold(); break;
+					case "allin": currentPlayer.AllIn(); break;
+					default: break;
+					}
+				}
+				catch (NullPointerException e){
+					currentPlayer.setBlocked();
+					currentPlayer.setActionName("fold");
+					currentPlayer.playerState = ActionTaken.FOLDING;
+					currentPlayer.setPlayerTokens(0);
+					currentPlayer.setPlayerName("Player left!");
+				}
 				//wykaszam getcurrenttotalbet >> getcurrentbet
 				
 				if(player.playerState == ActionTaken.CHECKING){ 
@@ -244,7 +252,7 @@ public class Auction{
 				if(player.playerState == ActionTaken.FOLDING){ 
 					//playersInRound.remove(player); //if player is folding, remove him from this round and queue
 					//playerQueue.remove(player);
-					//it.remove();
+					it.remove();
 					player.setInRound(false);
 					player.setInGame(false); // for needs of game
 				}
@@ -254,8 +262,8 @@ public class Auction{
 						setCurrentBet(player.getCurrentBet());
 					player.setPlayerTokens(0);
 					//playerQueue.remove(player);
-					//it.remove();
-					player.setInRound(false);
+					it.remove();
+					//player.setInRound(false);
 				}
 				
 				
@@ -287,6 +295,7 @@ public class Auction{
 			
 			while(it.hasNext())
 				playerQueue.add(it.next());
+			
 		}
 		if(endOfAuction==true)
 			System.out.println("Koniec aukcji!");

@@ -270,7 +270,7 @@ public class Client {
 	private static boolean illegalMove(AuctionGUI gui2) {
 		boolean checkMove = true;
 		
-		if(gui2.actionName == "bet" && (gui2.getCurrentPlayerBet() > playerTokens || gui2.getCurrentPlayerBet() < 0) )
+		if(gui2.actionName == "bet" && (gui2.getCurrentPlayerBet() >= playerTokens || gui2.getCurrentPlayerBet() < 0) )
 			checkMove = true;
 		else if(gui2.actionName == "raise" && (gui2.getCurrentPlayerBet() >= (playerTokens + currentBet) || gui2.getCurrentPlayerBet() < 0) )
 			checkMove = true;
