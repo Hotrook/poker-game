@@ -18,6 +18,7 @@ import exceptions.InvalidNumberOfSuitException;
 public class Game {
 	
 	private List<Player> players;
+	private List<Player> losers;
 	private List<Card> tableCards = new ArrayList<Card>();
 	public Auction auction;
 	
@@ -26,6 +27,7 @@ public class Game {
 					     InvalidNumberOfSuitException{
 		this.players = new ArrayList<Player>();
 		this.players.addAll(players);
+		this.losers = new ArrayList<Player>();
 	}
 	
 	
@@ -105,9 +107,8 @@ public class Game {
 		 winnersList = createSortedWinnersList();
 		 giveGainToWinners(winnersList);
 		 changeSmallBlind();
-		 removeLosers(); 
-		 tableCards.clear();
-		 Deck.getInstance().initializeCards();
+		 removeLosers();
+		 informLosers();
 		 
 		 //clear the table
 		 clearTableViewForEachPlayer(players);
@@ -323,6 +324,8 @@ public class Game {
 		}
 		else{
 			if( i == 0 ){
+				Deck.getInstance().initializeCards();
+				tableCards.clear();
 				tableCards.addAll( Deck.getInstance().giveCards( 3 ));
 			}
 			else{
@@ -352,13 +355,17 @@ public class Game {
 			}
 		}
 		for( Player player : toRemove){
+			losers.add(player);
 			players.remove(player);
-			
-			//inform loser about his lose
-			Server.writers.get(player.getPlayerIndex()).println("lose");
 		}
 	}
 	
+	public void informLosers(){
+		for( Player loser : losers){
+			Server.writers.get(loser.getPlayerIndex()).println("lose");
+		}
+		losers.clear();
+	}
 	
 	
 

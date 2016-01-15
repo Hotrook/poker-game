@@ -21,7 +21,7 @@ public class Bot extends Player {
 	public void getMovement(int round){
 		if( round == 0 ){
 			if ( HandDeterminer.determineHand(getHand(), null, this) > 255 ||
-				 sumHand() > 23 || generator.nextInt()%6 == 0){
+				 sumHand() > 23 || generator.nextInt()%12 == 0){
 				
 				if( HandDeterminer.determineHand(getHand(), null, this) > 255){
 					coef = (HandDeterminer.determineHand(getHand(), null, this) - 255) / 12;
@@ -47,7 +47,10 @@ public class Bot extends Player {
 			if( HandDeterminer.determineHand(getHand(),getTableCards(),this) > 255 ||
 				generator.nextInt()%9 == 0 ){
 				if( HandDeterminer.determineHand(getHand(), null, this) > 255){
-					coef = (HandDeterminer.determineHand(getHand(), null, this) - 255) / 12;
+					int base = 0;
+					coef = (HandDeterminer.determineHand(getHand(), null, this) - 255);
+					base = (int) ((( coef / 255)+1 )* 255);
+					coef = coef/base;
 				}
 				else{
 					coef = (generator.nextInt()%100)/100;
@@ -63,7 +66,18 @@ public class Bot extends Player {
 		else if( round == 2){
 			if(HandDeterminer.determineHand(getHand(), getTableCards(), this) > 262 ||
 			   generator.nextInt()%6 == 0){
-				setActionName("call");
+			   if( HandDeterminer.determineHand(getHand(), getTableCards(), this) > 262){
+				   int base = 0;
+					coef = (HandDeterminer.determineHand(getHand(), null, this) - 262);
+					base = (int) ((( coef / 255)+1 )* 255);
+					coef = coef/base;
+			   }
+			   else{
+				   coef = (generator.nextInt()%100)/100;
+			   }
+			   bet = (int) (coef*0.2*getPlayerTokens());
+			   
+			   bet = controlBet(bet);
 			}
 			else
 				setActionName("fold");
@@ -72,7 +86,18 @@ public class Bot extends Player {
 		else if( round == 3){
 			if(HandDeterminer.determineHand(getHand(),getTableCards(),this) > 400 ||
 			   generator.nextInt()%3 == 0){
-				setActionName("call"); 
+				if( HandDeterminer.determineHand(getHand(), getTableCards(), this) > 400){
+						int base;
+					    coef = (HandDeterminer.determineHand(getHand(), null, this) - 265);
+						base = (int) ((( coef / 255)+1 )* 255);
+						coef = coef/base;
+				   }
+				   else{
+					   coef = (generator.nextInt()%100)/100;
+				   }
+				   bet = (int) (coef*0.2*getPlayerTokens());
+				   
+				   bet = controlBet(bet);
 			}
 			else
 				setActionName("fold");
@@ -122,7 +147,9 @@ public class Bot extends Player {
 	}
 	
 	@Override
-	public void setBlocked(){}
+	public void setBlocked(){
+		setCurrentPlayerBet(getCurrentBet());
+	}
 	
 	public void showCards(List <Card> cards){
 		setTableCards(cards);
