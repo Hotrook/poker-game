@@ -14,7 +14,7 @@ import main.Player;
 public class TestPlayer{
 	
 	@Test
-	public void test_PlayerConstructor(){
+	public void testPlayerConstructor(){
 		Player player = new Player("Adam", 1000, 0);
 		Player player1 = new Player(new Socket(), 123, 2, GameType.FIXLIMIT,false);
 		player1.setLimit(10);
@@ -33,43 +33,43 @@ public class TestPlayer{
 	}
 	
 	@Test
-	public void test_Check(){
+	public void testCheck(){
 		Player player = new Player("Adam",1000,0);
-		player.Check();
+		player.check();
 		assertEquals(player.playerState,ActionTaken.CHECKING);
 	}
 	
 	@Test
-	public void test_Bet(){
+	public void testBet(){
 		Player player = new Player("Adam", 1000, 0);
-		player.Bet(400);
+		player.bet(400);
 		assertEquals(player.getPlayerTokens(),600);
 		assertEquals(player.getCurrentTotalBet(),400);
 		assertEquals(player.playerState,ActionTaken.BETING);
 	}
 	
 	@Test
-	public void test_Raise(){
+	public void testRaise(){
 		Player player = new Player("Adam", 1000, 0);
 		Player player2 = new Player("Tomek", 1000, 1);
-		player.Bet(300);
-		player2.Raise(400);
+		player.bet(300);
+		player2.raise(400);
 		assertEquals(player2.getPlayerTokens(),600);
 		assertEquals(player2.getCurrentTotalBet(),400);
 		assertEquals(player2.playerState,ActionTaken.RISING);
 	}
 	
 	@Test
-	public void test_Fold(){
+	public void testFold(){
 		Player player = new Player("Adam", 1000, 0);
-		player.Fold();
+		player.fold();
 		assertEquals(player.playerState,ActionTaken.FOLDING);
 	}
 	
 	@Test
-	public void test_AllIn(){
+	public void testAllIn(){
 		Player player = new Player("Adam", 1000, 0);
-		player.AllIn();
+		player.allIn();
 		assertEquals(player.getPlayerTokens(),0);
 		assertEquals(player.getCurrentTotalBet(),1000);
 		assertEquals(player.playerState,ActionTaken.ALLIN);		

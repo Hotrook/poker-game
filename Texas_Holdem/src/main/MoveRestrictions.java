@@ -8,7 +8,7 @@ public final class MoveRestrictions {
 	
 	//public static void Restrict(Auction auction){
 	//PP - Previous Player
-	public static void Restrict(AuctionGUI gui, int playerTokens, int currentBet , ActionTaken PP_action, int movesCounter){
+	public static void restrict(AuctionGUI gui, int playerTokens, int currentBet , ActionTaken ppaction, int movesCounter){
 		//Player previousPlayer = auction.getPreviousPlayer();
 		
 		//check player's tokens in order to specify options available
@@ -25,7 +25,7 @@ public final class MoveRestrictions {
 		//options available for first player in his first move: CHECK, BET, FOLD, ALL IN
 		//option unavailable: RAISE, CALL
 		//if(auction.movesCounter == 0){
-		if(movesCounter == 0 && PP_action == ActionTaken.NONE){	
+		if(movesCounter == 0 && ppaction == ActionTaken.NONE){	
 			gui.raise.setEnabled(false);
 			gui.call.setEnabled(false);
 		}
@@ -33,13 +33,13 @@ public final class MoveRestrictions {
 		//options available after CHECK of previous player: CHECK, BET, FOLD, ALL IN
 		//option unavailable: RAISE, CALL
 		//if(previousPlayer.playerState == ActionTaken.CHECKING){
-		if(PP_action == ActionTaken.CHECKING){
+		if(ppaction == ActionTaken.CHECKING){
 			gui.raise.setEnabled(false);
 			gui.call.setEnabled(false);
 		}
 		
-		if(PP_action == ActionTaken.BB){
-			MoveRestrictions.ResetRestrictions(gui);
+		if(ppaction == ActionTaken.BB){
+			MoveRestrictions.resetRestrictions(gui);
 			gui.bet.setEnabled(false);
 			gui.call.setEnabled(false);
 		}
@@ -47,28 +47,28 @@ public final class MoveRestrictions {
 		//options available after BET of previous player: RAISE, CALL, FOLD, ALL IN
 		//option unavailable: CHECK, BET
 		//if(previousPlayer.playerState == ActionTaken.BETING){
-		if(PP_action == ActionTaken.BETING){
+		if(ppaction == ActionTaken.BETING){
 			gui.check.setEnabled(false);
 			gui.bet.setEnabled(false);
 		}
 		
 		//options available after CALL of previous player: RAISE, FOLD, ALL IN, CALL
 		//option unavailable: CHECK, BET
-		if(PP_action == ActionTaken.CALLING){
+		if(ppaction == ActionTaken.CALLING){
 			gui.check.setEnabled(false);
 			gui.bet.setEnabled(false);
 		}
 		
 		//options available after RAISE of previous player: CALL, FOLD, ALL IN, RAISE
 		//option unavailable: CHECK, BET
-		if(PP_action == ActionTaken.RISING){
+		if(ppaction == ActionTaken.RISING){
 			gui.check.setEnabled(false);
 			gui.bet.setEnabled(false);
 		}
 		
 		//options available after FOLD of previous player: 
 		//option unavailable: CHECK, BET, CALL, FOLD, ALL IN, RAISE
-		if(PP_action == ActionTaken.FOLDING){
+		if(ppaction == ActionTaken.FOLDING){
 			if(currentBet!=0){
 				gui.check.setEnabled(false);
 				gui.bet.setEnabled(false);
@@ -81,7 +81,7 @@ public final class MoveRestrictions {
 		
 		//options available after ALLIN of previous player: 
 		//option unavailable: CHECK, BET, CALL, FOLD, ALL IN, RAISE
-		if(PP_action == ActionTaken.ALLIN){
+		if(ppaction == ActionTaken.ALLIN){
 			gui.check.setEnabled(false);
 			gui.bet.setEnabled(false);
 		}
@@ -90,7 +90,7 @@ public final class MoveRestrictions {
 	}
 	
 	//Enable all options before restrictions
-	public static void ResetRestrictions(AuctionGUI gui){
+	public static void resetRestrictions(AuctionGUI gui){
 		gui.bet.setEnabled(true);
 		gui.check.setEnabled(true);
 		gui.call.setEnabled(true);
@@ -100,7 +100,7 @@ public final class MoveRestrictions {
 	}
 	
 	//Restrict all options
-	public static void RestrictAll(AuctionGUI gui){
+	public static void restrictAll(AuctionGUI gui){
 		gui.bet.setEnabled(false);
 		gui.check.setEnabled(false);
 		gui.call.setEnabled(false);

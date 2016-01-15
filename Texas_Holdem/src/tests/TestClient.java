@@ -9,7 +9,7 @@ import main.Client;
 public class TestClient {
 
 	@Test
-	public void test_ParseData(){
+	public void testParseData(){
 		String testString = "set active;1000;A";
 		String[] result = Client.parseData(testString);
 		assertEquals("set active", result[0]);

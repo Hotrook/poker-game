@@ -3,12 +3,10 @@ package tests;
 import main.Card;
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import exceptions.InvalidNumberOfRankException;
@@ -19,7 +17,7 @@ public class TestDeck {
 	
 
 	@Test
-	public void test_Shuffle() throws InvalidNumberOfRankException, InvalidNumberOfSuitException {
+	public void testShuffle() throws InvalidNumberOfRankException, InvalidNumberOfSuitException {
 		
 		List<Card> cards1 = Arrays.asList(new Card[52]);
 		List<Card> cards2 = Arrays.asList(new Card[52]);

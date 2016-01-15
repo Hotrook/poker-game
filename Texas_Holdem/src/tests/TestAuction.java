@@ -123,13 +123,13 @@ public class TestAuction {
 		//5. player1 calls player4's bet	|A - 80, B - 50, C - 80, D - 80
 		//6. player2 calls player1's bet	|A - 80, B - 80, C - 80, D - 80
 		//bets should be equal
-		player1.Bet(50);
-		player2.Call(player1.getCurrentBet());
-		player3.Raise(100);
-		player4.Call(player3.getCurrentBet());
+		player1.bet(50);
+		player2.call(player1.getCurrentBet());
+		player3.raise(100);
+		player4.call(player3.getCurrentBet());
 		assertEquals(false, auction.checkIfBetsAreEqual(players));
-		player1.Call(player4.getCurrentBet()-player1.getCurrentBet());
-		player2.Call(player1.getCurrentBet()-player2.getCurrentBet());
+		player1.call(player4.getCurrentBet()-player1.getCurrentBet());
+		player2.call(player1.getCurrentBet()-player2.getCurrentBet());
 		assertEquals(true, auction.checkIfBetsAreEqual(players));
 	}
 	

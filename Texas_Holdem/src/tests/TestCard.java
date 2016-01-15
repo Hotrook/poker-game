@@ -13,7 +13,7 @@ public class TestCard {
 	
 	
 	@Test(expected = InvalidNumberOfRankException.class)
-	public void test_InvalidNumberOfRankException() 
+	public void testInvalidNumberOfRankException() 
 			throws InvalidNumberOfRankException, 
 				   InvalidNumberOfSuitException {
 		Card card = new Card( -1, 3 );
@@ -22,7 +22,7 @@ public class TestCard {
 	
 	
 	@Test(expected = InvalidNumberOfSuitException.class)
-	public void test_InvalidNumberOfSuitException() 
+	public void testInvalidNumberOfSuitException() 
 			throws InvalidNumberOfRankException, 
 			InvalidNumberOfSuitException {
 		Card card = new Card( 6, 13 );
@@ -31,7 +31,7 @@ public class TestCard {
 	
 	
 	@Test 
-	public void test_Compare() throws InvalidNumberOfRankException, 
+	public void testCompare() throws InvalidNumberOfRankException, 
 									  InvalidNumberOfSuitException {
 		
 		Card card1 = new Card( 8, 3 );
@@ -39,9 +39,9 @@ public class TestCard {
 		Card card3 = new Card( 9, 0 );
 		Card card4 = new Card( 9, 0 );
 		
-		assertEquals( 1 , card1.Compare( card2 ) );
-		assertEquals( -1, card2.Compare( card3 ) );
-		assertEquals( 0 , card3.Compare( card4 ) );
+		assertEquals( 1 , card1.compare( card2 ) );
+		assertEquals( -1, card2.compare( card3 ) );
+		assertEquals( 0 , card3.compare( card4 ) );
 	}
 	
 	

@@ -64,7 +64,7 @@ public class Card {
 	
 	
 	
-	public int Compare( Card card ){
+	public int compare( Card card ){
 		
 		int thisCard = 13 * this.rank + this.suit;
 		int secondCard = 13 * card.rank + card.suit;

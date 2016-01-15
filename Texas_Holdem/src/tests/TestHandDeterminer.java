@@ -16,12 +16,12 @@ import main.Player;
 
 public class TestHandDeterminer {
 	
-	List<Card> DummyCards;
-	List<Card> DummyPlayerCards;
+	List<Card> dummyCards;
+	List<Card> dummyPlayerCards;
 	List<Card> tableCards;
 	List<Card> playerCards ;
-	List<Card> ShittyCards;
-	List<Card> ShittyPlayerCards;
+	List<Card> shittyCards;
+	List<Card> shittyPlayerCards;
 	Player player;
 	
 	public final double precision = 0.0000000000001;
@@ -43,33 +43,33 @@ public class TestHandDeterminer {
 		Card c5 = new Card(11,0);
 		Card c6 = new Card(11,3);
 		
-		ShittyCards = new ArrayList<Card>();
-		ShittyPlayerCards = new ArrayList<Card>();
-		DummyCards = new ArrayList<Card>();
-		DummyPlayerCards = new ArrayList<Card>();
+		shittyCards = new ArrayList<Card>();
+		shittyPlayerCards = new ArrayList<Card>();
+		dummyCards = new ArrayList<Card>();
+		dummyPlayerCards = new ArrayList<Card>();
 		tableCards = new ArrayList<Card>();
 		playerCards = new ArrayList<Card>();
 		
-		DummyCards.add(card1);
-		DummyCards.add(card2);
-		DummyCards.add(card3);
-		DummyCards.add(card4);
-		DummyCards.add(card5);
+		dummyCards.add(card1);
+		dummyCards.add(card2);
+		dummyCards.add(card3);
+		dummyCards.add(card4);
+		dummyCards.add(card5);
 		
-		ShittyCards.add(c3);
-		ShittyCards.add(c4);
-		ShittyCards.add(c5);
-		ShittyCards.add(c6);
+		shittyCards.add(c3);
+		shittyCards.add(c4);
+		shittyCards.add(c5);
+		shittyCards.add(c6);
 		
-		ShittyPlayerCards.add(c1);
-		ShittyPlayerCards.add(c2);
+		shittyPlayerCards.add(c1);
+		shittyPlayerCards.add(c2);
 		
-		DummyPlayerCards.add(card6);
-		DummyPlayerCards.add(card7);
+		dummyPlayerCards.add(card6);
+		dummyPlayerCards.add(card7);
 		
 		player = new Player("Siemanko",123,123);
-		player.setTableCards(DummyCards);
-		System.out.println(HandDeterminer.determineHand(ShittyPlayerCards,ShittyCards,player));
+		player.setTableCards(dummyCards);
+		System.out.println(HandDeterminer.determineHand(shittyPlayerCards,shittyCards,player));
 	}
 	
 	
@@ -94,7 +94,7 @@ public class TestHandDeterminer {
 		
 		playerCards.add(card6);
 		playerCards.add(card7);
-		System.out.println(HandDeterminer.determineHand(ShittyPlayerCards,ShittyCards,player));
+		System.out.println(HandDeterminer.determineHand(shittyPlayerCards,shittyCards,player));
 		
 		assertEquals(8*251+9, HandDeterminer.determineHand(tableCards,playerCards,player),precision);
 	}

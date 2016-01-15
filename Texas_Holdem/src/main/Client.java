@@ -13,13 +13,19 @@ public class Client {
 	
 	private static Socket soc;
 	private final static int SOCKET_NUMBER = 8901;
-	private static String IP_ADRESS;
+	private static String ipAdress;
 	private static AuctionGUI gui;
 	private static String playerName;
 	private static BufferedReader in;
 	private static PrintWriter out;
 	private static GameType gametype;
 	private static int limit;
+	
+	
+	
+	private static int currentBet = 0;
+	private static int playerTokens = 0;
+	private static int currentPot = 0;
 	
 	public static void main(String[] args) {
 		
@@ -31,7 +37,7 @@ public class Client {
 		
 		try{
 			//create tools for network communication: socket, reader and writer 
-			soc = new Socket(IP_ADRESS, SOCKET_NUMBER);
+			soc = new Socket(ipAdress, SOCKET_NUMBER);
 	        in = new BufferedReader(new InputStreamReader(soc.getInputStream()));
 	        out = new PrintWriter(soc.getOutputStream(), true);
 	        
@@ -59,7 +65,7 @@ public class Client {
 	
 	//show dialog collecting IP address of a server
 	private static void getIPAdress(){
-		IP_ADRESS = JOptionPane.showInputDialog(
+		ipAdress = JOptionPane.showInputDialog(
 				gui,
 	            "Enter IP Address of the Server:",
 	            JOptionPane.QUESTION_MESSAGE);
@@ -85,8 +91,8 @@ public class Client {
 				separatedInput = parseData(in.readLine());
 				
 				if(separatedInput[0].equals("set active")){
-					MoveRestrictions.ResetRestrictions(gui);
-					MoveRestrictions.Restrict(gui, 
+					MoveRestrictions.resetRestrictions(gui);
+					MoveRestrictions.restrict(gui, 
 							Integer.parseInt(separatedInput[3]), 
 							Integer.parseInt(separatedInput[6]), 
 							separatedInput[4].equals("null")?ActionTaken.NONE:ActionTaken.valueOf(separatedInput[4]), 
@@ -95,19 +101,19 @@ public class Client {
 				}
 					
 				if(separatedInput[0].equals("set blocked")){
-					MoveRestrictions.RestrictAll(gui);
+					MoveRestrictions.restrictAll(gui);
 				}
 				
 				if(separatedInput[0].equals("data")){
-					DisplayData(separatedInput);
+					displayData(separatedInput);
 				}
 				
 				if(separatedInput[0].equals("hand")){
-					DisplayPlayerHand(separatedInput);
+					displayPlayerHand(separatedInput);
 				}
 				
 				if(separatedInput[0].equals("table cards")){
-					DisplayTableCards(separatedInput);
+					displayTableCards(separatedInput);
 				}
 				
 				if(separatedInput[0].equals("win")){
@@ -137,11 +143,7 @@ public class Client {
 	}
 	
 	
-	private static int currentBet = 0;
-	private static int playerTokens = 0;
-	private static int currentPot = 0;
-	
-	private static void DisplayData(String[] data){
+	private static void displayData(String[] data){
 		gui.turn.setText("Ruch gracza: " + data[1]);
 		gui.txtStawka.setText(data[5]);
 		currentBet = Integer.parseInt(data[5]);
@@ -177,34 +179,34 @@ public class Client {
 	
 	
 	
-	private static void DisplayPlayerHand(String[] cards){
-		gui.playerCard1.setText(DetermineRank(cards[1]) + DetermineSuit(cards[2]));
-		gui.playerCard2.setText(DetermineRank(cards[3]) + DetermineSuit(cards[4]));
+	private static void displayPlayerHand(String[] cards){
+		gui.playerCard1.setText(determineRank(cards[1]) + determineSuit(cards[2]));
+		gui.playerCard2.setText(determineRank(cards[3]) + determineSuit(cards[4]));
 	}
 	
 	
 	
-	private static void DisplayTableCards(String[] cards){
-		gui.card1.setText(DetermineRank(cards[1]) + DetermineSuit(cards[2]));
-		gui.card2.setText(DetermineRank(cards[3]) + DetermineSuit(cards[4]));
-		gui.card3.setText(DetermineRank(cards[5]) + DetermineSuit(cards[6]));
+	private static void displayTableCards(String[] cards){
+		gui.card1.setText(determineRank(cards[1]) + determineSuit(cards[2]));
+		gui.card2.setText(determineRank(cards[3]) + determineSuit(cards[4]));
+		gui.card3.setText(determineRank(cards[5]) + determineSuit(cards[6]));
 		
 		if(cards.length == 7){
 			gui.card4.setText(null);
 			gui.card5.setText(null);
 		}
 		else if(cards.length == 9){
-			gui.card4.setText(DetermineRank(cards[7]) + DetermineSuit(cards[8]));
+			gui.card4.setText(determineRank(cards[7]) + determineSuit(cards[8]));
 			gui.card5.setText(null);
 		}
 		else if(cards.length == 11){
-			gui.card4.setText(DetermineRank(cards[7]) + DetermineSuit(cards[8]));
-			gui.card5.setText(DetermineRank(cards[9]) + DetermineSuit(cards[10]));
+			gui.card4.setText(determineRank(cards[7]) + determineSuit(cards[8]));
+			gui.card5.setText(determineRank(cards[9]) + determineSuit(cards[10]));
 		}
 	}
 	
 	
-	private static String DetermineRank(String rank){
+	private static String determineRank(String rank){
 		String temp = null;
 		switch(rank){
 		case "0": temp = "2"; break;
@@ -227,7 +229,7 @@ public class Client {
 	}
 	
 	
-	private static String DetermineSuit(String suit){
+	private static String determineSuit(String suit){
 		String temp = null;
 		switch(suit){
 		case "0" : temp = "\u2663"; break;

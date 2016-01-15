@@ -19,7 +19,7 @@ public class Player{
 	protected boolean isBigBlind;
 	protected boolean isDealerButton;
 	protected boolean isBot;
-	protected boolean inRound;
+	protected boolean isInRound;
 	protected boolean moved;
 	protected int currentTotalBet;
 	protected int currentAuctionBet;
@@ -32,8 +32,9 @@ public class Player{
 	protected GameType gameType;
 	protected int limit ;
 	protected double power;
-	public static BufferedReader in;
+	public static BufferedReader inp;
 	public static PrintWriter out;
+	public ActionTaken playerState;
 
 	public Player(Socket socket, int tokens, int index, GameType gameType, boolean isBot){
 		this.playerName=actionName;
@@ -53,12 +54,12 @@ public class Player{
 		setDealerButton(false);
 		setStateChanged(false);
 		setActionName(null);
-		if( isBot() == false ){
+		if(!isBot()){
 	        try {
-				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				inp = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				out = new PrintWriter(socket.getOutputStream(),true);
 				Server.writers.add(out);
-				Server.readers.add(in);
+				Server.readers.add(inp);
 			} catch (IOException e) {
 				System.out.println(e.getMessage());
 			}
@@ -87,7 +88,7 @@ public class Player{
 	public void sendHandInfoToClient(){
 		String handInfo = null;
 		handInfo = "hand";
-		for(Card card : getHand()){
+		for(final Card card : getHand()){
 			handInfo += ";" + card.getRank() + ";" + card.getSuit();
 		}
 		
@@ -123,27 +124,27 @@ public class Player{
 	
 ////AUCTION METHODS////
 	
-	public ActionTaken playerState;
+
 		
-	public void Check(){
+	public void check(){
 		playerState = ActionTaken.CHECKING;
 	}
 	
-	public void Bet(int betValue){
+	public void bet(int betValue){
 		setPlayerTokens(getPlayerTokens() - betValue);
 		setCurrentTotalBet(getCurrentTotalBet() + betValue);
 		setCurrentBet(betValue);
 		playerState = ActionTaken.BETING;
 	}
 	
-	public void Call(int difference){
+	public void call(int difference){
 		setCurrentTotalBet(getCurrentTotalBet() + difference);
 		setPlayerTokens(getPlayerTokens() - difference);
 		setCurrentBet(getCurrentBet() + difference);
 		playerState = ActionTaken.CALLING;
 	}
 
-	public void Raise(int auctionBetValue){
+	public void raise(int auctionBetValue){
 		setPlayerTokens(getPlayerTokens() - (auctionBetValue - getCurrentPlayerBet()));
 		setCurrentTotalBet(getCurrentTotalBet() + (auctionBetValue - getCurrentPlayerBet()));
 		setCurrentBet(auctionBetValue);
@@ -151,11 +152,11 @@ public class Player{
 		playerState = ActionTaken.RISING;
 	}
 
-	public void Fold(){
+	public void fold(){
 		playerState = ActionTaken.FOLDING;
 	}
 	
-	public int AllIn(){
+	public int allIn(){
 		playerState = ActionTaken.ALLIN;
 		setCurrentTotalBet(getCurrentTotalBet() + getPlayerTokens());
 		setCurrentBet(getPlayerTokens());
@@ -309,8 +310,9 @@ public class Player{
 	}
 
 	public void setActive(String data, int round) {
-		if( (isBigBlind() == false && isSmallBlind() == false) || round > 0 )
+		if( (!isBigBlind() && !isSmallBlind()) || round > 0 ){
 			setCurrentPlayerBet(0);
+		}
 		Server.writers.get(getPlayerIndex()).println("set active;" + data);
 		getMovement();
 	}
@@ -323,7 +325,9 @@ public class Player{
 		this.isBot = isBot;
 	}
 
-	public void setTableCards(List<Card> tableCards) {}
+	public void setTableCards(List<Card> tableCards) {
+	  //do nothing
+	}
 	
 	public void setLimit(int limit ){
 		this.limit = limit;
@@ -349,20 +353,20 @@ public class Player{
 		return currentPlayerBet;
 	}
 	
-	public void setInRound(boolean x){
-		this.inRound = x;
+	public void setInRound(boolean isInRound){
+		this.isInRound = isInRound;
 	}
 	
 	public boolean isInRound(){
-		return inRound;
+		return isInRound;
 	}
 	
-	public boolean getMoved(){
+	public boolean isMoved(){
 		return moved;
 	}
 	
-	public void setMoved(boolean is){
-		this.moved = is;
+	public void setMoved(boolean moved){
+		this.moved = moved;
 	}
 	
 	

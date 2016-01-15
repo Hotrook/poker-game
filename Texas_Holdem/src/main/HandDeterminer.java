@@ -19,39 +19,39 @@ public class HandDeterminer {
 			operatingList.addAll(tableCards);
 		
 		
-		if( (power = HandDeterminer.StraightFlush(operatingList)) > 0){
+		if( (power = HandDeterminer.straightFlush(operatingList)) > 0){
 			player.setPower( Hands.STRAIGHTFLUSH*251 + power);;
 			return Hands.STRAIGHTFLUSH * 251 + power;
 		}
-		else if((power = HandDeterminer.FourOfAKind(operatingList)) > 0){
+		else if((power = HandDeterminer.fourOfAKind(operatingList)) > 0){
 			player.setPower( Hands.FOUROFAKIND*251 + power);
 			return Hands.FOUROFAKIND * 251 + power;
 		}
-		else if((power = HandDeterminer.FullHouse(operatingList)) > 0){
+		else if((power = HandDeterminer.fullHouse(operatingList)) > 0){
 			player.setPower( Hands.FULLHOUSE*251 + power);
 			return Hands.FULLHOUSE * 251 + power;
 		}
-		else if((power = HandDeterminer.Flush(operatingList)) > 0){
+		else if((power = HandDeterminer.flush(operatingList)) > 0){
 			player.setPower( Hands.FLUSH*251 + power);
 			return Hands.FLUSH * 251 + power; 
 		}
-		else if((power = HandDeterminer.Straight(operatingList )) > 0){
+		else if((power = HandDeterminer.straight(operatingList )) > 0){
 			player.setPower( Hands.STRAIGHT*251 + power);
 			return Hands.STRAIGHT * 251 + power;
 		}
-		else if((power = HandDeterminer.ThreeOfAKind(operatingList)) > 0){
+		else if((power = HandDeterminer.threeOfAKind(operatingList)) > 0){
 			player.setPower( Hands.THREEOFAKIND*251 + power);
 			return Hands.THREEOFAKIND * 251 + power; 
 		}
-		else if((power = HandDeterminer.TwoPair(operatingList)) > 0){
+		else if((power = HandDeterminer.twoPair(operatingList)) > 0){
 			player.setPower( Hands.TWOPAIR*251 + power);
 			return Hands.TWOPAIR * 251 + power; 
 		}
-		else if((power = HandDeterminer.OnePair(operatingList)) > 0){
+		else if((power = HandDeterminer.onePair(operatingList)) > 0){
 			player.setPower( Hands.ONEPAIR*251 + power);
 			return Hands.ONEPAIR * 251 + power;
 		}
-		else if((power = HandDeterminer.HighCard(operatingList)) > 0){
+		else if((power = HandDeterminer.highCard(operatingList)) > 0){
 			player.setPower( Hands.HIGHCARD*251 + power);
 			return Hands.HIGHCARD * 251 + power;
 		}
@@ -59,7 +59,7 @@ public class HandDeterminer {
 	}
 	
 	
-	private static double StraightFlush(List<Card> operatingList){
+	private static double straightFlush(List<Card> operatingList){
 		
 		if( operatingList.size() < 5)
 			return 0;
@@ -96,7 +96,7 @@ public class HandDeterminer {
 	
 	
 	
-	private static double FourOfAKind(List<Card> operatingList){
+	private static double fourOfAKind(List<Card> operatingList){
 		
 		Collections.sort( operatingList, new SortByRank());
 		
@@ -137,7 +137,7 @@ public class HandDeterminer {
 	
 	
 	
-	private static double FullHouse(List<Card> operatingList){
+	private static double fullHouse(List<Card> operatingList){
 		if( operatingList.size() < 5){
 			return 0;
 		}
@@ -147,10 +147,10 @@ public class HandDeterminer {
 		int i = 0 ; 
 		int counter = 0 ;
 		double result;
-		boolean three_found = false;
-		boolean two_found = false;
+		boolean threefound = false;
+		boolean twofound = false;
 		
-		while( i <= 4 && three_found == false ){
+		while( i <= 4 && threefound == false ){
 			
 			three = operatingList.get(i).getRank();
 			
@@ -160,23 +160,23 @@ public class HandDeterminer {
 			}
 			
 			if( counter == 3){
-				three_found = true;
+				threefound = true;
 			}
 			i++;
 		}
 		
 		i=0;
-		while( i <= operatingList.size()-2  && two_found == false){
+		while( i <= operatingList.size()-2  && twofound == false){
 			if( operatingList.get(i).getRank() != three){
 				two = operatingList.get(i).getRank();
 				if( operatingList.get(i+1).getRank() == two){
-					two_found = true;
+					twofound = true;
 				}
 			}
 			i++;
 		}
 		
-		if( three_found && two_found ) {
+		if( threefound && twofound ) {
 			result = three + two*0.01;
 			
 			return result;
@@ -188,7 +188,7 @@ public class HandDeterminer {
 	
 	
 	
-	private static double Flush(List<Card> operatingList){
+	private static double flush(List<Card> operatingList){
 		
 		if( operatingList.size() < 5 ){
 			return 0;
@@ -199,9 +199,9 @@ public class HandDeterminer {
 		int i = 0 ;
 		int suit = 0;
 		double result = 0;
-		boolean flush_found = false;
+		boolean flushfound = false;
 		
-		while (i <= operatingList.size()-5 && flush_found == false ){
+		while (i <= operatingList.size()-5 && flushfound == false ){
 				
 				counter = 1;
 				suit = operatingList.get(i).getSuit();
@@ -212,7 +212,7 @@ public class HandDeterminer {
 				}
 				
 				if( counter == 5 ){
-					flush_found = true;
+					flushfound = true;
 				}
 				i++;
 		}
@@ -227,7 +227,7 @@ public class HandDeterminer {
 	
 	
 	
-	private static double Straight(List<Card> operatingList){
+	private static double straight(List<Card> operatingList){
 		
 		Collections.sort(operatingList, new SortByRank());
 		int counter = 0;
@@ -236,9 +236,9 @@ public class HandDeterminer {
 		int antecessor;
 		 
 		double result = 0; 
-		boolean straight_found = false;
+		boolean straightfound = false;
 		
-		while( i <= operatingList.size()-5 && straight_found == false ){
+		while( i <= operatingList.size()-5 && straightfound == false ){
 			
 			j = i;
 			counter = 1;
@@ -254,12 +254,12 @@ public class HandDeterminer {
 			}
 			
 			if( counter == 5 ){
-				straight_found = true;
+				straightfound = true;
 			}
 			i++;
 		}
 		
-		if( straight_found )
+		if( straightfound )
 			return result;
 		
 		return 0;
@@ -268,7 +268,7 @@ public class HandDeterminer {
 	
 	
 	
-	private static double ThreeOfAKind(List<Card> operatingList){
+	private static double threeOfAKind(List<Card> operatingList){
 		
 		if(operatingList.size() < 3){
 			return 0;
@@ -279,9 +279,9 @@ public class HandDeterminer {
 		int i = 0;
 		int rank;
 		double result = 0;
-		boolean three_found = false ;
+		boolean threefound = false ;
 		
-		while ( i <= operatingList.size()-3 && three_found == false ){
+		while ( i <= operatingList.size()-3 && threefound == false ){
 			
 			counter = 0 ; 
 			rank = operatingList.get(i).getRank();
@@ -292,7 +292,7 @@ public class HandDeterminer {
 			}
 			
 			if( counter == 3 ){
-				three_found = true;
+				threefound = true;
 			}
 			
 			counter = 0;
@@ -307,7 +307,7 @@ public class HandDeterminer {
 			i++;
 		}
 		
-		if( three_found ){
+		if( threefound ){
 			return result;
 		}
 		return 0;
@@ -317,7 +317,7 @@ public class HandDeterminer {
 	
 	
 	
-	private static double TwoPair(List<Card> operatingList){
+	private static double twoPair(List<Card> operatingList){
 		if( operatingList.size() < 4){
 			return 0;
 		}
@@ -328,39 +328,39 @@ public class HandDeterminer {
 		int pair2 = 0;
 		double result = 0;
 		
-		boolean first_found = false;
-		boolean second_found = false;
-		boolean third_found = false;
+		boolean firstfound = false;
+		boolean secondfound = false;
+		boolean thirdfound = false;
 		
 		while ( i <= operatingList.size()-2 ){
 			
 			rank = operatingList.get(i).getRank();
 			if( operatingList.get(i+1).getRank() == rank ){
 				
-				if( first_found == false ){
+				if( firstfound == false ){
 					
 					pair1 = rank;
-					first_found = true;
+					firstfound = true;
 					result = pair1;
 				}
-				else if( second_found == false ){
+				else if( secondfound == false ){
 					
 					pair2 = rank;
-					second_found = true;
+					secondfound = true;
 					result += pair2*0.01;
 				} 
 			}
 			i++;
 		}
 		
-		if( first_found && second_found ){
+		if( firstfound && secondfound ){
 			
 			i = 0;
-			while( i < operatingList.size() && third_found == false){
+			while( i < operatingList.size() && thirdfound == false){
 				
 				rank = operatingList.get(i).getRank();
 				if( rank != pair1 && rank != pair2 ){
-					third_found = true;
+					thirdfound = true;
 					result += rank * 0.0001;
 				}
 				i++;
@@ -376,7 +376,7 @@ public class HandDeterminer {
 	
 	
 	
-	private static double OnePair(List<Card> operatingList){
+	private static double onePair(List<Card> operatingList){
 		Collections.sort(operatingList, new SortByRank());
 		
 		int i = 0; 
@@ -384,21 +384,21 @@ public class HandDeterminer {
 		int rank = 0;
 		int pair = 0;
 		double result = 0;
-		boolean pair_found = false;
+		boolean pairfound = false;
 		
-		while ( i <= operatingList.size()-2 && pair_found == false ){
+		while ( i <= operatingList.size()-2 && pairfound == false ){
 			
 			pair = operatingList.get(i).getRank();
 			if( operatingList.get(i+1).getRank() == pair ){
 				
-				pair_found = true;
+				pairfound = true;
 				result = pair;
 			}
 			
 			i++;
 		}
 		
-		if( pair_found ){
+		if( pairfound ){
 			
 			i = 0; 
 			while ( i < operatingList.size() && counter < 3){
@@ -421,7 +421,7 @@ public class HandDeterminer {
 	
 	
 	
-	public static double HighCard(List<Card> operatingList){
+	public static double highCard(List<Card> operatingList){
 		Collections.sort(operatingList, new SortByRank());
 		double result;
 		int i = 1;
