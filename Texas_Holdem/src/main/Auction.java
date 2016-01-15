@@ -202,8 +202,13 @@ public class Auction{
 				Player player = it.next();
 				currentPlayer = player;
 				
-				if( currentPlayer.isInGame() == false || player.isInRound() == false)
+				if( checkPlayers()){
+					endOfAuction = true;
 					continue;
+				}
+				if( currentPlayer.isInGame() == false || player.isInRound() == false )
+					continue;
+				
 				//set previous player
 				// change couse it may couse some bugs when previous player was removed
 				if(playerQueue.indexOf(currentPlayer) == 0)
@@ -253,14 +258,11 @@ public class Auction{
 				if(player.playerState == ActionTaken.CALLING){
 					setCurrentPot(getCurrentPot() + difference);
 				}				
-				if(player.playerState == ActionTaken.RISING){ 
-					//setRaiseValue(player.getCurrentBet());
+				if(player.playerState == ActionTaken.RISING){ ;
 					setCurrentBet(player.getCurrentBet());
 					setCurrentPot(getCurrentPot() - player.getCurrentPlayerBet()+ player.getCurrentBet()); 
 				}
-				if(player.playerState == ActionTaken.FOLDING){ 
-					//playersInRound.remove(player); //if player is folding, remove him from this round and queue
-					//playerQueue.remove(player);
+				if(player.playerState == ActionTaken.FOLDING){
 					it.remove();
 					player.setInRound(false);
 					player.setInGame(false); // for needs of game
@@ -270,7 +272,7 @@ public class Auction{
 					if(player.getCurrentBet() > getCurrentBet())
 						setCurrentBet(player.getCurrentBet());
 					player.setPlayerTokens(0);
-					//playerQueue.remove(player);
+
 					//it.remove();
 					player.setInRound(false);
 				}
@@ -329,6 +331,21 @@ public class Auction{
 	
 ////GETTERS AND SETTERS////
 	
+	private boolean checkPlayers() {
+		int counter = 0;
+		
+		for( Player player : playerQueue ){
+			if( player.isInGame() == true && player.isInRound() == true){
+				++counter;
+			}
+		}
+		
+		if( counter == 1)
+			return true;
+		else
+			return false;
+	}
+
 	public int getCurrentPot() {
 		return currentPot;
 	}
