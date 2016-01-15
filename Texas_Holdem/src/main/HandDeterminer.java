@@ -20,7 +20,7 @@ public class HandDeterminer {
 		
 		
 		if( (power = HandDeterminer.StraightFlush(operatingList)) > 0){
-			player.setPower( Hands.STRAIGHTFLUSH*251 + power);
+			player.setPower( Hands.STRAIGHTFLUSH*251 + power);;
 			return Hands.STRAIGHTFLUSH * 251 + power;
 		}
 		else if((power = HandDeterminer.FourOfAKind(operatingList)) > 0){
@@ -78,7 +78,10 @@ public class HandDeterminer {
 				while( operatingList.get(i+counter).getSuit() == operatingList.get( i + counter - 1 ).getSuit() &&
 					   operatingList.get(i+counter).getRank() == operatingList.get( i + counter - 1 ).getRank() - 1){
 					counter++;
+					
 				}
+				
+				
 			}
 		}
 		
@@ -360,6 +363,7 @@ public class HandDeterminer {
 					third_found = true;
 					result += rank * 0.0001;
 				}
+				i++;
 			}
 			
 			return result;
