@@ -20,6 +20,7 @@ public class Player{
 	protected boolean isDealerButton;
 	protected boolean isBot;
 	protected boolean inRound;
+	protected boolean moved;
 	protected int currentTotalBet;
 	protected int currentAuctionBet;
 	protected int currentBet;
@@ -38,6 +39,7 @@ public class Player{
 		this.playerName=actionName;
 		this.playerIndex=index;
 		this.setPlayerTokens(tokens);
+		moved = false;
 		setBot(isBot);
 		setGameType(gameType);
 		setInGame(true);
@@ -353,6 +355,14 @@ public class Player{
 	
 	public boolean isInRound(){
 		return inRound;
+	}
+	
+	public boolean getMoved(){
+		return moved;
+	}
+	
+	public void setMoved(boolean is){
+		this.moved = is;
 	}
 	
 	

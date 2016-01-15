@@ -21,7 +21,7 @@ public class Bot extends Player {
 	public void getMovement(int round){
 		if( round == 0 ){
 			if ( HandDeterminer.determineHand(getHand(), null, this) > 255 ||
-				 sumHand() > 23 || generator.nextInt()%12 == 0){
+				 sumHand() > 19 || generator.nextInt()%3 == 0){
 				
 				if( HandDeterminer.determineHand(getHand(), null, this) > 255){
 					coef = (HandDeterminer.determineHand(getHand(), null, this) - 255) / 12;
@@ -119,9 +119,9 @@ public class Bot extends Player {
 			}
 		}
 		
-		if( bet <= getCurrentBet()){
-			if( getPlayerTokens () > getCurrentBet() ){
-				bet = getCurrentBet();
+		if( bet <= getCurrentAuctionBet()){
+			if( getPlayerTokens () > getCurrentAuctionBet() ){
+				bet = getCurrentAuctionBet();
 				setActionName("call");
 				setCurrentBet(bet);
 			}
@@ -142,12 +142,19 @@ public class Bot extends Player {
 	public void sendHandInfoToClient(){/*it should do nothing*/}
 	
 	public void setActive(String data,int round){
-		//setActionName("call");
+		System.out.println("\t" + "Bot: ");
+		System.out.println("\t"+getCurrentBet());
+		for ( Card card : getHand()){
+			System.out.println("\t" + card.getRank()+ " " + card.getSuit());
+		}
 		getMovement(round);
 	}
 	
 	@Override
 	public void setBlocked(){
+		System.out.println("\t" + "Bot: ");
+		System.out.println("\t"+getCurrentBet());
+		System.out.println("\t" + getActionName());
 		setCurrentPlayerBet(getCurrentBet());
 	}
 	
