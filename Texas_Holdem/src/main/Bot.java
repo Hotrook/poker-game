@@ -132,6 +132,7 @@ public class Bot extends Player {
 		}
 		else {
 			if( bet > getPlayerTokens())
+				bet = getPlayerTokens();
 				
 			setCurrentBet(bet);
 			setActionName("raise");
