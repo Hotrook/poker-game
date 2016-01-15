@@ -71,17 +71,30 @@ public class Auction{
 	
 	public boolean checkIfBetsAreEqual(List<Player> players){
 		boolean temp = true;
-		int checkingBet = players.get(0).getCurrentBet();
-		for(int i=1; i<players.size(); i++){
-			if(players.get(i).getCurrentBet() != checkingBet && players.get(i).isInRound() == true){
+		int checkingBet = findInGameBet(players);
+		System.out.println(" CHECK:  " + checkingBet + " " );
+		for(Player player : players){
+			System.out.print(  "  " + player.getCurrentBet() );
+			if(player.getCurrentBet() != checkingBet && player.isInRound() == true){
 				temp = false;
+				System.out.println("CHECK NIE ROWNY " + player.getPlayerName() + " " +player.getCurrentBet());
 				break;
 			}
-			checkingBet = players.get(i).getCurrentBet();
+			
 		}
 		return temp;
 	}
 	
+	private int findInGameBet(List<Player> players) {
+		int bet = 0;
+		for( Player player : players){
+			if( player.isInRound()){
+				bet = player.getCurrentBet();
+			}
+		}
+		return bet;
+	}
+
 	//method used to send data from each player to his client
 	private void sendDataToEachClient(List<Player> players){
 		for(Player player : players){ // TODO: modify to use bot
@@ -89,7 +102,7 @@ public class Auction{
 				player.sendDataToEachClient(createDataPackage(players));
 			else{
 				System.out.println("Działam" + player.getPlayerName() + " " + currentPlayer.getCurrentBet());
-				player.setCurrentBet(getCurrentBet());
+				player.setCurrentAuctionBet(getCurrentBet());
 				player.setCurrentPot(getCurrentPot());
 			}
 		

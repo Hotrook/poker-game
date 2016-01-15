@@ -24,18 +24,17 @@ public class Bot extends Player {
 				 sumHand() > 19 || generator.nextInt()%3 == 0){
 				
 				if( HandDeterminer.determineHand(getHand(), null, this) > 255){
-					coef = (HandDeterminer.determineHand(getHand(), null, this) - 255) / 12;
+					coef = (HandDeterminer.determineHand(getHand(), null, this) - 255) / 15;
 				}
-				else if( sumHand() > 23 ){
-					coef = (sumHand()- 23) / 5;
+				else if( sumHand() > 18 ){
+					coef = (sumHand()- 18) / 7;
 				}
 				else{
 					coef = (generator.nextInt()%100)/100;
 				}
 				bet = (int) (coef*0.2*getPlayerTokens());
 			
-				if( bet < getCurrentBet() )
-					bet = getCurrentBet();
+		
 				bet = controlBet(bet);
 				
 				
@@ -47,9 +46,9 @@ public class Bot extends Player {
 			if( HandDeterminer.determineHand(getHand(),getTableCards(),this) > 255 ||
 				generator.nextInt()%9 == 0 ){
 				if( HandDeterminer.determineHand(getHand(), null, this) > 255){
-					int base = 0;
-					coef = (HandDeterminer.determineHand(getHand(), null, this) - 255);
-					base = (int) ((( coef / 255)+1 )* 255);
+					double base = 0;
+					coef = (HandDeterminer.determineHand(getHand(), null, this));
+					base = ((( coef / 255)+1 )* 255);
 					coef = coef/base;
 				}
 				else{
@@ -67,9 +66,9 @@ public class Bot extends Player {
 			if(HandDeterminer.determineHand(getHand(), getTableCards(), this) > 262 ||
 			   generator.nextInt()%6 == 0){
 			   if( HandDeterminer.determineHand(getHand(), getTableCards(), this) > 262){
-				   int base = 0;
-					coef = (HandDeterminer.determineHand(getHand(), null, this) - 262);
-					base = (int) ((( coef / 255)+1 )* 255);
+				   double base = 0;
+					coef = (HandDeterminer.determineHand(getHand(), null, this));
+					base = ((( coef / 255)+1 )* 255);
 					coef = coef/base;
 			   }
 			   else{
@@ -87,9 +86,9 @@ public class Bot extends Player {
 			if(HandDeterminer.determineHand(getHand(),getTableCards(),this) > 400 ||
 			   generator.nextInt()%3 == 0){
 				if( HandDeterminer.determineHand(getHand(), getTableCards(), this) > 400){
-						int base;
-					    coef = (HandDeterminer.determineHand(getHand(), null, this) - 265);
-						base = (int) ((( coef / 255)+1 )* 255);
+						double base;
+					    coef = (HandDeterminer.determineHand(getHand(), null, this));
+						base =  ((( coef / 255)+1 )* 255);
 						coef = coef/base;
 				   }
 				   else{
@@ -119,11 +118,12 @@ public class Bot extends Player {
 			}
 		}
 		
+		
 		if( bet <= getCurrentAuctionBet()){
 			if( getPlayerTokens () > getCurrentAuctionBet() ){
 				bet = getCurrentAuctionBet();
 				setActionName("call");
-				setCurrentBet(bet);
+				//setCurrentBet(bet);
 			}
 			else{
 				bet = getPlayerTokens();
@@ -131,6 +131,8 @@ public class Bot extends Player {
 			}
 		}
 		else {
+			if( bet > getPlayerTokens())
+				
 			setCurrentBet(bet);
 			setActionName("raise");
 		}
@@ -153,8 +155,10 @@ public class Bot extends Player {
 	@Override
 	public void setBlocked(){
 		System.out.println("\t" + "Bot: ");
-		System.out.println("\t"+getCurrentBet());
+		System.out.println("\t"	+ getCurrentBet());
 		System.out.println("\t" + getActionName());
+		System.out.println("\t" + getCurrentAuctionBet());
+		
 		setCurrentPlayerBet(getCurrentBet());
 	}
 	

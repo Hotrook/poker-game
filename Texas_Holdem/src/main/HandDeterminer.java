@@ -280,11 +280,11 @@ public class HandDeterminer {
 		
 		while ( i <= operatingList.size()-3 && three_found == false ){
 			
-			counter = 1 ; 
+			counter = 0 ; 
 			rank = operatingList.get(i).getRank();
 			result = rank;
 			
-			while( operatingList.get(i+counter).getRank() == rank ){
+			while( i+counter < operatingList.size() && operatingList.get(i+counter).getRank() == rank){
 				counter++;
 			}
 			

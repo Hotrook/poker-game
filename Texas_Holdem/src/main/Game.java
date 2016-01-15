@@ -103,15 +103,20 @@ public class Game {
 				}
 			}
 		}
-		
+		 System.out.println("Control level -1");
 		 winnersList = createSortedWinnersList();
+		 System.out.println("Control level 0");
 		 giveGainToWinners(winnersList);
+		 System.out.println("Control level 1");
 		 changeSmallBlind();
+		 System.out.println("Control level 2");
 		 removeLosers();
+		 System.out.println("Control level 3");
 		 informLosers();
-		 
+		 System.out.println("Control level 4");
 		 //clear the table
 		 clearTableViewForEachPlayer(players);
+		 System.out.println("Control level 5");
 		 
 	}
 	
