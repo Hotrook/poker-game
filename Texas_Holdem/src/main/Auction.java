@@ -108,7 +108,7 @@ public class Auction{
 			if( !player.isBot() )
 				player.sendDataToEachClient(createDataPackage(players));
 			else{
-				System.out.println("Działam" + player.getPlayerName() + " " + currentPlayer.getCurrentBet());
+				//System.out.println("Działam" + player.getPlayerName() + " " + currentPlayer.getCurrentBet());
 				player.setCurrentAuctionBet(getCurrentBet());
 				player.setCurrentPot(getCurrentPot());
 			}
@@ -132,29 +132,38 @@ public class Auction{
 		
 		//placing blinds on table
 		for(Player pl: playerQueue){
-			pl.setMoved(false);
-			if(pl.isBigBlind() ){
-				pl.setCurrentPlayerBet(bbvalue);
-				setCurrentPot(getCurrentPot() + bbvalue); 
-				setCurrentBet(bbvalue);
-				pl.setCurrentBet(bbvalue);
-				pl.setCurrentTotalBet(pl.getCurrentTotalBet() + bbvalue);
-				pl.playerState = ActionTaken.BETING;
-				pl.setPlayerTokens(pl.getPlayerTokens() - bbvalue);
-				
-				currentPlayer = pl;
-				sendDataToEachClient(playerQueue);
-			}
-			if(pl.isSmallBlind() ){
-				pl.setCurrentPlayerBet(sbvalue);
-				setCurrentPot(getCurrentPot() + sbvalue); 
-				pl.setCurrentBet(sbvalue);
-				pl.setCurrentTotalBet(pl.getCurrentTotalBet() + sbvalue);
-				//pl.playerState = ActionTaken.BETING;
-				pl.setPlayerTokens(pl.getPlayerTokens() - sbvalue);
-			}	
-		}	
-	}
+      pl.setMoved(false);
+      if(pl.isBigBlind() ){
+        int tempbb = bbvalue;
+        if( pl.getPlayerTokens() < bbvalue ){
+          tempbb = pl.getPlayerTokens();
+        }
+        pl.setCurrentPlayerBet(tempbb);
+        setCurrentPot(getCurrentPot() + tempbb); 
+        setCurrentBet(tempbb);
+        pl.setCurrentBet(tempbb);
+        pl.setCurrentTotalBet(pl.getCurrentTotalBet() + tempbb);
+        pl.playerState = ActionTaken.BETING;
+        pl.setPlayerTokens(pl.getPlayerTokens() - tempbb);
+        System.out.println("Gracz " + pl.getPlayerIndex() + " is bg blind ");
+        currentPlayer = pl;
+        sendDataToEachClient(playerQueue);
+      }
+      if(pl.isSmallBlind() ){
+        int tempsb = sbvalue;
+        if( pl.getPlayerTokens() < sbvalue)
+          tempsb = pl.getPlayerTokens();
+        pl.setCurrentPlayerBet(tempsb);
+        setCurrentPot(getCurrentPot() + tempsb); 
+        pl.setCurrentBet(tempsb);
+        pl.setCurrentTotalBet(pl.getCurrentTotalBet() + tempsb);
+        //pl.playerState = ActionTaken.BETING;
+        pl.setPlayerTokens(pl.getPlayerTokens() - tempsb);
+        System.out.println("Gracz " + pl.getPlayerIndex() + " is small blind ");
+        
+      } 
+    } 
+  }
 	
 	//modify this method when more data is needed on client side
 	//the data format is: x;y;z
@@ -196,6 +205,7 @@ public class Auction{
 
 	
 	public void startAuction(int round){
+	  System.out.println("Start aukcji " + round);
 		setRoundNumber(round);
 		endOfAuction = false;
 		if(round!=0)
@@ -262,11 +272,13 @@ public class Auction{
 					}
 				}
 				catch (NullPointerException e){
-					currentPlayer.setBlocked();
-					currentPlayer.setActionName("fold");
-					currentPlayer.playerState = ActionTaken.FOLDING;
-					currentPlayer.setPlayerTokens(0);
-					currentPlayer.setPlayerName("Player left!");
+//					currentPlayer.setBlocked();
+				    currentPlayer.setActionName("fold");
+				    currentPlayer.playerState = ActionTaken.FOLDING;
+				    currentPlayer.setInGame(false);
+				    currentPlayer.setInRound(false);
+//					currentPlayer.setPlayerTokens(0);
+//					currentPlayer.setPlayerName("Player left!");
 				}
 				//wykaszam getcurrenttotalbet >> getcurrentbet
 				
@@ -285,7 +297,7 @@ public class Auction{
 					setCurrentPot(getCurrentPot() - player.getCurrentPlayerBet()+ player.getCurrentBet()); 
 				}
 				if(player.playerState == ActionTaken.FOLDING){
-					itr.remove();
+					//itr.remove();
 					player.setInRound(false);
 					player.setInGame(false); // for needs of game
 				}
@@ -304,8 +316,7 @@ public class Auction{
 				currentPlayer.setBlocked();
 				movesCounter++;
 				
-				if(currentPlayer.playerState != ActionTaken.ALLIN)
-					getCurrentPlayer().setActionName(null);
+				
 
 
 				//for(Player pl : playerQueue)
@@ -347,6 +358,7 @@ public class Auction{
 				player.playerState = null;
 			
 			player.setCurrentBet(0);
+			player.setCurrentPlayerBet(0);
 		}
 		//*player queue 
 		playerQueue = new ArrayList<Player>();

@@ -55,9 +55,14 @@ public class Game {
 		}
 		
 		while( players.size() > 1 ){
-			round();
+			try {
+        round();
+      } catch (InterruptedException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
 		}
-		
+		System.out.println(players.get(0).getPlayerTokens());
 		endGame();
 	}
 	
@@ -65,15 +70,16 @@ public class Game {
 	
 	private void endGame(){
 		for(Player player : auction.getPlayersInRound()){
+		  if( !player.isBot())
 			Server.writers.get(player.getPlayerIndex()).println("win");
 		}
-		System.exit(0);
+		//System.exit(0);
 	}
 	
 	
 	
 	public void round() throws InvalidNumberOfRankException, 
-							   InvalidNumberOfSuitException{
+							   InvalidNumberOfSuitException, InterruptedException{
 		
 		List<Player> winnersList = new ArrayList<Player> ();
 	
@@ -81,7 +87,7 @@ public class Game {
 		makePlayersInGame();
 		
 		auction = new Auction(players);
-		
+		System.out.println(" W grze jest " + players.size());
 		
 		for( int i = 0 ; i <= 3 ; ++i){
 			auction.startAuction(i);
@@ -103,6 +109,12 @@ public class Game {
 				}
 			}
 		}
+		int suma = 0 ;
+    for ( Player player : players ){
+      suma += player.getPlayerTokens();
+    }
+    System.out.println( " kasa :  " + suma);
+    suma += auction.getCurrentPot();
 		 System.out.println("Control level -1");
 		 winnersList = createSortedWinnersList();
 		 System.out.println("Control level 0");
@@ -117,6 +129,16 @@ public class Game {
 		 //clear the table
 		 clearTableViewForEachPlayer(players);
 		 System.out.println("Control level 5");
+		 
+		  suma = 0 ;
+		 for ( Player player : players ){
+		   suma += player.getPlayerTokens();
+		 }
+		 
+		 suma += auction.getCurrentPot();
+		 System.out.println( " KASSA :  "+  suma);
+		 
+
 		 
 	}
 	
@@ -182,7 +204,11 @@ public class Game {
 	
 	public void changeSmallBlind() {
 		int counter = 0;
-		
+		for(Player player : players){
+		  if( player.isBigBlind() ){
+		    player.setBigBlind(false);
+		  }
+		}
 		while ( counter < players.size() && players.get(counter).isSmallBlind() == false){
 			counter++;
 		}
@@ -212,6 +238,8 @@ public class Game {
 		for( Player player : players){
 			player.setInGame(true);
 			player.setInRound(true);
+			player.setActionName(null);
+			player.playerState = null;
 		}
 	}
 
@@ -229,21 +257,21 @@ public class Game {
 			wagers[i] = players.get(i).getCurrentTotalBet();
 		}
 		
-		while( auction.getCurrentPot() > 0 ){
+		while( auction.getCurrentPot() > 0  ){
 
-			int temp = auction.getCurrentPot();
 
-			power = winnersList.get(0).getPower(); // naprawic to 
+			System.out.println("w puli " +auction.getCurrentPot());
+			power = winnersList.get(0).getPower(); 
 			
 			helpingList = createHelpingList(power, winnersList);
 			
 			
 			higherRate = helpingList.get(0).getCurrentTotalBet(); 
-			
+			System.out.println("1Higher Rate: " + higherRate);
 			while(helpingList.isEmpty() == false ){
 				helpingPot = 0;
 				higherRate = helpingList.get(0).getCurrentTotalBet(); 
-				
+				System.out.println("h - l : " +  higherRate + " " + lowerRate);
 				
 				for( int i = 0 ; i < players.size() ; ++i ){
 					if( wagers[ i ] > lowerRate ){ 
@@ -258,10 +286,14 @@ public class Game {
 				
 				auction.setCurrentPot((auction.getCurrentPot()-helpingPot));
 				
+				int tempHelp = helpingPot/helpingList.size();
 				for( Player player : helpingList){
-					System.out.println("gracz " + player.getPlayerName() + "dostal " + helpingPot/helpingList.size());
-					player.setPlayerTokens(player.getPlayerTokens()+helpingPot/helpingList.size());
-					
+					System.out.println("gracz " + player.getPlayerName() + " " + player.getPlayerIndex()+"dostal " + helpingPot/helpingList.size());
+					player.setPlayerTokens(player.getPlayerTokens()+tempHelp);
+					helpingPot -= tempHelp;
+				}
+				if( helpingPot != 0){
+				  helpingList.get(0).setPlayerTokens( helpingList.get(0).getPlayerTokens()+helpingPot);
 				}
 				
 				while( helpingList.get(0).getCurrentTotalBet() == higherRate ){
@@ -312,7 +344,23 @@ public class Game {
 		}
 		
 		Collections.sort(winners, new SortPlayer() );
+		List<Player> toRemove = new ArrayList<Player>();
 	
+		for( int i = 0 ; i < winners.size(); ++i )
+		  for( int j = i -1  ; j >= 0 ; --j ){
+		    if( winners.get(i).getCurrentTotalBet() < winners.get(j).getCurrentTotalBet())
+		      toRemove.add(winners.get(i));
+		    if( winners.get(i).getCurrentTotalBet() == winners.get(j).getCurrentTotalBet() &&
+		        winners.get(i).getPower() < winners.get(j).getPower())
+		      toRemove.add(winners.get(i));
+		  }
+		for ( Player player : winners )
+      System.out.println("Wygrani: " +player.getPower() + " " + player.getCurrentTotalBet() );
+		for( Player pl : toRemove){
+		  winners.remove(pl);
+		}
+		for ( Player player : winners )
+		  System.out.println("2Wygrani: " +player.getPower() + " " + player.getCurrentTotalBet() );
 		return winners;
 	}
 
@@ -364,7 +412,8 @@ public class Game {
 	
 	public void informLosers(){
 		for( Player loser : losers){
-			Server.writers.get(loser.getPlayerIndex()).println("lose");
+		  if(!loser.isBot())
+			  Server.writers.get(loser.getPlayerIndex()).println("lose");
 		}
 		losers.clear();
 	}

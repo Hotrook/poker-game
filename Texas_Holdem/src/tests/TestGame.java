@@ -79,36 +79,6 @@ public class TestGame {
 	
 	
 	
-	@Test
-	public void testCreateSortedWinnersList() throws InvalidNumberOfRankException,
-												     InvalidNumberOfSuitException{
-		List<Player> expected = new ArrayList<Player>();
-		List<Player> created = new ArrayList<Player>();
-		
-		expected.add(player);
-		expected.add(player1);
-		expected.add(player2);
-		
-		List<Card> tableCards = new ArrayList<Card>();
-		tableCards.add( new Card( 2,0) );
-		tableCards.add( new Card( 4,0) );
-		tableCards.add( new Card( 6,0) );
-		tableCards.add( new Card( 8,1) );
-		tableCards.add( new Card( 10,2) );
-		
-		game.setTableCards(tableCards);
-		
-		
-	
-		
-		created = game.createSortedWinnersList();
-		
-		
-		assertEquals(expected,created);
- 		
-	}
-	
-	
 	
 	
 	@Test
@@ -173,31 +143,7 @@ public class TestGame {
 	
 	
 	
-	@Test
-	public void testSorting() throws InvalidNumberOfRankException, 
-								     InvalidNumberOfSuitException{
-		
-		player3.setInGame(true);
-		player2.setPower(1000);
-		player1.setCurrentTotalBet(70);
-		player3.setPower(1999);
-		
-		List <Player> winners = new ArrayList<Player>();
-		List <Player> expected = new ArrayList<Player>();
-		
-		expected.add(player3);
-		expected.add(player);
-		expected.add(player1);
-		expected.add(player2);
-		
-		initializeCards();
-		
-		winners = game.createSortedWinnersList();
-		
-		assertEquals(expected,winners);
-		
-	}
-	
+
 	
 	
 	

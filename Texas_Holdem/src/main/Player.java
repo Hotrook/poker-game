@@ -145,6 +145,7 @@ public class Player{
 	}
 
 	public void raise(int auctionBetValue){
+	  
 		setPlayerTokens(getPlayerTokens() - (auctionBetValue - getCurrentPlayerBet()));
 		setCurrentTotalBet(getCurrentTotalBet() + (auctionBetValue - getCurrentPlayerBet()));
 		setCurrentBet(auctionBetValue);

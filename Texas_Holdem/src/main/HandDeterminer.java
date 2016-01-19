@@ -76,9 +76,10 @@ public class HandDeterminer {
 				max = operatingList.get(i - 1).getRank();
 				
 				while( operatingList.get(i+counter).getSuit() == operatingList.get( i + counter - 1 ).getSuit() &&
-					   operatingList.get(i+counter).getRank() == operatingList.get( i + counter - 1 ).getRank() - 1){
+					   operatingList.get(i+counter).getRank() == operatingList.get( i + counter - 1 ).getRank() - 1 && i+counter<6){
 					counter++;
-					
+					if( i + counter >= operatingList.size()-1 )
+					  break;
 				}
 				
 				
@@ -113,7 +114,7 @@ public class HandDeterminer {
 				max = operatingList.get(i-1).getRank();
 				
 				while( i+counter < operatingList.size() &&
-						operatingList.get(i+counter).getRank() == operatingList.get(i+counter - 1).getRank() ){
+						operatingList.get(i+counter).getRank() == max ){
 					counter++;
 				}
 				
@@ -124,9 +125,11 @@ public class HandDeterminer {
 		
 		if(counter == 3){
 			counter = 0 ; 
-			while ( operatingList.get(counter).getRank() == max ){
+			while ( operatingList.get(counter).getRank() == max  && counter < operatingList.size()-1){
 				counter++;
 			}
+			if( counter >= operatingList.size() )
+			  counter = operatingList.size()-1;
 			max += operatingList.get(counter).getRank()*0.01;
 			return max;
 		}
