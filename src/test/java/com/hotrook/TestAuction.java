@@ -1,20 +1,11 @@
-package tests;
+package com.hotrook;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-
-import main.Auction;
-import main.AuctionGUI;
-import main.Input;
-import main.Player;
-import main.Server;
 
 public class TestAuction {
 	private List<Player> players;
@@ -62,10 +53,10 @@ public class TestAuction {
 	@Test
 	public void testConstructor(){
 		Auction auction = new Auction(players);
-		assertEquals(players, auction.getPlayersInRound());
-		assertEquals(0, auction.getPlayerQueue().size());
-		assertEquals(0, auction.getRoundNumber());
-		assertEquals(0, auction.getCurrentPot());
+		Assert.assertEquals(players, auction.getPlayersInRound());
+		Assert.assertEquals(0, auction.getPlayerQueue().size());
+		Assert.assertEquals(0, auction.getRoundNumber());
+		Assert.assertEquals(0, auction.getCurrentPot());
 	}
 	
 	
@@ -75,16 +66,16 @@ public class TestAuction {
 		auction.setInitialPlayerQueue(auction.getPlayersInRound());
 		
 		//first assertion: players amount in queue is equal to players amount in round
-		assertEquals(auction.getPlayersInRound().size(), auction.getPlayerQueue().size());
+		Assert.assertEquals(auction.getPlayersInRound().size(), auction.getPlayerQueue().size());
 		
 		//second assertion: players are in right order
 		//normal order: A, B - Dealer Button, C - Small Blind, D - Big Blind
 		//right order starts with the first player after Big Blind
 		//right order: A -> B -> C -> D
-		assertEquals("A", auction.getPlayerQueue().get(0).getPlayerName());
-		assertEquals("B", auction.getPlayerQueue().get(1).getPlayerName());
-		assertEquals("C", auction.getPlayerQueue().get(2).getPlayerName());
-		assertEquals("D", auction.getPlayerQueue().get(3).getPlayerName());
+		Assert.assertEquals("A", auction.getPlayerQueue().get(0).getPlayerName());
+		Assert.assertEquals("B", auction.getPlayerQueue().get(1).getPlayerName());
+		Assert.assertEquals("C", auction.getPlayerQueue().get(2).getPlayerName());
+		Assert.assertEquals("D", auction.getPlayerQueue().get(3).getPlayerName());
 	}
 	
 	
@@ -94,16 +85,16 @@ public class TestAuction {
 		auction.setPlayerQueue(auction.getPlayersInRound());
 	
 		//first assertion: players amount in queue is equal to players amount in round
-		assertEquals(auction.getPlayersInRound().size(), auction.getPlayerQueue().size());
+		Assert.assertEquals(auction.getPlayersInRound().size(), auction.getPlayerQueue().size());
 		
 		//second assertion: players are in right order
 		//normal order: A, B - Dealer Button, C - Small Blind, D - Big Blind
 		//right order starts with the Small Blind
 		//right order: C -> D -> A -> B
-		assertEquals("C", auction.getPlayerQueue().get(0).getPlayerName());
-		assertEquals("D", auction.getPlayerQueue().get(1).getPlayerName());
-		assertEquals("A", auction.getPlayerQueue().get(2).getPlayerName());
-		assertEquals("B", auction.getPlayerQueue().get(3).getPlayerName());	
+		Assert.assertEquals("C", auction.getPlayerQueue().get(0).getPlayerName());
+		Assert.assertEquals("D", auction.getPlayerQueue().get(1).getPlayerName());
+		Assert.assertEquals("A", auction.getPlayerQueue().get(2).getPlayerName());
+		Assert.assertEquals("B", auction.getPlayerQueue().get(3).getPlayerName());
 	}
 	
 	
@@ -112,7 +103,7 @@ public class TestAuction {
 		Auction auction = new Auction(players);
 		
 		//initial assertion, each player has bet equal to 0
-		assertEquals(true, auction.checkIfBetsAreEqual(players));
+		Assert.assertEquals(true, auction.checkIfBetsAreEqual(players));
 		
 		//example situation of betting 
 		//SCENARIO:
@@ -127,10 +118,10 @@ public class TestAuction {
 		player2.call(player1.getCurrentBet());
 		player3.raise(100);
 		player4.call(player3.getCurrentBet());
-		assertEquals(false, auction.checkIfBetsAreEqual(players));
+		Assert.assertEquals(false, auction.checkIfBetsAreEqual(players));
 		player1.call(player4.getCurrentBet()-player1.getCurrentBet());
 		player2.call(player1.getCurrentBet()-player2.getCurrentBet());
-		assertEquals(true, auction.checkIfBetsAreEqual(players));
+		Assert.assertEquals(true, auction.checkIfBetsAreEqual(players));
 	}
 	
 	
@@ -143,7 +134,7 @@ public class TestAuction {
 		player4.setActionName("");
 		auction.setCurrentPlayer(player1);
 		String data = auction.createDataPackage(players);
-		assertEquals("data;A;1000;null;0;100;500;A;1000;B;1000;C;1000 (SB);D;1000 (BB)",data);
+		Assert.assertEquals("data;A;1000;null;0;100;500;A;1000;B;1000;C;1000 (SB);D;1000 (BB)",data);
 	}
 
 

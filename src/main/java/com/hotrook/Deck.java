@@ -1,12 +1,11 @@
-package main;
+package com.hotrook;
 
 
+import com.hotrook.exceptions.InvalidNumberOfRankException;
+import com.hotrook.exceptions.InvalidNumberOfSuitException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import exceptions.InvalidNumberOfRankException;
-import exceptions.InvalidNumberOfSuitException;
 
 public class Deck {
 	
@@ -15,8 +14,8 @@ public class Deck {
 	
 	
 	
-	private Deck() throws InvalidNumberOfRankException, 
-						  InvalidNumberOfSuitException {
+	private Deck() throws InvalidNumberOfRankException,
+            InvalidNumberOfSuitException {
 		
 		Deck.cards = new ArrayList<Card>();
 		initializeCards();

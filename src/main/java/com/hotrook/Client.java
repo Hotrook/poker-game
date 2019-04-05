@@ -1,4 +1,4 @@
-package main;
+package com.hotrook;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

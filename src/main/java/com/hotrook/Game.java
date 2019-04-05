@@ -1,12 +1,12 @@
-package main;
+package com.hotrook;
 
+import com.hotrook.exceptions.InvalidNumberOfRankException;
+import com.hotrook.exceptions.InvalidNumberOfSuitException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import exceptions.InvalidNumberOfRankException;
-import exceptions.InvalidNumberOfSuitException;
 /**
  * 
  * @author Seba
@@ -23,8 +23,8 @@ public class Game {
 	public Auction auction;
 	
 	
-	public Game(List<Player> players) throws InvalidNumberOfRankException, 
-					     InvalidNumberOfSuitException{
+	public Game(List<Player> players) throws InvalidNumberOfRankException,
+            InvalidNumberOfSuitException {
 		this.players = new ArrayList<Player>();
 		this.players.addAll(players);
 		this.losers = new ArrayList<Player>();

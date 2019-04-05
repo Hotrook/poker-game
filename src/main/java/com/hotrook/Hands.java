@@ -1,4 +1,4 @@
-package main;
+package com.hotrook;
 
 public class Hands {
 	public final static int STRAIGHTFLUSH = 8;

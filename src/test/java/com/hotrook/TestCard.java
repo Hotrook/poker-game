@@ -1,12 +1,11 @@
-package tests;
+package com.hotrook;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import exceptions.InvalidNumberOfRankException;
-import exceptions.InvalidNumberOfSuitException;
-import main.Card;
+import com.hotrook.exceptions.InvalidNumberOfRankException;
+import com.hotrook.exceptions.InvalidNumberOfSuitException;
 
 public class TestCard {
 

@@ -1,17 +1,13 @@
-package tests;
+package com.hotrook;
 
-import main.Card;
-import static org.junit.Assert.*;
+import com.hotrook.exceptions.InvalidNumberOfRankException;
+import com.hotrook.exceptions.InvalidNumberOfSuitException;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import org.junit.Test;
-
-import exceptions.InvalidNumberOfRankException;
-import exceptions.InvalidNumberOfSuitException;
-import main.Deck;
 
 public class TestDeck {
 	
@@ -28,7 +24,7 @@ public class TestDeck {
 		
 		Collections.copy(cards2, Deck.getInstance().getCards());
 	
-		assertNotEquals(cards1, cards2);
+		Assert.assertNotEquals(cards1, cards2);
  		
 	}
 

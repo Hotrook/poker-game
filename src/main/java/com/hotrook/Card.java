@@ -1,8 +1,8 @@
-package main;
+package com.hotrook;
 
 
-import exceptions.InvalidNumberOfRankException;
-import exceptions.InvalidNumberOfSuitException;
+import com.hotrook.exceptions.InvalidNumberOfRankException;
+import com.hotrook.exceptions.InvalidNumberOfSuitException;
 
 public class Card {
 
@@ -31,8 +31,8 @@ public class Card {
 	private final int rank;
 	private final int power;
 	
-	public Card( int rank , int suit ) throws InvalidNumberOfRankException, 
-				   							  InvalidNumberOfSuitException 
+	public Card( int rank , int suit ) throws InvalidNumberOfRankException,
+            InvalidNumberOfSuitException
 	{
 		
 		if( rank < 0 || rank > 13 ){

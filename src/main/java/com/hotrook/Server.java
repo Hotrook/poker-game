@@ -1,6 +1,8 @@
-package main;
+package com.hotrook;
 
 
+import com.hotrook.exceptions.InvalidNumberOfRankException;
+import com.hotrook.exceptions.InvalidNumberOfSuitException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,9 +10,6 @@ import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import exceptions.InvalidNumberOfRankException;
-import exceptions.InvalidNumberOfSuitException;
 
 public class Server {
 	

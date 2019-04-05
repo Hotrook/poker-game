@@ -1,19 +1,15 @@
-package tests;
+package com.hotrook;
 
 import static org.junit.Assert.*;
 
+import com.hotrook.exceptions.InvalidNumberOfRankException;
+import com.hotrook.exceptions.InvalidNumberOfSuitException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import exceptions.InvalidNumberOfRankException;
-import exceptions.InvalidNumberOfSuitException;
-import main.Auction;
-import main.Card;
-import main.Game;
-import main.Player;
 
 public class TestGame {
 	
@@ -28,7 +24,7 @@ public class TestGame {
 
 	@Before
 	public void init  () throws InvalidNumberOfRankException,
-							    InvalidNumberOfSuitException, 
+			InvalidNumberOfSuitException,
 							    NoSuchFieldException, 
 							    SecurityException{
 		players = new ArrayList<Player>();
@@ -70,10 +66,10 @@ public class TestGame {
 												InvalidNumberOfSuitException{
 		
 		game.putCardsOnTheTable(0);
-		assertEquals(3, game.getTableCards().size() );
+		Assert.assertEquals(3, game.getTableCards().size() );
 		
 		game.putCardsOnTheTable(1);
-		assertEquals(4, game.getTableCards().size() );
+		Assert.assertEquals(4, game.getTableCards().size() );
 	}
 	
 	
@@ -91,7 +87,7 @@ public class TestGame {
 		
 		created = game.createHelpingList( 253.100806, game.getPlayers() );
 		
-		assertEquals( expected,created);
+		Assert.assertEquals( expected,created);
 		
 	}
 	
@@ -119,9 +115,9 @@ public class TestGame {
 		
 		game.giveGainToWinners(winnersList);
 		
-		assertEquals(81, player.getPlayerTokens());
-		assertEquals(121, player1.getPlayerTokens());
-		assertEquals(56, player2.getPlayerTokens());
+		Assert.assertEquals(81, player.getPlayerTokens());
+		Assert.assertEquals(121, player1.getPlayerTokens());
+		Assert.assertEquals(56, player2.getPlayerTokens());
 		
 	}
 	
@@ -133,10 +129,10 @@ public class TestGame {
 		
 		game.changeSmallBlind();
 		
-		assertEquals(true,player3.isSmallBlind());
-		assertEquals(false,player3.isBigBlind());
-		assertEquals(true,player.isBigBlind());
-		assertEquals(false,player2.isSmallBlind());
+		Assert.assertEquals(true,player3.isSmallBlind());
+		Assert.assertEquals(false,player3.isBigBlind());
+		Assert.assertEquals(true,player.isBigBlind());
+		Assert.assertEquals(false,player2.isSmallBlind());
 		
 	}
 	
@@ -159,7 +155,7 @@ public class TestGame {
 		
 		game.removeLosers();
 		
-		assertEquals(expected, game.getPlayers());
+		Assert.assertEquals(expected, game.getPlayers());
 	}
 											
 

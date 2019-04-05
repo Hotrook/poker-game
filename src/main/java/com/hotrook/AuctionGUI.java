@@ -1,4 +1,4 @@
-package main;
+package com.hotrook;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

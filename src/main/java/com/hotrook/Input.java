@@ -1,4 +1,4 @@
-package main;
+package com.hotrook;
 
 public final class Input {
 	private int numberOfPlayers;

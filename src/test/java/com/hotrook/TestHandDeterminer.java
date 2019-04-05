@@ -1,18 +1,13 @@
-package tests;
+package com.hotrook;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.hotrook.exceptions.InvalidNumberOfRankException;
+import com.hotrook.exceptions.InvalidNumberOfSuitException;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import exceptions.InvalidNumberOfRankException;
-import exceptions.InvalidNumberOfSuitException;
-import main.Card;
-import main.HandDeterminer;
-import main.Player;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestHandDeterminer {
 	
@@ -96,7 +91,7 @@ public class TestHandDeterminer {
 		playerCards.add(card7);
 		System.out.println(HandDeterminer.determineHand(shittyPlayerCards,shittyCards,player));
 		
-		assertEquals(8*251+9, HandDeterminer.determineHand(tableCards,playerCards,player),precision);
+		Assert.assertEquals(8*251+9, HandDeterminer.determineHand(tableCards,playerCards,player),precision);
 	}
 	
 	@Test
@@ -110,8 +105,8 @@ public class TestHandDeterminer {
 							      new Card(4,1));
 		
 		playerCards = generateList(new Card( 6,2), new Card(9,1));
-		assertEquals(7*251+9.06, HandDeterminer.determineHand(tableCards,playerCards,player),precision);
-		assertEquals(7*251+9.06,player.getPower(),precision);
+		Assert.assertEquals(7*251+9.06, HandDeterminer.determineHand(tableCards,playerCards,player),precision);
+		Assert.assertEquals(7*251+9.06,player.getPower(),precision);
 	}
 	
 	@Test
@@ -127,8 +122,8 @@ public class TestHandDeterminer {
 								  new Card(12,0));
 		
 		playerCards = generateList(new Card(7,3),new Card(7,2));
-		assertEquals(6*251 + 4.07 , HandDeterminer.determineHand(tableCards,playerCards,player),precision);
-		assertEquals(6*251 + 4.07,player.getPower(),precision);
+		Assert.assertEquals(6*251 + 4.07 , HandDeterminer.determineHand(tableCards,playerCards,player),precision);
+		Assert.assertEquals(6*251 + 4.07,player.getPower(),precision);
 	}
 
 	@Test 
@@ -144,8 +139,8 @@ public class TestHandDeterminer {
 								  new Card(12,1));
 		
 		playerCards = generateList(new Card(7,1),new Card(7,2));
-		assertEquals(5*251 + 12.07060502 , HandDeterminer.determineHand(tableCards,playerCards,player),precision);
-		assertEquals(5*251 + 12.07060502,player.getPower(),precision);
+		Assert.assertEquals(5*251 + 12.07060502 , HandDeterminer.determineHand(tableCards,playerCards,player),precision);
+		Assert.assertEquals(5*251 + 12.07060502,player.getPower(),precision);
 	}
 	
 	
@@ -162,8 +157,8 @@ public class TestHandDeterminer {
 								  new Card(8,3));
 		playerCards = generateList(new Card(7,1), new Card(6,2));
 		
-		assertEquals(4*251 + 11, HandDeterminer.determineHand(tableCards, playerCards, player),precision);
-		assertEquals(4*251 + 11,player.getPower(),precision);
+		Assert.assertEquals(4*251 + 11, HandDeterminer.determineHand(tableCards, playerCards, player),precision);
+		Assert.assertEquals(4*251 + 11,player.getPower(),precision);
 	}
 	
 	
@@ -181,8 +176,8 @@ public class TestHandDeterminer {
 		
 		playerCards = generateList(new Card(11,0),new Card(12,2));
 		
-		assertEquals(3*251 + 11.1204, HandDeterminer.determineHand(tableCards,playerCards,player),precision);
-		assertEquals(3*251 + 11.1204,player.getPower(),precision);
+		Assert.assertEquals(3*251 + 11.1204, HandDeterminer.determineHand(tableCards,playerCards,player),precision);
+		Assert.assertEquals(3*251 + 11.1204,player.getPower(),precision);
 	}
 	
 	@Test
@@ -197,8 +192,8 @@ public class TestHandDeterminer {
 		
 		playerCards = generateList(new Card(7,2),new Card(11,2));
 		
-		assertEquals(2*251 + 4.0311, HandDeterminer.determineHand(tableCards,playerCards,player),precision);
-		assertEquals(2*251 + 4.0311,player.getPower(),precision);
+		Assert.assertEquals(2*251 + 4.0311, HandDeterminer.determineHand(tableCards,playerCards,player),precision);
+		Assert.assertEquals(2*251 + 4.0311,player.getPower(),precision);
 	}
 	
 	
@@ -216,8 +211,8 @@ public class TestHandDeterminer {
 
 		playerCards = generateList(new Card(11,1),new Card(11,2));
 
-		assertEquals(1*251 + 11.070504, HandDeterminer.determineHand(tableCards,playerCards,player),precision);
-		assertEquals(1*251 + 11.070504,player.getPower(),precision);
+		Assert.assertEquals(1*251 + 11.070504, HandDeterminer.determineHand(tableCards,playerCards,player),precision);
+		Assert.assertEquals(1*251 + 11.070504,player.getPower(),precision);
 	}
 	
 	
@@ -233,8 +228,8 @@ public class TestHandDeterminer {
 
 		playerCards = generateList(new Card(7,2),new Card(11,2));
 
-		assertEquals(12.11070504, HandDeterminer.determineHand(tableCards,playerCards,player),precision);
-		assertEquals(12.11070504, player.getPower(),precision);
+		Assert.assertEquals(12.11070504, HandDeterminer.determineHand(tableCards,playerCards,player),precision);
+		Assert.assertEquals(12.11070504, player.getPower(),precision);
 	}
 	
 
