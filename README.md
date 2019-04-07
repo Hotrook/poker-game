@@ -1,2 +1,2 @@
 # poker-game
-Game of Texas Hold'em for Laboratories 
+Game of Texas Hold'em for Laboratories [![Build Status](https://travis-ci.com/Hotrook/poker-game.svg?branch=master)](https://travis-ci.com/Hotrook/poker-game) [![Maintainability](https://api.codeclimate.com/v1/badges/e50c1265b060de6230fe/maintainability)](https://codeclimate.com/github/Hotrook/poker-game/maintainability) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b1569bfd343a416a891d7af5652de9c0)](https://www.codacy.com/app/Hotrook/poker-game?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Hotrook/poker-game&amp;utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/Hotrook/poker-game/branch/master/graph/badge.svg)](https://codecov.io/gh/Hotrook/poker-game)
